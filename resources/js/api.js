@@ -603,6 +603,37 @@ export const getActiveTheme = async () => {
   return data.data.theme
 }
 
+
+//public auth provider methods
+export const getAvailableAuthProviders = async () => {
+  const response = await fetch(`${apiUrl}/api/available-auth-providers`, {
+    method: 'GET',
+    headers: {
+      ...addJsonHeader()
+    }
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    throw new Error(data.message)
+  }
+  return data.data.authProviders
+}
+
+//private auth provider methods
+export const getAuthProviders = async () => {
+  const response = await fetchWithAuth(`${apiUrl}/api/auth-providers`, {
+    method: 'GET',
+    headers: {
+      ...addJsonHeader()
+    }
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    throw new Error(data.message)
+  }
+  return data.data.authProviders
+}
+
 //misc methods
 export const getHealth = async () => {
   const response = await fetch(`${apiUrl}/api/health`)

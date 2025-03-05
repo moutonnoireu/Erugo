@@ -261,7 +261,70 @@ class SettingsSeeder extends Seeder
                 'group' => 'system',
                 'created_at' => now(),
                 'updated_at' => now()
-            ]
+            ],
+            //google oauth
+            [
+                'key' => 'google_client_id',
+                'value' => null,
+                'previous_value' => null,
+                'group' => 'system.oauth',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'key' => 'google_client_secret',
+                'value' => null,
+                'previous_value' => null,
+                'group' => 'system.oauth',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            //enable google oauth
+            [
+                'key' => 'enable_google_oauth',
+                'value' => 'false',
+                'previous_value' => null,
+                'group' => 'system.oauth',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+
+            //oidc oauth
+            [
+                'key' => 'oidc_base_url',
+                'value' => null,
+                'previous_value' => null,
+                'group' => 'system.oauth',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'key' => 'oidc_client_id',
+                'value' => null,
+                'previous_value' => null,
+                'group' => 'system.oauth',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'key' => 'oidc_client_secret',
+                'value' => null,
+                'previous_value' => null,
+                'group' => 'system.oauth',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            //enable oidc oauth
+            [
+                'key' => 'enable_oidc_oauth',
+                'value' => 'false',
+                'previous_value' => null,
+                'group' => 'system.oauth',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+
+
         ]);
     }
 }

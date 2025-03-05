@@ -12,6 +12,9 @@ use App\Http\Controllers\BackgroundsController;
 use App\Http\Middleware\maxRequestSize;
 use App\Services\SettingsService;
 use App\Http\Controllers\ThemesController;
+use App\Http\Controllers\AuthProvidersController;
+
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -87,8 +90,6 @@ Route::group([], function ($router) {
         Route::get('/group/{group}', [SettingsController::class, 'readGroup'])->name('settings.readGroup');
     });
 
-
-
     //manage shares [auth]
     Route::group(['prefix' => 'shares', 'middleware' => ['auth']], function ($router) {
 
@@ -116,6 +117,17 @@ Route::group([], function ($router) {
         Route::post('/set-active', [ThemesController::class, 'setActiveTheme'])->name('themes.setActive');
         Route::post('/install', [ThemesController::class, 'installCustomTheme'])->name('themes.install');
     });
+
+    //manage auth providers [auth, admin]
+    Route::group(['prefix' => 'auth-providers', 'middleware' => ['auth', Admin::class]], function ($router) {
+        Route::get('/', [AuthProvidersController::class, 'index'])->name('auth-providers.index');
+        Route::post('/', [AuthProvidersController::class, 'create'])->name('auth-providers.create');
+        Route::put('/{id}', [AuthProvidersController::class, 'update'])->name('auth-providers.update');
+        Route::delete('/{id}', [AuthProvidersController::class, 'delete'])->name('auth-providers.delete');
+    });
+
+    //read auth providers [public]
+    Route::get('/available-auth-providers', [AuthProvidersController::class, 'list'])->name('auth-providers.list');
 
     //read active theme [public]
     Route::get('/themes/active', [ThemesController::class, 'getActiveTheme'])->name('themes.getActive');

@@ -14,6 +14,7 @@
 </head>
 
 <body data-settings='{!! json_encode($settings) !!}'>
+  
 <style id="erugo-css-variables">
     :root {
       /* Links */

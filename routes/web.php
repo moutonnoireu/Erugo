@@ -8,8 +8,10 @@ use App\Mail\shareDownloadedMail;
 use App\Jobs\sendEmail;
 use App\Models\Share;
 use App\Models\Theme;
+use App\Http\Controllers\ExternalAuthController;
 
-function getSettings() {
+function getSettings()
+{
     $settings = Setting::whereLike('group', 'ui%')->orWhere('key', 'default_language')->orWhere('key', 'show_language_selector')->get();
     $indexedSettings = [];
     foreach ($settings as $setting) {
@@ -30,7 +32,7 @@ Route::get('/', function () {
     $indexedSettings['api_url'] = $appURL;
 
     $theme = Theme::where('active', true)->first();
-    
+
 
     return view('app', ['settings' => $indexedSettings, 'theme' => $theme]);
 });
@@ -70,15 +72,6 @@ Route::get('/shares/{share}', function () {
 });
 
 
-Route::get('/logo', function () {
-    //grab the logo file data from settings
-    $setting = Setting::where('key', 'logo')->first();
-    $logo = Storage::disk('public')->get($setting->value);
-    // return $setting;
-    return response($logo)->header('Content-Type', 'image/png');
-});
-
-
 Route::get('/get-logo', function () {
     //grab the logo file data from settings
     $setting = Setting::where('key', 'logo')->first();
@@ -87,10 +80,10 @@ Route::get('/get-logo', function () {
     return response($logo)->header('Content-Type', 'image/png');
 });
 
+//auth provider login
+Route::get('/auth/provider/{provider}/login', [ExternalAuthController::class, 'providerLogin'])
+    ->name('social.provider.login');
 
-Route::get('/test-email', function () {
-    $share = Share::find(1);
-    sendEmail::dispatch('dean@oveio.io', shareDownloadedMail::class, ['share' => $share]);
-    return 'Email sent';
-    // return view('emails.shareDownloadedMail', ['share' => $share]);
-});
+//auth provider callback
+Route::get('/auth/provider/{provider}/callback', [ExternalAuthController::class, 'providerCallback'])
+    ->name('social.provider.callback');
