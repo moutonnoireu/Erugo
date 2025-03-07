@@ -1,15 +1,15 @@
 {
   "Add Files": "Bestanden toevoegen",
   "Add Folders": "Mappen toevoegen",
-  "Add Recipient": "Toevoegen Ontvanger",
+  "Add Recipient": "Ontvanger Toevoegen",
   "Message to share recipients (optional)": "Bericht om te delen naar ontvanger (OPTIONEEL)",
   "No files added yet": "Nog geen bestanden toegevoegd",
   "No recipients": "Geen ontvangers",
   "Powered by": "Aangedreven door",
-  "Share Name": "Deel naam",
-  "Share URL": "Deel link",
+  "Share Name": "Naam",
+  "Share URL": "Gedeelde link",
   "We'll provide you with a link instead": {
-    "": "Wij voorzien je van een link"
+    "": "Wij zullen jou een link sturen"
   },
   "auth": {
     "back_to_login": "Terug naar aanmelden",
@@ -63,10 +63,10 @@
       "logo_image": "Logo afbeelding",
       "logo_width": "Logo Breedte",
       "other_ui_settings": "Andere",
-      "select_theme": "Selecteer thema",
+      "select_theme": "Thema Selecteren",
       "select_theme_description": "Kies uit een reeks kant-en-klare thema's of een thema dat je zelf hebt geïnstalleerd.",
       "show_powered_by": "Toon Aangedreven door Erugo",
-      "show_powered_by_description": "Toon of verberg de \"Powered by Erugo\" tekst onderaan de pagina. Deze tekst zorgt ervoor dat Erugo ontdekt wordt door gebruikers en helpt ons te groeien, je kunt het echter verbergen als je dat wilt.\n",
+      "show_powered_by_description": "Toon of verberg de \"Aangedreven door Erugo\" tekst onderaan de pagina. Deze tekst zorgt ervoor dat Erugo ontdekt wordt door gebruikers en helpt ons te groeien, je kunt het echter verbergen als je dat wilt.\n",
       "theme": "Thema's",
       "theme_description": "Kies uit een reeks kant-en-klare thema's of een thema dat je zelf hebt geïnstalleerd.",
       "theme_file": "Thema Bestand",
@@ -80,7 +80,7 @@
         "save": "Branding-instellingen opslaan"
       },
       "myShares": {
-        "create": "Creëer aandeel"
+        "create": "Gedeelde link aanmaken"
       },
       "system": {
         "save": "Bewaar systeem instellingen"
@@ -93,9 +93,92 @@
     "description": {
       "branding": "Pas de UI van je erugo instantie aan en voeg je eigen branding toe.",
       "myProfile": "Beheer je profiel",
-      "myShares": "Beheer je aandelen.",
+      "myShares": "Beheer je gedeelde links.",
       "system": "Beheer het gedrag van je Erugo instantie.",
-      "users": "Beheer je gebruikers"
+      "users": "Beheer je gebruikers."
+    },
+    "error": {
+      "shareExpired": "Aandeel niet verlopen",
+      "shareExtended": "Niet gelukt om aandeel uit te breiden"
+    },
+    "help": {
+      "auth_provider": {
+        "title": "Auth provider informatie"
+      },
+      "downloadLimit": {
+        "description": "Je kunt de downloadlimiet voor elk aandeel instellen door op het getal aan de rechterkant te klikken en de nieuwe limiet in te voeren. Wis het vakje om de limiet te verwijderen.",
+        "description2": "Wijzigingen worden automatisch opgeslagen wanneer je buiten het vakje klikt.",
+        "title": "Limiethulp downloaden"
+      }
+    },
+    "provider": {
+      "edit": "Bewerk"
+    },
+    "success": {
+      "shareExpired": "Aandeel verlopen",
+      "shareExtended": "Aandeel uitgebreid"
+    },
+    "system": {
+      "application_name": "Naam toepassing",
+      "application_name_description": "Pas de weergegeven naam van je applicatie aan die wordt weergegeven in titelbalken, dialoogvensters en andere interface-elementen. Dit helpt om een consistente merknaam te behouden voor de hele gebruikerservaring.",
+      "application_url": "URL toepassing",
+      "application_url_description": "De basis-URL van je applicatie. Deze wordt gebruikt om klikbare koppelingen te maken in notificatie-e-mails, zodat gebruikers direct terug kunnen navigeren naar specifieke pagina's binnen de applicatie.",
+      "auth": "Auth",
+      "auth_provider_config_base_url": "Basis URL",
+      "auth_provider_config_client_id": "Klant-ID",
+      "auth_provider_config_client_secret": "Geheim van de klant",
+      "auth_provider_enabled": "inschakelen",
+      "auth_provider_name": "Naam aanbieder",
+      "auth_provider_type": "Type aanbieder",
+      "auth_providers": "Auth providers",
+      "auth_providers_description": "Configureer de auth providers waarmee je wilt dat je gebruikers zich kunnen authenticeren.",
+      "clean_files_after": "Bestanden opschonen na",
+      "clean_files_after_description": "Hoe lang nadat een gedeelde link is verlopen worden de bestanden verwijderd uit het systeem.",
+      "days": "Dagen",
+      "default_language": "Standaard Taal",
+      "default_language_description": "Stel de primaire taal in die standaard wordt gebruikt in de interface van de applicatie voor alle gebruikers. Individuele gebruikers kunnen deze instelling overschrijven met hun persoonlijke voorkeuren.",
+      "disabled": "Uitgeschakeld",
+      "emails": "Meldingen",
+      "enable_share_deleted_emails": "Delen van verwijderde links e-mails inschakelen",
+      "enable_share_deletion_warning_emails": "Waarschuwingse-mails voor het verwijderen van links inschakelen",
+      "enable_share_downloaded_emails": "Gedownloade e-mails delen inschakelen",
+      "enable_share_expired_warning_emails": "Verlopen link e-mails inschakelen",
+      "enable_share_expiry_warning_emails": "Waarschuwingsmails voor bijna aflopende links inschakelen",
+      "enabled": "Ingeschakeld",
+      "general": "Algemeen",
+      "login_message": "Inlogbericht",
+      "login_message_description": "Voeg een aangepast bericht of mededeling toe die wordt weergegeven op het inlogscherm. Dit kan worden gebruikt voor welkomstberichten, belangrijke meldingen of tijdelijke mededelingen.",
+      "max_expiry_time": "Maximale verlooptijd",
+      "max_expiry_time_description": "Stel het maximum aantal dagen in dat een gebruiker kan selecteren voor het verlopen van gedeelde links bij het aanmaken. Hou dit vak leeg om een onbeperkte verlooptijd in te stellen.",
+      "max_share_size": "Maximale bestandsgrootte",
+      "max_share_size_description": "Stel de maximale grootte in van een gedeeld bestand die een gebruiker kan aanmaken. De waarde is in megabytes of gigabytes.",
+      "share_deleted_emails": "\"Deel verwijderde\" e-mails",
+      "share_deleted_emails_description": "Stel gebruikers op de hoogte wanneer hun links permanent uit het systeem zijn verwijderd. Dit bevestigt de voltooiing van de levenscyclus van de inhoud voor beveiligings- en nalevingsdoeleinden.",
+      "share_deletion_warning_emails": "\"Waarschuwingsmails \"Delen verwijderen",
+      "share_deletion_warning_emails_description": "Laat gebruikers van tevoren weten wanneer hun verlopen links definitief verwijderd moeten worden. Dit geeft hen een laatste kans om belangrijke inhoud te bewaren.",
+      "share_downloaded_emails": "\"E-mails \"Gedownload delen",
+      "share_downloaded_emails_description": "Stel link-eigenaars op de hoogte wanneer hun gedeelde content voor het eerst wordt gedownload. Dit helpt gebruikers bij te houden wanneer ontvangers toegang krijgen tot hun gedeelde bestanden.",
+      "share_expired_warning_emails": "\"Waarschuwingsmails \"Delen verlopen",
+      "share_expired_warning_emails_description": "Waarschuw gebruikers wanneer hun links de vervaldatum hebben bereikt en niet langer toegankelijk zijn voor ontvangers. Helpt gebruikers zich bewust te blijven van hun deelstatus.",
+      "share_expiry_warning_emails": "\"Waarschuwingsmails \"Vervallen aandelen",
+      "share_expiry_warning_emails_description": "Stuur proactieve meldingen naar gebruikers wanneer hun links bijna verlopen. Dit geeft hen de mogelijkheid om de toegang te verlengen als dat nodig is.",
+      "shares": "Gedeelde Bestanden",
+      "show_language_selector": "Taalkeuze tonen",
+      "show_language_selector_description": "Schakel de zichtbaarheid van het taalkeuzemenu in de rechterbovenhoek van de applicatie in. Als deze optie is ingeschakeld, kunnen gebruikers snel schakelen tussen de beschikbare interfacetalen.",
+      "smtp": "SMTP",
+      "smtp_host": "SMTP Host",
+      "smtp_host_description": "Het serveradres voor uw uitgaande e-mailservice. Dit wordt gebruikt om meldingen en andere systeem e-mails naar gebruikers te sturen.",
+      "smtp_password": "SMTP wachtwoord",
+      "smtp_password_description": "Het wachtwoord dat wordt gebruikt om te verifiëren met je SMTP-server. Met dit wachtwoord kan je app e-mails versturen via je e-mailprovider.",
+      "smtp_port": "SMTP-poort",
+      "smtp_port_description": "Het poortnummer dat wordt gebruikt om verbinding te maken met je SMTP-server. Gebruikelijke poorten zijn 25 (standaard), 465 (SSL) en 587 (TLS).",
+      "smtp_sender_address": "SMTP Afzender Adres",
+      "smtp_sender_address_description": "Het e-mailadres dat wordt gebruikt als afzender voor alle systeemmails. Dit adres moet geldig zijn en correct geconfigureerd zijn met uw SMTP-service.",
+      "smtp_sender_name": "SMTP afzendernaam",
+      "smtp_sender_name_description": "De weergavenaam die wordt weergegeven als de afzender van systeem e-mails. Gebruikers zien deze naam in hun e-mailprogramma (bijv. \"Your App Name\" of \"Your App Support\").",
+      "smtp_username": "SMTP Gebruikersnaam",
+      "smtp_username_description": "De gebruikersnaam die nodig is om te verifiëren met je SMTP-server. Dit is meestal het e-mailadres of de accountnaam die is gekoppeld aan uw e-mailservice.",
+      "your_auth_providers": "Uw autorisatoren"
     },
     "error": {
       "shareExpired": "Aandeel niet verlopen",
@@ -181,7 +264,7 @@
       "your_auth_providers": "Uw autorisatoren"
     },
     "table": {
-      "actions": "Akties",
+      "actions": "Acties",
       "dates": "Datums",
       "downloads": "Downloads",
       "files": "Bestanden",
@@ -191,14 +274,14 @@
       "branding": "Branding & UI",
       "manage": "Beheer",
       "myProfile": "Mijn profiel",
-      "myShares": "Mijn aandelen",
+      "myShares": "Mijn Gedeelde Links",
       "system": "Systeem Instellingen",
       "users": "Gebruikers",
       "users.edit": "Bewerk {name}"
     },
     "users": {
-      "account": "Type rekening",
-      "actions": "Akties",
+      "account": "Gebruikersrol",
+      "actions": "Acties",
       "active": "Actief",
       "add": "Toevoegen gebruiker",
       "add_user_description": "We sturen een e-mail naar de gebruiker met een link om het&nbsp;wachtwoord in te stellen.",
@@ -207,7 +290,7 @@
       "admin_help_text_2": "De gebruiker heeft dezelfde rechten als jij.\n",
       "cannot_delete_yourself": "Je kunt jezelf niet verwijderen",
       "close": "Sluit",
-      "created": "Gemaakt",
+      "created": "Aangemaakt",
       "current_password": "Huidig wachtwoord",
       "delete": "Verwijder",
       "edit": "Bewerk",
@@ -240,10 +323,10 @@
     },
     "created": "Gemaakt",
     "data_loading": "Laden...",
-    "deletes": "Verwijdert",
+    "deletes": "Verwijderd",
     "download_limit_reached": "Download limiet bereikt",
     "download_limit_reached.message": "De share die je probeert te downloaden heeft zijn downloadlimiet bereikt. Vraag de maker van de share om de downloadlimiet te verhogen.",
-    "expired": "Aandeel verlopen",
+    "expired": "Link verlopen",
     "expired.message": "De share die u probeert te downloaden is verlopen. Vraag de maker van de share om een nieuwe share aan te maken.",
     "expires": "Verloopt op",
     "expires.in": "Verloopt in {days} {days, plural, one {day} other {days}}, {hours} {hours, plural, one {hour} other {hours}}, {minutes} {minutes, plural, one {minute} other {minutes}}",

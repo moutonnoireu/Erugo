@@ -9,7 +9,7 @@ import { store } from '../store'
 
 const apiUrl = getApiUrl()
 const toast = useToast()
-const logoUrl = `${apiUrl}/logo`
+const logoUrl = `${apiUrl}/get-logo`
 
 const newUser = ref({
   username: '',
