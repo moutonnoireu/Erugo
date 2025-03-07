@@ -14,6 +14,7 @@ import en from './i18n/en.json'
 import de from './i18n/de.json'
 import fr from './i18n/fr.json'
 import it from './i18n/it.json'
+import nl from './i18n/nl.json'
 
 let clickOutsideEvent = null
 
@@ -119,7 +120,8 @@ const tolgee = Tolgee().use(DevTools()).use(FormatIcu()).init({
     en,
     de,
     fr,
-    it
+    it,
+    nl
   }
 })
 
