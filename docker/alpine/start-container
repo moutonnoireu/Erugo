@@ -44,6 +44,14 @@ if [ -z "$DB_CONNECTION" ]; then
     export DB_DATABASE=./storage/app/private/database.sqlite
 fi
 
+# Create an environment file for cron jobs
+echo "Creating environment file for cron jobs..."
+env | grep -E "^(APP_|DB_|REDIS_|MAIL_|QUEUE_|JWT_|ASSET_)" > /var/www/html/.env.cron
+
+# Update crontab to source the environment file
+echo "* * * * * . /var/www/html/.env.cron; cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" | crontab -u erugo -
+
+
 # Always run migrations
 su-exec erugo php artisan migrate --force
 su-exec erugo php artisan db:seed --force
