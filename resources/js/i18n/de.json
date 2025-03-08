@@ -13,10 +13,13 @@
   },
   "auth": {
     "back_to_login": "Zurück zur Anmeldung",
+    "confirm_password": "Bestätigen Sie Ihr Passwort",
     "email": "E-Mail",
     "failed_to_reset_password": "Passwort kann nicht zurückgesetzt werden",
     "failed_to_send_password_reset_email": "E-Mail zum Zurücksetzen des Passworts konnte nicht gesendet werden",
     "forgot_password": "Passwort vergessen",
+    "forgot_password_create_password": "Passwort erstellen",
+    "forgot_password_create_password_description": "Bitte geben Sie Ihr neues Passwort ein. Passwort und Passwortbestätigung müssen übereinstimmen",
     "invalid_email_or_password": "Anmeldung fehlgeschlagen",
     "login": "Anmeldung",
     "login_successful": "Erfolgreich eingeloggt",
@@ -31,6 +34,7 @@
     "please_enter_email_to_reset_password": "Bitte geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen",
     "please_enter_password_and_confirm_password": "Bitte geben Sie ein Passwort ein und bestätigen Sie das Passwort",
     "request_reset": "Reset anfordern",
+    "save_new_password": "Neues Passwort speichern",
     "welcome": "Willkommen"
   },
   "confirm_delete_user": "Sind Sie sicher, dass Sie diesen Benutzer löschen möchten?",
@@ -112,7 +116,8 @@
       }
     },
     "provider": {
-      "edit": "bearbeiten"
+      "edit": "bearbeiten",
+      "view": "Siehe"
     },
     "success": {
       "shareExpired": "Anteil verfallen",
@@ -127,16 +132,21 @@
       "auth_provider_config_base_url": "Basis-URL",
       "auth_provider_config_client_id": "Kunden-ID",
       "auth_provider_config_client_secret": "Geheimnis des Kunden",
+      "auth_provider_config_tenant": "Mieter-ID",
       "auth_provider_enabled": "Aktivieren Sie",
       "auth_provider_name": "Name des Anbieters",
       "auth_provider_type": "Typ des Anbieters",
       "auth_providers": "Autorisierte Anbieter",
       "auth_providers_description": "Konfigurieren Sie die Authentifizierungsanbieter, über die sich Ihre Benutzer authentifizieren können sollen.",
+      "auth_providers_description_localhost": "Die externe Authentifizierungskonfiguration ist auf localhost nicht verfügbar. OAuth-Anbieter benötigen einen vollständig qualifizierten Domainnamen (FQDN), um ordnungsgemäß zu funktionieren. Bitte greifen Sie über eine registrierte Domain auf Erugo zu, um diese Einstellungen zu konfigurieren.",
+      "callback_url": "Rückruf-URL",
+      "callback_url_description": "Verwenden Sie die in der Konfiguration Ihres Identitätsanbieters angegebene Callback-URL.",
       "clean_files_after": "Dateien bereinigen nach",
       "clean_files_after_description": "Wie lange nach Ablauf einer Freigabe die Dateien aus dem System gelöscht werden.",
       "days": "Tage",
       "default_language": "Standardsprache",
       "default_language_description": "Legen Sie die primäre Sprache fest, die standardmäßig auf der gesamten Anwendungsoberfläche für alle Benutzer verwendet wird. Einzelne Benutzer können diese Einstellung mit ihren persönlichen Präferenzen überschreiben.",
+      "delete_auth_provider": "Diesen Anbieter löschen",
       "disabled": "Behinderte",
       "emails": "Benachrichtigungen",
       "enable_share_deleted_emails": "Freigabe gelöschter E-Mails aktivieren",
@@ -146,12 +156,22 @@
       "enable_share_expiry_warning_emails": "Warn-E-Mails zum Ablauf der Freigabe aktivieren",
       "enabled": "Aktiviert",
       "general": "Allgemein",
+      "languages": {
+        "dutch": "Niederländisch",
+        "english": "Englisch",
+        "french": "Französisch",
+        "german": "Deutsch",
+        "italian": "Italienisch"
+      },
       "login_message": "Login-Nachricht",
       "login_message_description": "Fügen Sie eine benutzerdefinierte Nachricht oder Ankündigung hinzu, die auf dem Anmeldebildschirm angezeigt werden soll. Dies kann für Willkommensnachrichten, wichtige Benachrichtigungen oder temporäre Ankündigungen verwendet werden.",
       "max_expiry_time": "Maximale Verfallszeit",
       "max_expiry_time_description": "Legen Sie die maximale Anzahl von Tagen fest, die ein Benutzer bei der Erstellung einer Aktie für den Verfall auswählen kann. Leeren Sie den Wert, um eine unbegrenzte Verfallszeit zuzulassen.",
       "max_share_size": "Maximale Anteilsgröße",
       "max_share_size_description": "Legen Sie die maximale Größe einer Freigabe fest, die ein Benutzer erstellen kann. Der Wert wird in Megabyte oder Gigabyte angegeben.",
+      "provider_trust_warning": "Warnung: Auth Provider Trust",
+      "provider_trust_warning_description": "Stellen Sie sicher, dass Sie nur Authentifizierungsanbieter konfigurieren und aktivieren, denen Sie vertrauen. Authentifizierungsanbieter verfügen über erweiterte Zugriffsrechte auf Ihre Anwendungs- und Benutzerdaten. Das Hinzufügen von nicht vertrauenswürdigen oder gefährdeten Anbietern kann zu unbefugtem Zugriff, Datenverletzungen oder Kontoübernahmen führen.",
+      "select_auth_provider": "Wählen Sie einen Autorisierungsanbieter",
       "share_deleted_emails": "\"Gelöschte\" E-Mails freigeben",
       "share_deleted_emails_description": "Benachrichtigung der Benutzer, wenn ihre Freigaben endgültig aus dem System gelöscht wurden. Dies bestätigt den Abschluss des Lebenszyklus von Inhalten aus Sicherheits- und Compliance-Gründen.",
       "share_deletion_warning_emails": "\"Warn-E-Mails zum Löschen von Teilen",
@@ -180,6 +200,7 @@
       "smtp_username_description": "Der Benutzername, der für die Authentifizierung bei Ihrem SMTP-Server erforderlich ist. Dies ist normalerweise die E-Mail-Adresse oder der Kontoname, der mit Ihrem E-Mail-Dienst verbunden ist.",
       "your_auth_providers": "Ihre Auth-Provider"
     },
+    "system_auth_provider_info_link": "Über {name}",
     "table": {
       "actions": "Aktionen",
       "dates": "Daten",

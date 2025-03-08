@@ -29,6 +29,19 @@ select {
   &.error {
     border: 1px solid red;
   }
+
+}
+
+input:read-only,
+textarea:read-only,
+select:disabled {
+  background: var(--panel-background-color-alt);
+  cursor: not-allowed;
+  border: 1px dashed var(--input-border-color);
+  &:focus {
+    border: 1px solid var(--input-border-color);
+    outline: none;
+  }
 }
 
 select {
@@ -111,16 +124,17 @@ select {
       color: var(--checkbox-checked-check-color);
     }
   }
-  p.help-text {
-    margin-left: 30px;
-    width: 100%;
-    font-size: 0.8rem;
-    color: var(--label-text-color);
-    svg {
-      width: 16px;
-      height: 16px;
-      margin-right: 5px;
-      margin-top: -2px;
-    }
+}
+
+p.help-text {
+  // margin-left: 30px;
+  width: 100%;
+  font-size: 0.8rem;
+  color: var(--label-text-color);
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    margin-top: -2px;
   }
 }

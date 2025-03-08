@@ -1,0 +1,159 @@
+{
+  "Add Files": "Adicionar Ficheiros",
+  "Add Folders": "Adicionar Pastas",
+  "Add Recipient": "Adicionar Destinatário",
+  "Message to share recipients (optional)": "Mensagem para partilhar destinatários (opcional)",
+  "No files added yet": "Ainda não tem ficheiros adicionados",
+  "No recipients": "Sem destinatários",
+  "Powered by": "Powered by",
+  "Share Name": "Nome de partilha",
+  "Share URL": "Endereço de partilha",
+  "We'll provide you with a link instead": {
+    "": "Providenciaremos um endereço"
+  },
+  "auth": {
+    "back_to_login": "Voltar à autenticação",
+    "confirm_password": "Confirmar a palavra-passe",
+    "email": "Correio eletrónico",
+    "failed_to_reset_password": "Falha ao repor a palavra passe",
+    "failed_to_send_password_reset_email": "Falha ao enviar o correio eletrónico para repor a palavra passe",
+    "forgot_password": "Esqueci-me da palavra passe",
+    "forgot_password_create_password": "Criar palavra-passe",
+    "forgot_password_create_password_description": "Introduza a sua nova palavra-passe. Tanto a palavra-passe como a confirmação da palavra-passe têm de corresponder",
+    "invalid_email_or_password": "Falha na autenticação",
+    "login": "Entrar",
+    "login_successful": "Autenticação bem sucedida",
+    "login_with": "Autenticar com",
+    "or": "Ou",
+    "password": "Palavra passe",
+    "password_reset_email_sent": "Correio eletrónico para repor a palavra passe foi enviado",
+    "password_reset_successfully": "Palavra passe reposta com sucesso",
+    "passwords_do_not_match": "Palavras passe diferentes",
+    "please_enter_email": "Por favor inserir um endereço de correio eletrónico",
+    "please_enter_email_and_password": "Por favor introduzir endereço e palavra passe",
+    "please_enter_email_to_reset_password": "Por favor introduza o seu endereço para repor a palavra passe",
+    "please_enter_password_and_confirm_password": "Por favor introduza palavra passe e sua confirmação",
+    "request_reset": "Requesição enviada",
+    "save_new_password": "Guardar a nova palavra-passe",
+    "welcome": "Bem-vindo"
+  },
+  "confirm_delete_user": "Tem a certeza de que pretende eliminar este utilizador?",
+  "download": {
+    "files": "{value, plural, one {Baixar # ficheiro} many {Baixar {value} ficheiros} other {}}"
+  },
+  "email": "Endereço de correio eletrónico",
+  "full_name": "Nome Completo",
+  "limit": "Limite",
+  "message": {
+    "from": "Mensagem de {name}"
+  },
+  "settings": {
+    "branding": {
+      "background_images": "Imagens de Fundo",
+      "background_images_description": "Transferir imagens de fundo para personalizar e substituir as de Unplash. As imagens alternam aleatoriamente a cada 3 minutos para criar uma imagem de marca dinâmica.",
+      "delete": "Apagar",
+      "delete_theme": "Apagar o Tema",
+      "delete_theme_description": "Apagar o tema selecionado. Isto vai removê-lo da lista de temas e não o poderá utilizar novamente. Não é possível apagar o tema atual ou grupos de temas.",
+      "download": "Baixar",
+      "download_theme": "Baixar Tema",
+      "download_theme_description": "Baixar o tema selecionado como ficheiro JSON. Este pode ser usado para criar um novo tema ou modificar o existente.",
+      "in_pixels": "Em pixéis",
+      "install_custom_theme": "Instalar um Tema Personalizado",
+      "install_custom_theme_description": "Instalar um tema personalizado a partir de um ficheiro JSON.\n\nEste pode ser um tema que tenha você modificado, criado ou baixado.",
+      "install_custom_theme_description_2": "Se baixar um tema da internet, por favor certifique-se que confia na fonte e que verificou que não tem código malicioso no mesmo antes de o instalar.",
+      "install_theme": "Instalar Tema",
+      "logo": "Logotipo",
+      "logo_description": "Apresente o seu logo de empresa em formato PNG no canto superior-esquerdo. Indique a largura em pixels - a altura ajustará automaticamente para manter o aspecto. Utilize uma imagem pelo menos tão larga quanto o seu monitor para garantir a qualidade.",
+      "logo_image": "Imagem de Logotipo",
+      "logo_width": "Largura de Logotipo",
+      "other_ui_settings": "Outras",
+      "select_theme": "Escolha o Tema",
+      "select_theme_description": "Escolha entre uma variedade de temas existentes ou um que tenha instalado.",
+      "show_powered_by": "Apresentar Powered by Erugo",
+      "show_powered_by_description": "Mostrar ou esconder a mensagem \"Powered by Erugo\" ao fundo da página. Este texto permite que a Erugo seja descoberta por outros utilizadores e ajudará-nos a crescer, no entanto  poderá esconder se assim desejar.",
+      "theme": "Temas",
+      "theme_description": "Escolha entre uma variedade de temas existentes ou um que tenha instalado.",
+      "theme_file": "Ficheiro de Tema",
+      "theme_name": "Nome de Tema",
+      "upload_background_image": "Transferir Imagem de Fundo",
+      "use_my_backgrounds": "Usar as Minhas Imagens de Fundo",
+      "use_my_backgrounds_description": "Usar as imagens de fundo que transferiu. Se não for selecionado, serão utilizadas as imagens de fundo de Unsplash."
+    },
+    "button": {
+      "branding": {
+        "save": "Guardar as Definições de Marca"
+      },
+      "myShares": {
+        "create": "Criar Partilha"
+      },
+      "system": {
+        "save": "Salvar Definições de Sistema"
+      },
+      "users": {
+        "add": "Adicionar Utilizador"
+      }
+    },
+    "close": "Fechar",
+    "description": {
+      "branding": "Personalizar a interface de utilizador da Erugo e adicionar a sua marca.",
+      "myProfile": "Gerir o seu perfil.",
+      "myShares": "Gerir as suas Partilhas",
+      "system": "Gerir o comportamento da Erugo.",
+      "users": "Gerir os seus utilizadores."
+    },
+    "error": {
+      "shareExpired": "Falha ao expirar a partilha",
+      "shareExtended": "Falha ao extender a partilha"
+    },
+    "help": {
+      "auth_provider": {
+        "title": "Informação do fornecedor de autenticação"
+      },
+      "downloadLimit": {
+        "description": "Pode definir o limite de baixamentos para qualquer partilha ao clicar no número do lado direito e inserindo o novo limite. Deixe a caixa vazia para remover o limite.",
+        "description2": "As alterações serão guardadas automaticamente quando clicar fora da caixa.",
+        "title": "Ajuda sobre o limite de baixamentos"
+      }
+    },
+    "provider": {
+      "edit": "Editar",
+      "view": "Ver"
+    },
+    "success": {
+      "shareExpired": "Partilha expirada",
+      "shareExtended": "Partilha extendida"
+    },
+    "system": {
+      "application_name": "Nome da Aplicação",
+      "application_name_description": "Personalizar o nome da aplicação que aparece na barra de título, caixas de diálogo e outros elementos de interface. Isto ajudará a manter a sua marca consistente na experiência do utilizador.",
+      "application_url": "Endereço da Aplicação",
+      "application_url_description": "O endereço de internet da sua aplicação. Este endereço serve para criar ligações para os envios de notificações por correio eletrónico, permitindo aos utilizadores a navegação direta a páginas específicas da aplicação.",
+      "auth": "Autenticação",
+      "auth_provider_config_base_url": "Endereço de Base",
+      "auth_provider_config_client_id": "Identificação do Cliente",
+      "auth_provider_config_client_secret": "Segredo do Cliente",
+      "auth_provider_config_tenant": "Identificação do inquilino",
+      "auth_provider_enabled": "Ativar",
+      "auth_provider_name": "Nome de Fornecedor",
+      "auth_provider_type": "Tipo de Fornecedor",
+      "auth_providers": "Fornecedores de Autenticação",
+      "auth_providers_description": "Configure os fornecedores de autenticação através dos quais pretende que os utilizadores se possam autenticar.",
+      "auth_providers_description_localhost": "A configuração de autenticação externa não está disponível no \"localhost\". Os provedores OAuth exigem um nome de domínio devidamente qualificado (FQDN) para funcionar corretamente. Aceda a Erugo através de um domínio registado para configurar estas definições.",
+      "callback_url": "Endereço de retorno",
+      "callback_url_description": "Utilize o endereço de retorno fornecido na configuração do seu fornecedor de identidade.",
+      "clean_files_after": "Eliminar Ficheiros Após",
+      "clean_files_after_description": "Quanto tempo após uma partilha expirar, ela será eliminada do sistema.",
+      "days": "Dias",
+      "default_language": "Lingua Predefinida",
+      "languages": {
+        "dutch": "holandês",
+        "english": "Inglês",
+        "french": "francês",
+        "german": "alemão",
+        "italian": "italiano"
+      },
+      "provider_trust_warning": "Aviso: Confiança do fornecedor de autenticação",
+      "provider_trust_warning_description": "Certifique-se de que configura e ativa apenas os fornecedores de autenticação em que confia. Os fornecedores de autenticação têm privilégios de acesso elevados à sua aplicação e aos dados do utilizador. A adição de fornecedores não confiáveis ou comprometidos pode levar a acesso não autorizado, violações de dados ou aquisição de contas."
+    }
+  }
+}

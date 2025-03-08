@@ -3,9 +3,9 @@ import { ref, onMounted } from 'vue'
 import { getApiUrl } from '../utils'
 import { useToast } from 'vue-toastification'
 import { domData } from '../domData'
-import { KeyRound, Annoyed } from 'lucide-vue-next'
+import { KeyRound, Fingerprint } from 'lucide-vue-next'
 import { store } from '../store'
-import { login, refresh, logout, forgotPassword, resetPassword } from '../api'
+import { login, refresh, logout, forgotPassword, resetPassword, getAvailableAuthProviders } from '../api'
 
 import { useTranslate } from '@tolgee/vue'
 
@@ -22,15 +22,19 @@ const forgotPasswordMode = ref(false)
 const haveResetToken = ref(false)
 const resetToken = ref('')
 const waitingForRedirect = ref(false)
+const authProviders = ref([])
 
 onMounted(() => {
   attemptRefresh()
-  console.log('domData', domData())
+
   const token = domData().token
   if (token) {
     haveResetToken.value = true
     resetToken.value = token
   }
+  getAvailableAuthProviders().then((data) => {
+    authProviders.value = data
+  })
 })
 
 const attemptLogin = async () => {
@@ -101,6 +105,10 @@ const attemptResetPassword = async () => {
     toast.error(t.value('auth.failed_to_reset_password'))
   }
 }
+const attemptAuthProviderLogin = (providerId) => {
+  const newLocation = `/auth/provider/${providerId}/login`
+  window.location.href = newLocation
+}
 </script>
 
 <template>
@@ -128,48 +136,86 @@ const attemptResetPassword = async () => {
           ref="passwordInput"
         />
       </div>
-      <div class="row mt-3 align-items-center" v-if="!forgotPasswordMode">
-        <div class="col">
+      <div class="row mt-3 align-items-center w-100" v-if="!forgotPasswordMode">
+        <div class="col-6 ps-0">
           <button class="block" @click="attemptLogin">
             <KeyRound />
             {{ $t('auth.login') }}
           </button>
         </div>
-        <div class="col">
+        <div class="col-6 pe-0">
           <a href="" @click.prevent="forgotPasswordMode = true">{{ $t('auth.forgot_password') }}</a>
         </div>
       </div>
       <div class="row mt-3 align-items-center" v-if="forgotPasswordMode">
         <div class="col">
           <button class="block" @click="attemptForgotPassword">
-            <KeyRound />{{ $t('auth.request_reset') }}
+            <KeyRound />
+            {{ $t('auth.request_reset') }}
           </button>
         </div>
         <div class="col">
           <a href="" @click.prevent="forgotPasswordMode = false">{{ $t('auth.back_to_login') }}</a>
         </div>
       </div>
+
+      <template v-if="authProviders.length > 0 && !waitingForRedirect && !forgotPasswordMode">
+        <div class="row w-100 mt-5 mb-0 align-items-center">
+          <div class="col">
+            <hr />
+          </div>
+          <div class="col text-center pt-0 pb-0">
+            <p class="m-0" style="font-size: 0.7rem; line-height: 0.8rem">{{ $t('auth.or') }}</p>
+            <p class="m-0" style="font-size: 0.7rem; line-height: 0.8rem">{{ $t('auth.login_with') }}</p>
+          </div>
+          <div class="col">
+            <hr />
+          </div>
+        </div>
+
+        <div class="row mt-4 w-100 gap-0">
+          <div class="col-6 pe-1 ps-1 mb-2" v-for="provider in authProviders" :key="provider.id">
+            <button class="block secondary provider-button" @click="attemptAuthProviderLogin(provider.id)">
+              <Fingerprint v-if="!provider.icon" />
+              <svg v-else v-html="provider.icon" class="custom"></svg>
+              {{ provider.name }}
+            </button>
+          </div>
+        </div>
+      </template>
     </div>
+    <svg id="gradientDefs">
+      <linearGradient id="gradient">
+        <stop offset="0%" style="stop-color: var(--link-color); stop-opacity: 1" />
+        <stop offset="100%" style="stop-color: var(--link-color-hover); stop-opacity: 1" />
+      </linearGradient>
+    </svg>
   </div>
 
   <div class="auth-container" v-else-if="!waitingForRedirect">
     <div class="auth-container-inner">
-      <h1>Create Password</h1>
-      <p>Please create your new password.</p>
+      <h1>{{ t('auth.forgot_password_create_password') }}</h1>
+      <p>{{ t('auth.forgot_password_create_password_description') }}</p>
       <div class="input-container">
-        <label for="email">Email</label>
-        <input type="text" v-model="email" placeholder="Email" @keyup.enter="moveToPassword" />
+        <label for="email">{{ t('auth.email') }}</label>
+        <input type="text" v-model="email" :placeholder="t('auth.email')" @keyup.enter="moveToPassword" />
       </div>
-      <div   class="input-container">
-        <label for="password">Password</label>
-        <input type="password" v-model="password" placeholder="Password" @keyup.enter="attemptResetPassword" />
-        <label for="password_confirmation">Confirm Password</label>
-        <input type="password" v-model="password_confirmation" placeholder="Confirm Password" @keyup.enter="attemptResetPassword" />
+      <div class="input-container">
+        <label for="password">{{ t('auth.password') }}</label>
+        <input type="password" v-model="password" :placeholder="t('auth.password')" @keyup.enter="attemptResetPassword" />
+        <label for="password_confirmation">{{ t('auth.confirm_password') }}</label>
+        <input
+          type="password"
+          v-model="password_confirmation"
+          :placeholder="t('auth.confirm_password')"
+          @keyup.enter="attemptResetPassword"
+        />
       </div>
       <div class="row mt-3 align-items-center">
         <div class="col">
           <button class="block" @click="attemptResetPassword">
-            <KeyRound />Save new password
+            <KeyRound />
+            {{ t('auth.save_new_password') }}
           </button>
         </div>
       </div>
@@ -177,8 +223,28 @@ const attemptResetPassword = async () => {
   </div>
   <div class="auth-container" v-else>
     <div class="auth-container-inner">
-      <h1>Your password has been set!</h1>
-      <p>Hold tight while we redirect you to the dashboard.</p>
+      <h1>{{ t('auth.password_set') }}</h1>
+      <p>{{ t('auth.password_set_description') }}</p>
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+.provider-button {
+  svg {
+    stroke: url(#gradient);
+    &.custom {
+      fill: url(#gradient);
+    }
+  }
+}
+
+#gradientDefs {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+</style>

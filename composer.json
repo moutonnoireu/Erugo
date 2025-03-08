@@ -11,11 +11,17 @@
     "require": {
         "php": "^8.2",
         "intervention/image": "^3.11",
+        "jumbojett/openid-connect-php": "^1.0",
+        "kovah/laravel-socialite-oidc": "^0.3.0",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.18",
         "laravel/tinker": "^2.9",
         "php-open-source-saver/jwt-auth": "^2.8",
-        "rcrowe/twigbridge": "^0.14.3"
+        "rcrowe/twigbridge": "^0.14.3",
+        "socialiteproviders/authentik": "^5.2",
+        "socialiteproviders/microsoft-azure": "^5.2",
+        "web-auth/webauthn-lib": "^5.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
