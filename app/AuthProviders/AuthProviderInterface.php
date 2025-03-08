@@ -3,6 +3,7 @@
 namespace App\AuthProviders;
 use App\Models\AuthProvider as AuthProviderModel;
 use App\AuthProviders\AuthProviderUser;
+use Illuminate\Validation\Validator;
 
 interface AuthProviderInterface
 {
@@ -17,5 +18,11 @@ interface AuthProviderInterface
     public static function getName(): string;
 
     public static function getDescription(): string;
+
+    public static function getValidator(array $data): Validator;
+
+    public static function getEmptyProviderConfig(): array;
+
+    public static function getInformationUrl(): ?string;
 }
 

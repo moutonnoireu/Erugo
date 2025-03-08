@@ -6,6 +6,8 @@ use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\GoogleProvider;
 use App\AuthProviders\AuthProviderUser;
 use App\Models\AuthProvider as AuthProviderModel;
+use Illuminate\Support\Facades\Validator as ValidatorFacade;
+use Illuminate\Validation\Validator;
 
 class GoogleAuthProvider extends BaseAuthProvider
 {
@@ -20,19 +22,26 @@ class GoogleAuthProvider extends BaseAuthProvider
     $this->provider = $provider;
   }
 
-  public function redirect()
+  private function createClient()
   {
     //let's check we have all the required data
     if (!$this->client_id || !$this->client_secret) {
       $this->throwMissingDataException();
     }
 
-    // Create Google provider
-    $googleProvider = Socialite::buildProvider(GoogleProvider::class, [
+    $client = Socialite::buildProvider(GoogleProvider::class, [
       'client_id' => $this->client_id,
       'client_secret' => $this->client_secret,
-      'redirect' => route('social.provider.callback', ['provider' => $this->provider->id])
+      'redirect' => route('social.provider.callback', ['provider' => $this->provider->uuid])
     ]);
+
+    return $client;
+  }
+
+  public function redirect()
+  {
+    // Create Google provider
+    $googleProvider = $this->createClient();
 
     // Begin authentication flow - this will redirect the user
     return $googleProvider->redirect();
@@ -40,17 +49,8 @@ class GoogleAuthProvider extends BaseAuthProvider
 
   public function handleCallback(): AuthProviderUser
   {
-    //let's check we have all the required data
-    if (!$this->client_id || !$this->client_secret) {
-      $this->throwMissingDataException();
-    }
-
     // Create Google provider
-    $googleProvider = Socialite::buildProvider(GoogleProvider::class, [
-      'client_id' => $this->client_id,
-      'client_secret' => $this->client_secret,
-      'redirect' => route('social.provider.callback', ['provider' => $this->provider->id])
-    ]);
+    $googleProvider = $this->createClient();
 
     // Get the user information
     $user = $googleProvider->user();
@@ -78,5 +78,26 @@ class GoogleAuthProvider extends BaseAuthProvider
   public static function getDescription(): string
   {
     return 'Google is a popular authentication provider that allows users to sign in to your application using their Google account.';
+  }
+
+  public static function getValidator(array $data): Validator
+  {
+    return ValidatorFacade::make($data, [
+      'client_id' => ['required', 'string'],
+      'client_secret' => ['required', 'string'],
+    ]);
+  }
+
+  public static function getInformationUrl(): ?string
+  {
+    return 'https://developers.google.com/identity/sign-in/web/sign-in';
+  }
+
+  public static function getEmptyProviderConfig(): array
+  {
+    return [
+      'client_id' => '',
+      'client_secret' => '',
+    ];
   }
 }

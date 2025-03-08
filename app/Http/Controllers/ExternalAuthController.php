@@ -26,6 +26,12 @@ class ExternalAuthController extends Controller
      */
     private $settings;
 
+    private function getProviderClass($class)
+    {
+        return "App\\AuthProviders\\" . $class . "AuthProvider";
+    }
+
+
     /**
      * Initialize the controller
      */
@@ -48,14 +54,15 @@ class ExternalAuthController extends Controller
     {
         // Retrieve the authentication provider by ID
         $provider = AuthProvider::where('id', $providerId)->first();
-        
+
         // If the provider is not found, redirect to the home page with an error message
         if (!$provider) {
             return redirect('/')->with('error', 'Provider not found');
         }
 
         // Instantiate the provider class and redirect to the provider's login page
-        $providerClass = new $provider->provider_class($provider);
+        $class = $this->getProviderClass($provider->provider_class);
+        $providerClass = new $class($provider);
         return $providerClass->redirect();
     }
 
@@ -65,20 +72,21 @@ class ExternalAuthController extends Controller
      * @param int $providerId The ID of the authentication provider
      * @return \Illuminate\Http\JsonResponse
      */
-    public function providerCallback($providerId)
+    public function providerCallback($providerUuid)
     {
         // Retrieve the authentication provider by ID
-        $provider = AuthProvider::where('id', $providerId)->first();
-        
+        $provider = AuthProvider::where('uuid', $providerUuid)->first();
+
         // If the provider is not found, redirect to the home page with an error message
         if (!$provider) {
             return redirect('/')->with('error', 'Provider not found');
         }
 
         // Instantiate the provider class and handle the callback to get the user information
-        $providerClass = new $provider->provider_class($provider);
+        $class = $this->getProviderClass($provider->provider_class);
+        $providerClass = new $class($provider);
         $user = $providerClass->handleCallback();
-        
+
         // Return the user information as a JSON response
         return $this->respondWithToken($user);
     }
@@ -91,10 +99,10 @@ class ExternalAuthController extends Controller
      */
     private function respondWithToken(AuthProviderUser $user)
     {
-        
+
         // swap the AuthProviderUser for a User
         $user = User::where('email', $user->email)->first();
-        
+
         if (!$user) {
             return response()->json([
                 'status' => 'error',

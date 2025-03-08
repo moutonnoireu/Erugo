@@ -6,6 +6,8 @@ use Laravel\Socialite\Facades\Socialite;
 use SocialiteProviders\Authentik\Provider as AuthentikProvider;
 use App\AuthProviders\AuthProviderUser;
 use App\Models\AuthProvider as AuthProviderModel;
+use Illuminate\Support\Facades\Validator as ValidatorFacade;
+use Illuminate\Validation\Validator;
 
 class AuthentikAuthProvider extends BaseAuthProvider
 {
@@ -20,18 +22,25 @@ class AuthentikAuthProvider extends BaseAuthProvider
     $this->provider = $provider;
   }
 
-  private function getConfig()
+  private function getConfig(bool $asArray = false)
   {
-    return new \SocialiteProviders\Manager\Config(
-      $this->client_id,
-      $this->client_secret,
-      route('social.provider.callback', ['provider' => $this->provider->id]),
-      [
-        'base_url' => $this->provider->provider_config->base_url,
-      ]
-    );
+    if (!$asArray) {
+      return new \SocialiteProviders\Manager\Config(
+        $this->client_id,
+        $this->client_secret,
+        route('social.provider.callback', ['provider' => $this->provider->uuid]),
+        [
+          'base_url' => $this->provider->provider_config->base_url,
+        ]
+      );
+    } else {
+      return [
+        'client_id' => $this->client_id,
+        'client_secret' => $this->client_secret,
+        'redirect' => route('social.provider.callback', ['provider' => $this->provider->uuid])
+      ];
+    }
   }
-
   public function redirect()
   {
     //let's check we have all the required data
@@ -40,13 +49,8 @@ class AuthentikAuthProvider extends BaseAuthProvider
     }
 
     // Create Authentik provider
-    $authentikProvider = Socialite::buildProvider(AuthentikProvider::class, [
-      'client_id' => $this->client_id,
-      'client_secret' => $this->client_secret,
-      'redirect' => route('social.provider.callback', ['provider' => $this->provider->id])
-    ]);
-
-
+    $authentikProvider = Socialite::buildProvider(AuthentikProvider::class, $this->getConfig(true));
+    //an aparent bug in socialite, we need to set the config again to get it to see the base_url
     $authentikProvider->setConfig($this->getConfig());
 
     // Begin authentication flow - this will redirect the user
@@ -61,12 +65,9 @@ class AuthentikAuthProvider extends BaseAuthProvider
     }
 
     // Create Authentik provider
-    $authentikProvider = Socialite::buildProvider(AuthentikProvider::class, [
-      'client_id' => $this->client_id,
-      'client_secret' => $this->client_secret,
-      'redirect' => route('social.provider.callback', ['provider' => $this->provider->id])
-    ]);
+    $authentikProvider = Socialite::buildProvider(AuthentikProvider::class, $this->getConfig(true));
 
+    //an aparent bug in socialite, we need to set the config again to get it to see the base_url
     $authentikProvider->setConfig($this->getConfig());
 
     // Get the user information
@@ -84,7 +85,7 @@ class AuthentikAuthProvider extends BaseAuthProvider
 
   public static function getIcon(): string
   {
-    return '<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 190 190">  <rect class="cls-1" x="107.1" y="34.93" width="6.37" height="18.2"/>  <rect class="cls-1" x="123.67" y="34.16" width="6.37" height="14.23"/>  <path class="cls-1" d="M30.83,55A23.23,23.23,0,0,0,10.41,67.13h10.8C26,63,32.94,61.8,38,67.13H49.39C44.93,61.09,38.24,55,30.83,55Z"/>  <path class="cls-1" d="M46.25,78.11c-14.89,31.15-41,4.6-25-11H10.41c-8.47,14.76,3.24,34.68,20.42,34.23,13.28,0,24.24-19.72,24.24-23.21,0-1.54-2.14-6.25-5.68-11H38A40.52,40.52,0,0,1,46.25,78.11Zm.4-.91Z"/>  <path class="cls-1" d="M189.62,34.71V117A28.62,28.62,0,0,1,161,145.54H148.89v-28H90.94v28H78.81A28.62,28.62,0,0,1,50.22,117V91.08h91.87V41.62H97.74V69.41H50.22V34.71a27.43,27.43,0,0,1,.19-3.29,27.09,27.09,0,0,1,.71-3.84c.1-.41.22-.82.34-1.21a2.13,2.13,0,0,1,.09-.3c.07-.21.13-.4.2-.59s.14-.4.21-.59.16-.44.25-.65.18-.43.26-.64a29.35,29.35,0,0,1,2.6-4.82l0-.05c.26-.37.53-.75.81-1.12s.47-.61.7-.91.57-.67.86-1,.56-.63.86-.93l0,0a4.53,4.53,0,0,1,.49-.49,29.23,29.23,0,0,1,3.4-2.84c.32-.24.66-.46,1-.68s.77-.49,1.17-.72a23.78,23.78,0,0,1,2.29-1.21l.75-.34a27.84,27.84,0,0,1,3.35-1.21c.44-.13.88-.24,1.33-.35a6.19,6.19,0,0,1,.65-.15,28.86,28.86,0,0,1,3.87-.57l.56,0h.28c.43,0,.87,0,1.31,0H161c.43,0,.87,0,1.3,0h.28l.56,0a29.25,29.25,0,0,1,3.88.57c.22,0,.43.09.65.15.45.11.88.22,1.32.35a27.23,27.23,0,0,1,3.35,1.21l.75.34a25.19,25.19,0,0,1,2.3,1.21c.39.23.78.47,1.16.72s.69.44,1,.68a29.23,29.23,0,0,1,3.91,3.36q.45.45.87.93c.29.32.57.66.85,1l.71.91c.28.37.54.75.8,1.12l0,.05a28.61,28.61,0,0,1,2.6,4.82l.27.64.24.65c.08.19.15.39.22.59l.19.59c0,.09.06.19.1.3.11.39.23.8.34,1.21a28.56,28.56,0,0,1,.7,3.84A27.42,27.42,0,0,1,189.62,34.71Z"/>  <path class="cls-1" d="M184.76,18.78H55.07A28.59,28.59,0,0,1,78.8,6.12H161A28.59,28.59,0,0,1,184.76,18.78Z"/>  <path class="cls-1" d="M189.43,31.43H50.4a28.29,28.29,0,0,1,4.67-12.65H184.76A28.17,28.17,0,0,1,189.43,31.43Z"/>  <path class="cls-1" d="M189.63,34.71v9.37H142.09V41.62H97.74v2.46H50.21V34.71a27.43,27.43,0,0,1,.19-3.29h139A27.42,27.42,0,0,1,189.63,34.71Z"/>  <rect class="cls-1" x="50.21" y="44.08" width="47.54" height="12.66"/>  <rect class="cls-1" x="142.09" y="44.08" width="47.54" height="12.66"/>  <rect class="cls-1" x="50.21" y="56.74" width="47.54" height="12.65"/>  <rect class="cls-1" x="142.09" y="56.74" width="47.54" height="12.65"/></svg>';
+    return '<?xml version="1.0" encoding="utf-8"?><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g>	<rect x="279.9" y="141" class="st0" width="17.9" height="51.2"/>	<rect x="326.5" y="138.8" class="st0" width="17.9" height="40"/>	<path class="st0" d="M65.3,197.3c-24,0-46,13.2-57.4,34.3h30.4c13.5-11.6,33-15,47.1,0h32.2C105,214.5,86.2,197.3,65.3,197.3z"/>	<path class="st0" d="M108.7,262.4C66.8,350-6.6,275.3,38.3,231.5H7.9c-23.8,41.5,9.1,97.5,57.4,96.3c37.4,0,68.2-55.5,68.2-65.3		c0-4.3-6-17.6-16-31H85.4C96.1,241.2,105.4,255.2,108.7,262.4z M109.8,259.8L109.8,259.8z"/>	<path class="st0" d="M512,140.3v231.3c0,44.3-36.1,80.4-80.4,80.4h-34.1v-78.8h-163v78.8h-34.1c-44.4,0-80.4-36.1-80.4-80.4v-72.8		h258.4V159.8H253.6v78.2H119.9v-97.6c0-3.1,0.2-6.2,0.5-9.2c0.4-3.7,1.1-7.3,2-10.8c0.3-1.1,0.6-2.3,1-3.4c0.1-0.3,0.2-0.6,0.3-0.8		c0.2-0.6,0.4-1.1,0.5-1.7c0.2-0.5,0.4-1.1,0.6-1.7c0.2-0.6,0.5-1.2,0.7-1.8c0.2-0.6,0.5-1.2,0.8-1.8c2-4.7,4.4-9.3,7.3-13.6		c0,0,0.1-0.1,0.1-0.1c0.7-1.1,1.5-2.1,2.3-3.2c0.7-0.9,1.3-1.7,2-2.6c0.8-0.9,1.6-1.9,2.4-2.8c0.8-0.9,1.6-1.8,2.4-2.6l0.1-0.1		c0.4-0.5,0.9-0.9,1.4-1.4c3-2.9,6.2-5.6,9.6-8c0.9-0.7,1.9-1.3,2.8-1.9c1.1-0.7,2.2-1.4,3.3-2c2.1-1.2,4.2-2.4,6.5-3.4		c0.7-0.3,1.4-0.7,2.1-1c3.1-1.3,6.2-2.5,9.4-3.4c1.2-0.4,2.5-0.7,3.7-1c0.6-0.2,1.2-0.3,1.8-0.4c3.6-0.8,7.2-1.3,10.9-1.6l1.6-0.1		c0.3,0,0.5,0,0.8,0c1.2-0.1,2.4-0.1,3.7-0.1h231.3c1.2,0,2.5,0,3.7,0.1c0.3,0,0.5,0,0.8,0l1.6,0.1c3.7,0.3,7.3,0.8,10.9,1.6		c0.6,0.1,1.2,0.3,1.8,0.4c1.3,0.3,2.5,0.6,3.7,1c3.2,0.9,6.3,2.1,9.4,3.4c0.7,0.3,1.4,0.6,2.1,1c2.2,1,4.4,2.2,6.5,3.4		c1.1,0.7,2.2,1.3,3.3,2c1,0.6,1.9,1.3,2.8,1.9c3.9,2.8,7.6,6,11,9.4c0.8,0.8,1.7,1.7,2.4,2.6c0.8,0.9,1.6,1.9,2.4,2.8		c0.7,0.8,1.3,1.7,2,2.6c0.8,1.1,1.5,2.1,2.3,3.2c0,0,0.1,0.1,0.1,0.1c2.9,4.3,5.3,8.8,7.3,13.6c0.2,0.6,0.5,1.2,0.8,1.8		c0.2,0.6,0.5,1.2,0.7,1.8c0.2,0.5,0.4,1.1,0.6,1.7c0.2,0.6,0.4,1.1,0.5,1.7c0.1,0.3,0.2,0.6,0.3,0.8c0.3,1.1,0.7,2.3,1,3.4		c0.9,3.6,1.6,7.2,2,10.8C511.8,134.2,512,137.2,512,140.3z"/>	<path class="st0" d="M498.3,95.5H133.5c14.9-22.2,40-35.6,66.7-35.6h231.3C458.4,59.9,483.4,73.3,498.3,95.5z"/>	<path class="st0" d="M511.5,131.1H120.4c1.4-12.8,6-25,13.1-35.6h364.8C505.5,106.1,510,118.4,511.5,131.1z"/>	<path class="st0" d="M512,140.3v26.4H378.3v-6.9H253.6v6.9H119.9v-26.4c0-3.1,0.2-6.2,0.5-9.2h391.1		C511.8,134.2,512,137.2,512,140.3z"/>	<rect x="119.9" y="166.7" class="st0" width="133.7" height="35.6"/>	<rect x="378.3" y="166.7" class="st0" width="133.7" height="35.6"/>	<rect x="119.9" y="202.3" class="st0" width="133.7" height="35.6"/>	<rect x="378.3" y="202.3" class="st0" width="133.7" height="35.6"/></g></svg>';
   }
 
   public static function getName(): string
@@ -95,5 +96,28 @@ class AuthentikAuthProvider extends BaseAuthProvider
   public static function getDescription(): string
   {
     return 'Authentik is an open-source authentication provider that allows users to sign in to your application using their Authentik account.';
+  }
+
+  public static function getValidator(array $data): Validator
+  {
+    return ValidatorFacade::make($data, [
+      'client_id' => ['required', 'string'],
+      'client_secret' => ['required', 'string'],
+      'base_url' => ['required', 'url'],
+    ]);
+  }
+
+  public static function getInformationUrl(): ?string
+  {
+    return 'https://docs.goauthentik.io/docs/add-secure-apps/applications/manage_apps';
+  }
+
+  public static function getEmptyProviderConfig(): array
+  {
+    return [
+      'client_id' => '',
+      'client_secret' => '',
+      'base_url' => '',
+    ];
   }
 }

@@ -158,7 +158,7 @@ const attemptAuthProviderLogin = (providerId) => {
         </div>
       </div>
 
-      <template v-if="authProviders.length > 0">
+      <template v-if="authProviders.length > 0 && !waitingForRedirect && !forgotPasswordMode">
         <div class="row w-100 mt-5 mb-0 align-items-center">
           <div class="col">
             <hr />
@@ -193,20 +193,20 @@ const attemptAuthProviderLogin = (providerId) => {
 
   <div class="auth-container" v-else-if="!waitingForRedirect">
     <div class="auth-container-inner">
-      <h1>Create Password</h1>
-      <p>Please create your new password.</p>
+      <h1>{{ t('auth.forgot_password_create_password') }}</h1>
+      <p>{{ t('auth.forgot_password_create_password_description') }}</p>
       <div class="input-container">
-        <label for="email">Email</label>
-        <input type="text" v-model="email" placeholder="Email" @keyup.enter="moveToPassword" />
+        <label for="email">{{ t('auth.email') }}</label>
+        <input type="text" v-model="email" :placeholder="t('auth.email')" @keyup.enter="moveToPassword" />
       </div>
       <div class="input-container">
-        <label for="password">Password</label>
-        <input type="password" v-model="password" placeholder="Password" @keyup.enter="attemptResetPassword" />
-        <label for="password_confirmation">Confirm Password</label>
+        <label for="password">{{ t('auth.password') }}</label>
+        <input type="password" v-model="password" :placeholder="t('auth.password')" @keyup.enter="attemptResetPassword" />
+        <label for="password_confirmation">{{ t('auth.confirm_password') }}</label>
         <input
           type="password"
           v-model="password_confirmation"
-          placeholder="Confirm Password"
+          :placeholder="t('auth.confirm_password')"
           @keyup.enter="attemptResetPassword"
         />
       </div>
@@ -214,7 +214,7 @@ const attemptAuthProviderLogin = (providerId) => {
         <div class="col">
           <button class="block" @click="attemptResetPassword">
             <KeyRound />
-            Save new password
+            {{ t('auth.save_new_password') }}
           </button>
         </div>
       </div>
@@ -222,8 +222,8 @@ const attemptAuthProviderLogin = (providerId) => {
   </div>
   <div class="auth-container" v-else>
     <div class="auth-container-inner">
-      <h1>Your password has been set!</h1>
-      <p>Hold tight while we redirect you to the dashboard.</p>
+      <h1>{{ t('auth.password_set') }}</h1>
+      <p>{{ t('auth.password_set_description') }}</p>
     </div>
   </div>
 </template>

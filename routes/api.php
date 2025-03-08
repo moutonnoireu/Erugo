@@ -121,9 +121,12 @@ Route::group([], function ($router) {
     //manage auth providers [auth, admin]
     Route::group(['prefix' => 'auth-providers', 'middleware' => ['auth', Admin::class]], function ($router) {
         Route::get('/', [AuthProvidersController::class, 'index'])->name('auth-providers.index');
+        Route::get('/available-types', [AuthProvidersController::class, 'listAvailableProviderTypes'])->name('auth-providers.listAvailableProviderTypes');
         Route::post('/', [AuthProvidersController::class, 'create'])->name('auth-providers.create');
+        Route::put('/bulk-update', [AuthProvidersController::class, 'bulkUpdate'])->name('auth-providers.bulkUpdate');
         Route::put('/{id}', [AuthProvidersController::class, 'update'])->name('auth-providers.update');
         Route::delete('/{id}', [AuthProvidersController::class, 'delete'])->name('auth-providers.delete');
+        Route::get('/{uuid}/callback-url', [AuthProvidersController::class, 'getCallbackUrl'])->name('auth-providers.getCallbackUrl');
     });
 
     //read auth providers [public]

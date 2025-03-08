@@ -6,6 +6,8 @@ use App\Models\AuthProvider as AuthProviderModel;
 use App\Exceptions\AuthProviderMissingDataException;
 use App\Exceptions\AuthProviderAuthFailureException;
 use App\AuthProviders\AuthProviderUser;
+use Illuminate\Support\Facades\Validator as ValidatorFacade;
+use Illuminate\Validation\Validator;
 
 class BaseAuthProvider implements AuthProviderInterface
 {
@@ -49,6 +51,21 @@ class BaseAuthProvider implements AuthProviderInterface
     public static function getDescription(): string
     {
         return 'Base Auth Provider Description';
+    }
+
+    public static function getValidator(array $data): Validator
+    {
+        return ValidatorFacade::make($data, []);
+    }
+
+    public static function getEmptyProviderConfig(): array
+    {
+        return [];
+    }
+
+    public static function getInformationUrl(): ?string
+    {
+        return null;
     }
 
 }
