@@ -50,7 +50,7 @@
   "settings": {
     "branding": {
       "background_images": "Imagens de Fundo",
-      "background_images_description": "Transferir imagens de fundo para customizar e substituir as de Unplash. As imagens alternam aleatoriamente a cada 3 minutos para criar uma imagem de marca dinâmica.",
+      "background_images_description": "Transferir imagens de fundo para personalizar e substituir as de Unplash. As imagens alternam aleatoriamente a cada 3 minutos para criar uma imagem de marca dinâmica.",
       "delete": "Apagar",
       "delete_theme": "Apagar o Tema",
       "delete_theme_description": "Apagar o tema selecionado. Isto vai removê-lo da lista de temas e não o poderá utilizar novamente. Não é possível apagar o tema atual ou grupos de temas.",
@@ -58,8 +58,8 @@
       "download_theme": "Baixar Tema",
       "download_theme_description": "Baixar o tema selecionado como ficheiro JSON. Este pode ser usado para criar um novo tema ou modificar o existente.",
       "in_pixels": "Em pixéis",
-      "install_custom_theme": "Instalar um Tema Customizado",
-      "install_custom_theme_description": "Instalar um tema customizado a partir de um ficheiro JSON.\n\nEste pode ser um tema que tenha você modificado, criado ou baixado.",
+      "install_custom_theme": "Instalar um Tema Personalizado",
+      "install_custom_theme_description": "Instalar um tema personalizado a partir de um ficheiro JSON.\n\nEste pode ser um tema que tenha você modificado, criado ou baixado.",
       "install_custom_theme_description_2": "Se baixar um tema da internet, por favor certifique-se que confia na fonte e que verificou que não tem código malicioso no mesmo antes de o instalar.",
       "install_theme": "Instalar Tema",
       "logo": "Logotipo",
@@ -94,13 +94,57 @@
       }
     },
     "close": "Fechar",
+    "description": {
+      "branding": "Personalizar a interface de utilizador da Erugo e adicionar a sua marca.",
+      "myProfile": "Gerir o seu perfil.",
+      "myShares": "Gerir as suas Partilhas",
+      "system": "Gerir o comportamento da Erugo.",
+      "users": "Gerir os seus utilizadores."
+    },
+    "error": {
+      "shareExpired": "Falha ao expirar a partilha",
+      "shareExtended": "Falha ao extender a partilha"
+    },
+    "help": {
+      "auth_provider": {
+        "title": "Informação do fornecedor de autenticação"
+      },
+      "downloadLimit": {
+        "description": "Pode definir o limite de baixamentos para qualquer partilha ao clicar no número do lado direito e inserindo o novo limite. Deixe a caixa vazia para remover o limite.",
+        "description2": "As alterações serão guardadas automaticamente quando clicar fora da caixa.",
+        "title": "Ajuda sobre o limite de baixamentos"
+      }
+    },
     "provider": {
+      "edit": "Editar",
       "view": "Ver"
     },
+    "success": {
+      "shareExpired": "Partilha expirada",
+      "shareExtended": "Partilha extendida"
+    },
     "system": {
-      "auth_providers_description_localhost": "A configuração de autenticação externa não está disponível no localhost. Os provedores OAuth exigem um nome de domínio totalmente qualificado (FQDN) para funcionar corretamente. Aceda ao Erugo através de um domínio registado para configurar estas definições.",
-      "callback_url": "URL de chamada de retorno",
-      "callback_url_description": "Utilize o URL de retorno de chamada fornecido na configuração do seu fornecedor de identidade.",
+      "application_name": "Nome da Aplicação",
+      "application_name_description": "Personalizar o nome da aplicação que aparece na barra de título, caixas de diálogo e outros elementos de interface. Isto ajudará a manter a sua marca consistente na experiência do utilizador.",
+      "application_url": "Endereço da Aplicação",
+      "application_url_description": "O endereço de internet da sua aplicação. Este endereço serve para criar ligações para os envios de notificações por correio eletrónico, permitindo aos utilizadores a navegação direta a páginas específicas da aplicação.",
+      "auth": "Autenticação",
+      "auth_provider_config_base_url": "Endereço de Base",
+      "auth_provider_config_client_id": "Identificação do Cliente",
+      "auth_provider_config_client_secret": "Segredo do Cliente",
+      "auth_provider_config_tenant": "Identificação do inquilino",
+      "auth_provider_enabled": "Ativar",
+      "auth_provider_name": "Nome de Fornecedor",
+      "auth_provider_type": "Tipo de Fornecedor",
+      "auth_providers": "Fornecedores de Autenticação",
+      "auth_providers_description": "Configure os fornecedores de autenticação através dos quais pretende que os utilizadores se possam autenticar.",
+      "auth_providers_description_localhost": "A configuração de autenticação externa não está disponível no \"localhost\". Os provedores OAuth exigem um nome de domínio devidamente qualificado (FQDN) para funcionar corretamente. Aceda a Erugo através de um domínio registado para configurar estas definições.",
+      "callback_url": "Endereço de retorno",
+      "callback_url_description": "Utilize o endereço de retorno fornecido na configuração do seu fornecedor de identidade.",
+      "clean_files_after": "Eliminar Ficheiros Após",
+      "clean_files_after_description": "Quanto tempo após uma partilha expirar, ela será eliminada do sistema.",
+      "days": "Dias",
+      "default_language": "Lingua Predefinida",
       "languages": {
         "dutch": "holandês",
         "english": "Inglês",
