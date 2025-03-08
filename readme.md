@@ -156,8 +156,8 @@ Currently, the following languages are supported:
 - French (Thanks to [@zarev](https://github.com/zarevskaya) & [@thibdevan](https://github.com/thibdevan))
 - German
 - Italian
-- Spanish
 - Dutch
+- Portuguese (Thanks to Distermaer)
 
 Erugo is fully translatable. If you would like to contribute a translation, please join our [Discord server](https://discord.gg/M74X2wmqY8) and drop a message in general channel.
 
