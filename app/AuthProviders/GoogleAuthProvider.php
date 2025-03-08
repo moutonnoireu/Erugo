@@ -29,7 +29,10 @@ class GoogleAuthProvider extends BaseAuthProvider
       $this->throwMissingDataException();
     }
 
-    $client = Socialite::buildProvider(GoogleProvider::class, [
+    $socialite = app(\Laravel\Socialite\SocialiteManager::class);
+    
+
+    $client = $socialite->buildProvider(GoogleProvider::class, [
       'client_id' => $this->client_id,
       'client_secret' => $this->client_secret,
       'redirect' => route('social.provider.callback', ['provider' => $this->provider->uuid])

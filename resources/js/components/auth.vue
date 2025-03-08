@@ -106,7 +106,8 @@ const attemptResetPassword = async () => {
   }
 }
 const attemptAuthProviderLogin = (providerId) => {
-  window.location.href = `/auth/provider/${providerId}/login`
+  const newLocation = `/auth/provider/${providerId}/login`
+  window.location.href = newLocation
 }
 </script>
 
