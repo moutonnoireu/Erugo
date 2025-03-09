@@ -7,7 +7,8 @@ use Jumbojett\OpenIDConnectClient;
 use App\AuthProviders\AuthProviderUser;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
 use Illuminate\Validation\Validator;
-
+use App\AuthProviders\overrides\ErugoOpenIDConnectclient;
+use Illuminate\Support\Str;
 
 class OIDCAuthProvider extends BaseAuthProvider
 {
@@ -33,23 +34,41 @@ class OIDCAuthProvider extends BaseAuthProvider
       $this->throwMissingDataException();
     }
 
-    $client =  new OpenIDConnectClient(
+    $client =  new ErugoOpenIDConnectclient(
       $this->base_url,
       $this->client_id,
       $this->client_secret
     );
+
     // Set callback URL and required scopes
-    $client->setRedirectURL(route('social.provider.callback', ['provider' => $this->provider->uuid]));
+    $route = route('social.provider.callback', ['provider' => $this->provider->uuid]);
+    $route = $route . '?linkingAccount=' . session('linkingAccount') . '&linkingUserId=' . session('linkingUserId');
+    $client->setRedirectURL($route);
     $client->addScope(['openid', 'email', 'profile']);
+
     return $client;
   }
+
   public function redirect()
   {
-    // Create OIDC client
-    $oidc =  $this->createClient();
 
-    // Begin authentication flow - this will redirect the user
+
+    // Create OIDC client
+    $oidc = $this->createClient();
+
+    \Log::info("Redirecting to OIDC");
+
+    $oidc->setState(Str::uuid()->toString());
+    $this->state = $oidc->getStateValue();
+    \Log::info("State: " . $this->state);
+
+    \Cache::put('oidc_linking_' . $this->state, [
+      'linkingAccount' => session('linkingAccount'),
+      'linkingUserId' => session('linkingUserId')
+    ], now()->addMinutes(10));
+
     $oidc->authenticate();
+
 
     // This code will only run if authentication fails to redirect
     $this->throwAuthFailureException();
@@ -57,22 +76,39 @@ class OIDCAuthProvider extends BaseAuthProvider
 
   public function handleCallback(): AuthProviderUser
   {
-    // Create OIDC client
-    $oidc = $this->createClient();
+    // Get state from the request
+    $linkingData = [
+      'linkingAccount' => request()->get('linkingAccount'),
+      'linkingUserId' => request()->get('linkingUserId')
+    ];
 
-    // Complete authentication and get user info
+    // Restore to session if found
+    if ($linkingData) {
+      session(['linkingAccount' => $linkingData['linkingAccount']]);
+      session(['linkingUserId' => $linkingData['linkingUserId']]);
+    }
+
+    \Log::info("Linking account", [
+      'linkingAccount' => session('linkingAccount'),
+      'linkingUserId' => session('linkingUserId')
+    ]);
+
+    // Create OIDC client and complete authentication
+    $oidc = $this->createClient();
     $oidc->authenticate();
+
+    // Get user info and continue as before
     $userInfo = $oidc->requestUserInfo();
 
-    // Return the user information as an AuthProviderUser
     return new AuthProviderUser([
       'sub' => $userInfo->sub,
       'name' => $userInfo->name,
       'email' => $userInfo->email,
-      'avatar' => $userInfo->picture,
-      'verified' => $userInfo->email_verified,
+      'avatar' => $userInfo->picture ?? null,
+      'verified' => $userInfo->email_verified ?? false,
     ]);
   }
+
 
   public static function getIcon(): string
   {
