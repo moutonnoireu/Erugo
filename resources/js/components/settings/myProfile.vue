@@ -46,7 +46,7 @@ const loadProfile = async () => {
 const loadAvailableAuthProviders = async () => {
   console.log('loadAvailableAuthProviders', profile.value.linked_accounts)
   let providers = await getAvailableAuthProviders()
-  if (profile.value.linked_accounts) {
+  if (profile.value.linked_accounts.length > 0) {
     availableAuthProviders.value = providers.map((p) => {
       return {
         ...p,

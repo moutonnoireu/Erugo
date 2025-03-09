@@ -40,6 +40,7 @@ onMounted(() => {
 
   if (domSuccess().length > 0) {
     nextTick(() => {
+      console.log('domSuccess', domSuccess())
       toast.success(domSuccess())
       if (domSuccess() == 'Account linked successfully') {
         store.setSettingsOpen(true)

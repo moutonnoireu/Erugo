@@ -8,12 +8,12 @@ export const domData = () => {
 
 export const domError = () => {
   const error = document.body.getAttribute('data-error')
-  return error
+  return error || ''
 }
 
 export const domSuccess = () => {
   const success = document.body.getAttribute('data-success')
-  return success
+  return success || ''
 }
 
 const getSettings = () => {
