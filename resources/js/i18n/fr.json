@@ -156,6 +156,13 @@
       "enable_share_expiry_warning_emails": "Notifier par mail lorsqu'un partage va bientôt expirer",
       "enabled": "Activé",
       "general": "Général",
+      "languages": {
+        "dutch": "Néerlandais",
+        "english": "Anglais",
+        "french": "Anglais",
+        "german": "Allemand",
+        "italian": "Italien"
+      },
       "login_message": "Message de connexion",
       "login_message_description": "Ajoutez un message personnalisé ou une annonce qui s'affichera sur l'écran de connexion. Ce message peut être utilisé pour des messages de bienvenue, des notifications importantes ou des annonces temporaires.",
       "max_expiry_time": "Durée maximale d'expiration",
