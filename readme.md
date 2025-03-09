@@ -17,13 +17,20 @@ Please note we're running the demo on a very cheap VPS so it may take a few seco
 ## Screenshots
 
 ![Upload Interface](.github/images/uploader.jpg)
+
 _A clean, intuitive upload interface showing file selection and recipient information_
 
 ![My Shares](.github/images/my-shares.jpg)
+
 _My Shares page showing share details and options to manage user's shares_
 
 ![Settings](.github/images/settings.jpg)
+
 _Comprehensive settings page to configure the application_
+
+![image](https://github.com/user-attachments/assets/ebce35e8-12ec-475c-9e0d-d438a5ad58b3)
+
+_New login screen with external auth provider support_
 
 ## Videos Featuring Erugo
 
@@ -149,8 +156,8 @@ Currently, the following languages are supported:
 - French (Thanks to [@zarev](https://github.com/zarevskaya) & [@thibdevan](https://github.com/thibdevan))
 - German
 - Italian
-- Spanish
 - Dutch
+- Portuguese (Thanks to Distermaer)
 
 Erugo is fully translatable. If you would like to contribute a translation, please join our [Discord server](https://discord.gg/M74X2wmqY8) and drop a message in general channel.
 
