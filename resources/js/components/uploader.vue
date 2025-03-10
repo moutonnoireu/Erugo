@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
-import { CircleSlash2, FilePlus, FolderPlus, Upload, Trash, Copy, X, Loader, Check, Plus } from 'lucide-vue-next'
+import { CircleSlash2, FilePlus, FolderPlus, Upload, Trash, Copy, X, Loader, Check, Plus, Pause, Play } from 'lucide-vue-next'
 import { niceFileSize, niceFileType, simpleUUID } from '../utils'
-import { createShare, getHealth, getMyProfile } from '../api'
+import { createShare, getHealth, getMyProfile, uploadFilesInChunks } from '../api'
 import Recipient from './recipient.vue'
 
 const fileInput = ref(null)
@@ -16,6 +16,12 @@ const uploadedBytes = ref(0)
 const totalBytes = ref(0)
 const shareName = ref('')
 const shareDescription = ref('')
+const isPaused = ref(false)
+const currentFileName = ref('')
+const currentFileIndex = ref(0)
+const totalFiles = ref(0)
+const currentChunk = ref(0)
+const totalChunks = ref(0)
 
 const recipientRefs = ref([])
 
@@ -79,42 +85,83 @@ const totalSize = computed(() => {
 const uploadFiles = async () => {
   const uploadId = simpleUUID()
   currentlyUploading.value = true
-
+  isPaused.value = false
+  
   if (totalSize.value > maxShareSize.value) {
     alert(`Total size of files is greater than the max share size of ${niceFileSize(maxShareSize.value)}`)
+    currentlyUploading.value = false
     return
   }
 
   //before we try uploading lets just check we're logged in still
-  const user = await getMyProfile()
+  try {
+    const user = await getMyProfile()
+  } catch (error) {
+    alert('You need to be logged in to upload files')
+    currentlyUploading.value = false
+    return
+  }
 
   try {
-    const share = await createShare(
+    await uploadFilesInChunks(
       uploadBasket.value,
+      uploadId,
       shareName.value,
       shareDescription.value,
       recipients.value,
-      uploadId,
       (progress) => {
         uploadProgress.value = progress.percentage
         uploadedBytes.value = progress.uploadedBytes
         totalBytes.value = progress.totalBytes
+        
+        if (progress.currentFileName) {
+          currentFileName.value = progress.currentFileName
+        }
+        
+        if (progress.currentFile && progress.totalFiles) {
+          currentFileIndex.value = progress.currentFile
+          totalFiles.value = progress.totalFiles
+        }
+        
+        if (progress.currentChunk && progress.totalChunks) {
+          currentChunk.value = progress.currentChunk
+          totalChunks.value = progress.totalChunks
+        }
+      },
+      (result) => {
+        showSharePanel(createShareURL(result.data.share.long_id))
+        uploadBasket.value = []
+        shareName.value = ''
+        shareDescription.value = ''
+        currentlyUploading.value = false
+        resetUploadState()
+      },
+      (error) => {
+        console.error('Upload error:', error)
+        alert(`Upload failed: ${error.message}`)
+        currentlyUploading.value = false
+        resetUploadState()
       }
     )
-
-    showSharePanel(createShareURL(share.data.share.long_id))
-    uploadBasket.value = []
-    shareName.value = ''
-    shareDescription.value = ''
   } catch (error) {
-  } finally {
+    console.error('Upload error:', error)
+    alert(`Upload failed: ${error.message}`)
     currentlyUploading.value = false
-    setTimeout(() => {
-      uploadProgress.value = 0
-      uploadedBytes.value = 0
-      totalBytes.value = 0
-    }, 1000)
+    resetUploadState()
   }
+}
+
+const resetUploadState = () => {
+  setTimeout(() => {
+    uploadProgress.value = 0
+    uploadedBytes.value = 0
+    totalBytes.value = 0
+    currentFileName.value = ''
+    currentFileIndex.value = 0
+    totalFiles.value = 0
+    currentChunk.value = 0
+    totalChunks.value = 0
+  }, 1000)
 }
 
 const createShareURL = (longId) => {
@@ -135,7 +182,7 @@ const copyShareUrl = () => {
   showCopySuccess.value = true
   setTimeout(() => {
     showCopySuccess.value = false
-  }, 10)
+  }, 1000)
 }
 
 const removeRecipient = (recipient) => {
@@ -150,6 +197,14 @@ const addRecipient = () => {
     showPopover: true
   }
   recipients.value.push(recipient)
+}
+
+const togglePause = () => {
+  isPaused.value = !isPaused.value
+  // Implementation of pause/resume would require storing the current upload state
+  // and having the server support for resuming uploads
+  console.log(isPaused.value ? 'Upload paused' : 'Upload resumed')
+  // This is a placeholder. Actual implementation would require additional backend support
 }
 </script>
 
@@ -177,6 +232,16 @@ const addRecipient = () => {
             <div class="progress-bar-text-sub">
               {{ niceFileSize(uploadedBytes) }} /
               {{ niceFileSize(totalBytes) }}
+            </div>
+            <div v-if="currentFileName" class="progress-bar-text-sub">
+              {{ $t('File') }}: {{ currentFileIndex }} / {{ totalFiles }} - {{ currentFileName }}
+            </div>
+            <div v-if="totalChunks > 0" class="progress-bar-text-sub">
+              {{ $t('Chunk') }}: {{ currentChunk }} / {{ totalChunks }}
+            </div>
+            <div class="pause-button" @click="togglePause">
+              <Pause v-if="!isPaused" />
+              <Play v-else />
             </div>
           </template>
           <template v-else>
@@ -329,8 +394,6 @@ const addRecipient = () => {
 <style scoped lang="scss">
 .progress-bar-container {
   margin-top: -20px;
-  // width: 300px;
-  // height: 30px;
   background: var(--panel-item-background-color);
   border-radius: 5px;
   display: flex;
@@ -349,6 +412,7 @@ const addRecipient = () => {
 
   &.visible {
     opacity: 1;
+    pointer-events: auto;
   }
 
   .progress-bar {
@@ -380,6 +444,26 @@ const addRecipient = () => {
       font-size: 10px;
       color: var(--progress-bar-text-color);
       font-weight: 400;
+    }
+    .pause-button {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      &:hover {
+        background: rgba(0, 0, 0, 0.2);
+      }
+      svg {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
 }

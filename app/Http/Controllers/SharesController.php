@@ -360,7 +360,7 @@ class SharesController extends Controller
     }
 
 
-    private function generateLongId()
+    public function generateLongId()
     {
         $maxAttempts = 10;
         $attempts = 0;
