@@ -10,7 +10,7 @@ const tolgee = useTolgee(['language'])
 
 const dropdownVisible = ref(false)
 const showLanguageSelector = computed(() => {
-  return domData().show_language_selector === 'true'
+  return domData().show_language_selector === true
 })
 
 // Define available languages as a data structure
