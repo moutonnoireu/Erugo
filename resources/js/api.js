@@ -1,5 +1,5 @@
 import { getApiUrl } from './utils'
-import { store } from './store'
+import { store, uploadController } from './store'
 import { jwtDecode } from 'jwt-decode'
 import { useToast } from 'vue-toastification'
 import debounce from './debounce'
@@ -795,7 +795,7 @@ export const uploadFileInChunks = async (
   onError
 ) => {
   // Configuration
-  const chunkSize = 1024 * 1024 * 5 // 5MB chunks
+  const chunkSize = 1024 * 1024 * 20 // 20MB chunks
   const totalChunks = Math.ceil(file.size / chunkSize)
   let currentChunk = 0
   let totalUploaded = 0
@@ -810,6 +810,9 @@ export const uploadFileInChunks = async (
 
   // Process chunks
   const processChunk = async () => {
+
+    
+
     if (currentChunk >= totalChunks) {
       // All chunks uploaded, finalize the upload
       try {
@@ -818,6 +821,12 @@ export const uploadFileInChunks = async (
       } catch (error) {
         onError(error)
       }
+      return
+    }
+
+    if (uploadController.pause) {
+      //we're paused so hold fire for 1 second and try again
+      setTimeout(processChunk, 1000)
       return
     }
 

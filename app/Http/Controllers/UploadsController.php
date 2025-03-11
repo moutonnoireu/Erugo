@@ -26,7 +26,6 @@ class UploadsController extends Controller
       'upload_id' => ['required', 'string'],
       'filename' => ['required', 'string'],
       'filesize' => ['required', 'numeric'],
-      'filetype' => ['required', 'string'],
       'total_chunks' => ['required', 'numeric']
     ]);
 

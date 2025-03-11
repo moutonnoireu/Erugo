@@ -1,10 +1,31 @@
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
-import { CircleSlash2, FilePlus, FolderPlus, Upload, Trash, Copy, X, Loader, Check, Plus, Pause, Play } from 'lucide-vue-next'
+import {
+  CircleSlash2,
+  FilePlus,
+  FolderPlus,
+  Upload,
+  Trash,
+  Copy,
+  X,
+  Loader,
+  Check,
+  Plus,
+  Pause,
+  Play,
+  Boxes,
+  Box
+} from 'lucide-vue-next'
 import { niceFileSize, niceFileType, simpleUUID } from '../utils'
 import { createShare, getHealth, getMyProfile, uploadFilesInChunks } from '../api'
 import Recipient from './recipient.vue'
+import { uploadController } from '../store'
+import { domData } from '../domData'
+import { useTranslate } from '@tolgee/vue'
+import { useToast } from 'vue-toastification'
 
+const { t } = useTranslate()
+const toast = useToast()
 const fileInput = ref(null)
 const sharePanelVisible = ref(false)
 const shareUrl = ref('')
@@ -22,6 +43,11 @@ const currentFileIndex = ref(0)
 const totalFiles = ref(0)
 const currentChunk = ref(0)
 const totalChunks = ref(0)
+const uploadSettings = ref({
+  uploadMode: domData().default_upload_mode,
+  allowDirectUploads: domData().allow_direct_uploads,
+  allowChunkedUploads: domData().allow_chunked_uploads
+})
 
 const recipientRefs = ref([])
 
@@ -35,6 +61,27 @@ onMounted(async () => {
   const health = await getHealth()
   console.log(health)
   maxShareSize.value = health.max_share_size
+
+  const savedUploadMode = localStorage.getItem('uploadMode')
+  if (savedUploadMode) {
+    if (savedUploadMode === 'chunked') {
+      if (uploadSettings.value.allowChunkedUploads) {
+        uploadSettings.value.uploadMode = 'chunked'
+      } else {
+        uploadSettings.value.uploadMode = 'direct'
+      }
+    }
+
+    if (savedUploadMode === 'direct') {
+      if (uploadSettings.value.allowDirectUploads) {
+        uploadSettings.value.uploadMode = 'direct'
+      } else {
+        uploadSettings.value.uploadMode = 'chunked'
+      }
+    }
+  }
+
+  console.log('uploadSettings', uploadSettings.value)
 })
 
 const showFilePicker = () => {
@@ -86,7 +133,8 @@ const uploadFiles = async () => {
   const uploadId = simpleUUID()
   currentlyUploading.value = true
   isPaused.value = false
-  
+  uploadController.resumeUpload()
+
   if (totalSize.value > maxShareSize.value) {
     alert(`Total size of files is greater than the max share size of ${niceFileSize(maxShareSize.value)}`)
     currentlyUploading.value = false
@@ -94,14 +142,20 @@ const uploadFiles = async () => {
   }
 
   //before we try uploading lets just check we're logged in still
-  try {
-    const user = await getMyProfile()
-  } catch (error) {
-    alert('You need to be logged in to upload files')
-    currentlyUploading.value = false
+  const user = await getMyProfile()
+
+  if (uploadSettings.value.uploadMode === 'chunked') {
+    await doChunkedUpload(uploadId)
+    return
+  } else if (uploadSettings.value.uploadMode === 'direct') {
+    await doDirectUpload(uploadId)
     return
   }
 
+  alert(t.value('upload.upload_mode_not_supported'))
+}
+
+const doChunkedUpload = async (uploadId) => {
   try {
     await uploadFilesInChunks(
       uploadBasket.value,
@@ -113,16 +167,16 @@ const uploadFiles = async () => {
         uploadProgress.value = progress.percentage
         uploadedBytes.value = progress.uploadedBytes
         totalBytes.value = progress.totalBytes
-        
+
         if (progress.currentFileName) {
           currentFileName.value = progress.currentFileName
         }
-        
+
         if (progress.currentFile && progress.totalFiles) {
           currentFileIndex.value = progress.currentFile
           totalFiles.value = progress.totalFiles
         }
-        
+
         if (progress.currentChunk && progress.totalChunks) {
           currentChunk.value = progress.currentChunk
           totalChunks.value = progress.totalChunks
@@ -148,6 +202,38 @@ const uploadFiles = async () => {
     alert(`Upload failed: ${error.message}`)
     currentlyUploading.value = false
     resetUploadState()
+  }
+}
+
+const doDirectUpload = async (uploadId) => {
+  try {
+    const share = await createShare(
+      uploadBasket.value,
+      shareName.value,
+      shareDescription.value,
+      recipients.value,
+      uploadId,
+      (progress) => {
+        uploadProgress.value = progress.percentage
+        uploadedBytes.value = progress.uploadedBytes
+        totalBytes.value = progress.totalBytes
+      }
+    )
+
+    showSharePanel(createShareURL(share.data.share.long_id))
+    uploadBasket.value = []
+    shareName.value = ''
+    shareDescription.value = ''
+  } catch (error) {
+    console.error('Upload error:', error)
+    alert(`Upload failed: ${error.message}`)
+  } finally {
+    currentlyUploading.value = false
+    setTimeout(() => {
+      uploadProgress.value = 0
+      uploadedBytes.value = 0
+      totalBytes.value = 0
+    }, 1000)
   }
 }
 
@@ -201,10 +287,18 @@ const addRecipient = () => {
 
 const togglePause = () => {
   isPaused.value = !isPaused.value
-  // Implementation of pause/resume would require storing the current upload state
-  // and having the server support for resuming uploads
   console.log(isPaused.value ? 'Upload paused' : 'Upload resumed')
-  // This is a placeholder. Actual implementation would require additional backend support
+  if (isPaused.value) {
+    uploadController.pauseUpload()
+  } else {
+    uploadController.resumeUpload()
+  }
+}
+
+const swapUploadMode = () => {
+  uploadSettings.value.uploadMode = uploadSettings.value.uploadMode === 'chunked' ? 'direct' : 'chunked'
+  localStorage.setItem('uploadMode', uploadSettings.value.uploadMode)
+  toast.success(t.value('uploader.upload_mode_swapped', { value: uploadSettings.value.uploadMode }))
 }
 </script>
 
@@ -226,6 +320,10 @@ const togglePause = () => {
         <div class="progress-bar">
           <div class="progress-bar-fill" :style="{ width: `${uploadProgress}%` }"></div>
         </div>
+        <div class="pause-button" @click="togglePause">
+          <Pause v-if="!isPaused" />
+          <Play v-else />
+        </div>
         <div class="progress-bar-text">
           <template v-if="uploadProgress < 100">
             {{ Math.round(uploadProgress) }}%
@@ -238,10 +336,6 @@ const togglePause = () => {
             </div>
             <div v-if="totalChunks > 0" class="progress-bar-text-sub">
               {{ $t('Chunk') }}: {{ currentChunk }} / {{ totalChunks }}
-            </div>
-            <div class="pause-button" @click="togglePause">
-              <Pause v-if="!isPaused" />
-              <Play v-else />
             </div>
           </template>
           <template v-else>
@@ -346,24 +440,59 @@ const togglePause = () => {
   </div>
 
   <div class="upload-button-container">
-    <button
-      class="upload-button"
-      :disabled="uploadBasket.length === 0 || currentlyUploading"
-      @click="uploadFiles"
-      :class="{ uploading: currentlyUploading }"
-    >
-      <div class="loader" v-if="currentlyUploading">
-        <Loader />
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col d-flex align-items-center justify-content-end">
+          <button
+            class="upload-button block"
+            :disabled="uploadBasket.length === 0 || currentlyUploading"
+            @click="uploadFiles"
+            :class="{ uploading: currentlyUploading }"
+          >
+            <div class="loader" v-if="currentlyUploading">
+              <Loader />
+            </div>
+            <Upload v-else />
+            <template v-if="uploadBasket.length > 0 && currentlyUploading">
+              {{ $t('uploading.files', 'Uploading {value} files', { value: uploadBasket.length }) }}
+            </template>
+            <template v-if="uploadBasket.length > 0 && !currentlyUploading">
+              {{ $t('upload.files', 'Upload {value} files', { value: uploadBasket.length }) }}
+            </template>
+            <template v-if="uploadBasket.length === 0">{{ $t('No files added yet') }}</template>
+          </button>
+        </div>
+
+        <div class="col-auto" v-if="uploadSettings.allowChunkedUploads && uploadSettings.allowDirectUploads">
+          <div class="upload-modes">
+            <div class="upload-mode" v-if="uploadSettings.uploadMode === 'chunked'">
+              <button class="icon-only secondary" :title="$t('uploader.current_mode.chunked')" @click="swapUploadMode">
+                <Boxes />
+              </button>
+            </div>
+            <div class="upload-mode" v-if="uploadSettings.uploadMode === 'direct'">
+              <button class="icon-only secondary" :title="$t('uploader.current_mode.direct')" @click="swapUploadMode">
+                <Box />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-auto" v-else>
+          <div class="upload-mode">
+            <div
+              class="svg-container"
+              :title="$t('uploader.current_mode.chunked')"
+              v-if="uploadSettings.uploadMode === 'chunked'"
+            >
+              <Boxes />
+            </div>
+            <div class="svg-container" :title="$t('uploader.current_mode.direct')" v-else>
+              <Box />
+            </div>
+          </div>
+        </div>
       </div>
-      <Upload v-else />
-      <template v-if="uploadBasket.length > 0 && currentlyUploading">
-        {{ $t('uploading.files', 'Uploading {value} files', { value: uploadBasket.length }) }}
-      </template>
-      <template v-if="uploadBasket.length > 0 && !currentlyUploading">
-        {{ $t('upload.files', 'Upload {value} files', { value: uploadBasket.length }) }}
-      </template>
-      <template v-if="uploadBasket.length === 0">{{ $t('No files added yet') }}</template>
-    </button>
+    </div>
   </div>
   <input
     type="file"
@@ -426,44 +555,49 @@ const togglePause = () => {
       height: 100%;
     }
   }
+  .pause-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    &:hover {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
   .progress-bar-text {
     font-size: 24px;
-    color: var(--progress-bar-text-color);
+    color: var(--panel-text-color);
     font-weight: 600;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     flex-direction: column;
+    background: var(--panel-background-color);
+    width: auto;
+    padding: 10px;
+    border-radius: 5px;
     .progress-bar-text-sub {
       font-size: 10px;
-      color: var(--progress-bar-text-color);
+      color: var(--panel-text-color);
+      opacity: 0.8;
       font-weight: 400;
-    }
-    .pause-button {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      cursor: pointer;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      &:hover {
-        background: rgba(0, 0, 0, 0.2);
-      }
-      svg {
-        width: 16px;
-        height: 16px;
-      }
     }
   }
 }
