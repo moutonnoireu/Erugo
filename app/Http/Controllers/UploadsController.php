@@ -53,7 +53,7 @@ class UploadsController extends Controller
       'user_id' => $user->id,
       'filename' => $request->filename,
       'filesize' => $request->filesize,
-      'filetype' => $request->filetype,
+      'filetype' => $request->filetype ?? 'unknown',
       'total_chunks' => $request->total_chunks,
       'chunks_received' => 0,
       'status' => 'pending'
@@ -234,7 +234,7 @@ class UploadsController extends Controller
     // Create a file record in the database
     $file = File::create([
       'name' => $request->filename,
-      'type' => $session->filetype,
+      'type' => $session->filetype ?? 'unknown',
       'size' => $session->filesize,
       'temp_path' => 'temp/' . $user->id . '/' . $request->filename
     ]);
