@@ -208,7 +208,10 @@ class SharesController extends Controller
             if (file_exists($filename)) {
                 $this->createDownloadRecord($share);
 
-                return response()->download($filename);
+                // return response()->download($filename);
+                return response()
+                    ->make('', 200)
+                    ->header('X-Accel-Filepath', $filename);
             } else {
                 //something went wrong, show the failed view
                 return view('shares.failed', [
