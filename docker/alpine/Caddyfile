@@ -1,6 +1,11 @@
 # Basic Caddyfile for Laravel
 :80 {
     root * /var/www/html/public
+
+		# Handle static files first
+    file_server {
+        index index.php
+    }
     
     # Handle internal file serving for downloads
     @download {
