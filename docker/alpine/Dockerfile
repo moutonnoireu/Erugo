@@ -58,6 +58,7 @@ RUN apk add --no-cache \
     php83-fileinfo \
     tzdata \
     libcap \
+    zip \
     && ln -s /usr/bin/php83 /usr/bin/php \
     && rm -rf /var/cache/apk/*
 
