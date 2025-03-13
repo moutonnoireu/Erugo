@@ -9,7 +9,7 @@
   "Share Name": "Nome de partilha",
   "Share URL": "Endereço de partilha",
   "We'll provide you with a link instead": {
-    "": "Providenciaremos um endereço"
+    "": "Se não tiver e-mail providenciaremos um endereço"
   },
   "auth": {
     "back_to_login": "Voltar à autenticação",
@@ -67,7 +67,7 @@
       "download": "Descarregar",
       "download_theme": "Descarregar Tema",
       "download_theme_description": "Descarregue o tema selecionado como ficheiro JSON. Este pode ser usado para criar um novo tema ou modificar o existente.",
-      "in_pixels": "Em pixéis",
+      "in_pixels": "Em pixels",
       "install_custom_theme": "Instalar um Tema Personalizado",
       "install_custom_theme_description": "Instalar um tema personalizado a partir de um ficheiro JSON.\n\nEste pode ser um tema que tenha você modificado, criado ou descarregado.",
       "install_custom_theme_description_2": "Se descarregar um tema da internet, por favor certifique-se que confia na fonte e que verificou que não tem código malicioso no mesmo antes de o instalar.",
@@ -295,17 +295,17 @@
       "extend": "Extender"
     },
     "contains": {
-      "count": "{value, plural, one {Contém # ficheiro} many {Contém {value} ficheiros} other {}}"
+      "count": "{value, plural, one {Contém: # ficheiro} other {Contém: {value} ficheiros} }"
     },
-    "created": "Criado",
+    "created": "Criação",
     "data_loading": "Carregando...",
-    "deletes": "Elimina",
+    "deletes": "Eliminação",
     "download_limit_reached": "Limite de Descarregamentos Atingido",
     "download_limit_reached.message": "A partilha que está a tentar descarregar atingiu o limite de descarregamentos. Por favor peça ao criador da partilha que aumente o limite.",
     "expired": "Partilha Expirada",
     "expired.message": "A partilha que está a tentar descarregar expirou. Por favor peça ao criador da partilha que estenda o seu prazo com mais tempo.",
-    "expires": "Expira",
-    "expires.in": "Expira em {days} {dias, plural, one {dia} other {dias}}, {hours} {horas, plural, one {hora} other {horas}}, {minutes} {minutos, plural, one {minuto} other {minutos}}",
+    "expires": "Expiração",
+    "expires.in": "Expira em {days} {days, plural, one {dia} other {dias}}, {hours} {hours, plural, one {hora} other {horas}}, {minutes} {minutes, plural, one {minuto} other {minutos}}",
     "files": {
       "count": "{value, plural, one {# ficheiro} many {# ficheiros} other {}}",
       "including": "incluíndo:"

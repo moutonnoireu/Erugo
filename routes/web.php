@@ -15,6 +15,7 @@ function getSettings()
 {
     
     $settingsService = new SettingsService();
+
     
     
     $settings = Setting::whereLike('group', 'ui%')

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import {
   CircleSlash2,
   FilePlus,
@@ -49,8 +49,6 @@ const uploadSettings = ref({
   allowChunkedUploads: domData().allow_chunked_uploads
 })
 
-const recipientRefs = ref([])
-
 const errors = ref({
   shareName: null
 })
@@ -58,10 +56,12 @@ const errors = ref({
 const recipients = ref([])
 
 onMounted(async () => {
+
+  //grab the max share size from the health check
   const health = await getHealth()
-  console.log(health)
   maxShareSize.value = health.max_share_size
 
+  //grab the upload mode from local storage
   const savedUploadMode = localStorage.getItem('uploadMode')
   if (savedUploadMode) {
     if (savedUploadMode === 'chunked') {
@@ -81,7 +81,6 @@ onMounted(async () => {
     }
   }
 
-  console.log('uploadSettings', uploadSettings.value)
 })
 
 const showFilePicker = () => {

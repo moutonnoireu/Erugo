@@ -157,7 +157,7 @@
       "callback_url": "Callback URL",
       "callback_url_description": "Gebruik de callback URL in de configuratie van je identity provider.",
       "chunked": "Opgedeeld",
-      "chunked_uploads_disabled_but_default": "U hebt de standaard uploadmodus ingesteld op chunked, maar chunked uploads zijn uitgeschakeld!",
+      "chunked_uploads_disabled_but_default": "U hebt de standaard uploadmodus ingesteld op gebundeld, maar gebundelde uploads zijn uitgeschakeld!",
       "clean_files_after": "Bestanden opschonen na",
       "clean_files_after_description": "Hoe lang nadat een gedeelde link is verlopen worden de bestanden verwijderd uit het systeem.",
       "days": "Dagen",

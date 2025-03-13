@@ -14,7 +14,7 @@
   "auth": {
     "back_to_login": "Retour à la connexion",
     "confirm_password": "Confirmez le mot de passe",
-    "email": "E-mail",
+    "email": "Email",
     "failed_to_reset_password": "Échec de la récupération du mot de passe",
     "failed_to_send_password_reset_email": "Échec de l'envoi du mail de réinitialisation du mot de passe",
     "forgot_password": "Mot de passe oublié",
@@ -52,9 +52,9 @@
     "account": {
       "change_password": "Modifier mon mot de passe",
       "create_link": "Lier",
-      "email": "Mon adresse e-mail",
+      "email": "Mon adresse email",
       "linked_accounts_description": "Liez votre compte à un fournisseur externe pour faciliter la connexion. Une fois le lien établi, vous pouvez vous connecter directement en sélectionnant le bouton du fournisseur sur l'écran de connexion.",
-      "myProfile_description": "Mettez à jour votre adresse e-mail ou changez votre nom. Vous pouvez modifier votre mot de passe en cliquant sur le bouton « Modifier mon mot de passe » et en suivant les instructions.",
+      "myProfile_description": "Mettez à jour votre adresse email ou changez votre nom. Vous pouvez modifier votre mot de passe en cliquant sur le bouton « Modifier mon mot de passe » et en suivant les instructions.",
       "name": "Mon nom complet",
       "unlink": "Délier"
     },

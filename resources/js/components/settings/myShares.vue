@@ -62,7 +62,6 @@ const handleDownloadLimitChange = async (share) => {
   }
 
   if (isNaN(newLimit)) {
-    toast.error('Invalid download limit')
     return
   }
   setDownloadLimit(share.id, newLimit)
