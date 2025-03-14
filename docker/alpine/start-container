@@ -110,5 +110,8 @@ su-exec erugo php artisan route:clear
 echo "Clearing compiled classes..."
 su-exec erugo php artisan clear-compiled
 
+echo "Updating legacy share paths..."
+su-exec erugo php artisan update-legacy-share-paths
+
 echo "Starting services..."
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
