@@ -47,6 +47,7 @@
   "message": {
     "from": "Messaggio da {name}"
   },
+  "processing_uploaded_files": "Elaborazione dei file caricati",
   "settings": {
     "account": {
       "change_password": "Cambiare la password",
@@ -136,6 +137,8 @@
       "shareExtended": "Quota estesa"
     },
     "system": {
+      "allow_chunked_uploads": "Consentire la modalità di caricamento chunked",
+      "allow_direct_uploads": "Consentire la modalità di caricamento diretto",
       "application_name": "Nome dell'applicazione",
       "application_name_description": "Personalizzate il nome visualizzato dell'applicazione che appare nelle barre del titolo, nelle finestre di dialogo e in altri elementi dell'interfaccia. Questo aiuta a mantenere un branding coerente in tutta l'esperienza dell'utente.",
       "application_url": "URL dell'applicazione",
@@ -153,12 +156,17 @@
       "auth_providers_description_localhost": "La configurazione dell'autenticazione esterna non è disponibile su localhost. I provider OAuth richiedono un nome di dominio completamente qualificato (FQDN) per funzionare correttamente. Per configurare queste impostazioni, accedere a Erugo attraverso un dominio registrato.",
       "callback_url": "URL di richiamo",
       "callback_url_description": "Utilizzare l'URL di callback fornito nella configurazione del provider di identità.",
+      "chunked": "Tritato",
+      "chunked_uploads_disabled_but_default": "Avete impostato la modalità di caricamento predefinita su chunked, ma i caricamenti chunked sono disabilitati!",
       "clean_files_after": "Pulire i file dopo",
       "clean_files_after_description": "Quanto tempo dopo la scadenza di una condivisione prima che i file vengano eliminati dal sistema.",
       "days": "Giorni",
       "default_language": "Lingua predefinita",
       "default_language_description": "Impostare la lingua principale che verrà utilizzata nell'interfaccia dell'applicazione per tutti gli utenti per impostazione predefinita. I singoli utenti possono sovrascrivere questa impostazione con le loro preferenze personali.",
+      "default_upload_mode": "Modalità di caricamento predefinita",
       "delete_auth_provider": "Cancellare questo provider",
+      "direct": "Diretto",
+      "direct_uploads_disabled_but_default": "Avete impostato la modalità di caricamento predefinita su diretto, ma i caricamenti diretti sono disabilitati!",
       "disabled": "Disabili",
       "emails": "Notifiche",
       "enable_share_deleted_emails": "Abilita la condivisione delle e-mail eliminate",
@@ -211,6 +219,7 @@
       "smtp_sender_name_description": "Il nome visualizzato come mittente delle e-mail di sistema. Gli utenti vedranno questo nome nel loro client di posta elettronica (ad esempio, \"Your App Name\" o \"Your App Support\").",
       "smtp_username": "Nome utente SMTP",
       "smtp_username_description": "Il nome utente richiesto per l'autenticazione con il server SMTP. In genere si tratta dell'indirizzo e-mail o del nome dell'account associato al servizio di posta elettronica.",
+      "upload_modes": "Modalità di caricamento",
       "your_auth_providers": "I vostri fornitori di autorizzazioni"
     },
     "system_auth_provider_info_link": "Informazioni su {name}",
@@ -304,7 +313,15 @@
   },
   "total_size": "Peso totale",
   "upload": {
-    "files": "{value, plural, other {Caricare # file}}"
+    "files": "{value, plural, other {Caricare # file}}",
+    "upload_mode_not_supported": "Non è stata selezionata alcuna modalità di caricamento valida! Non sappiamo cosa suggerire perché questo non dovrebbe essere possibile."
+  },
+  "uploader": {
+    "current_mode": {
+      "chunked": "Modalità di caricamento a pezzi",
+      "direct": "Modalità di caricamento diretto"
+    },
+    "upload_mode_swapped": "Modalità di caricamento cambiata in {value}"
   },
   "uploading": {
     "files": "{value, plural, one {Caricamento del file} other {Caricamento di # file} }"

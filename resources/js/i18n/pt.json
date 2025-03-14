@@ -9,7 +9,7 @@
   "Share Name": "Nome de partilha",
   "Share URL": "Endereço de partilha",
   "We'll provide you with a link instead": {
-    "": "Providenciaremos um endereço"
+    "": "Se não tiver e-mail providenciaremos um endereço"
   },
   "auth": {
     "back_to_login": "Voltar à autenticação",
@@ -47,6 +47,7 @@
   "message": {
     "from": "Mensagem de {name}"
   },
+  "processing_uploaded_files": "Processamento de ficheiros carregados",
   "settings": {
     "account": {
       "change_password": "Alterar a minha palavra-passe",
@@ -66,7 +67,7 @@
       "download": "Descarregar",
       "download_theme": "Descarregar Tema",
       "download_theme_description": "Descarregue o tema selecionado como ficheiro JSON. Este pode ser usado para criar um novo tema ou modificar o existente.",
-      "in_pixels": "Em pixéis",
+      "in_pixels": "Em pixels",
       "install_custom_theme": "Instalar um Tema Personalizado",
       "install_custom_theme_description": "Instalar um tema personalizado a partir de um ficheiro JSON.\n\nEste pode ser um tema que tenha você modificado, criado ou descarregado.",
       "install_custom_theme_description_2": "Se descarregar um tema da internet, por favor certifique-se que confia na fonte e que verificou que não tem código malicioso no mesmo antes de o instalar.",
@@ -136,6 +137,8 @@
       "shareExtended": "Partilha extendida"
     },
     "system": {
+      "allow_chunked_uploads": "Permitir o modo de carregamento em pedaços",
+      "allow_direct_uploads": "Permitir o modo de carregamento direto",
       "application_name": "Nome da Aplicação",
       "application_name_description": "Personalizar o nome da aplicação que aparece na barra de título, caixas de diálogo e outros elementos de interface. Isto ajudará a manter a sua marca consistente na experiência do utilizador.",
       "application_url": "Endereço da Aplicação",
@@ -153,12 +156,17 @@
       "auth_providers_description_localhost": "A configuração de autenticação externa não está disponível no \"localhost\". Os provedores OAuth exigem um nome de domínio devidamente qualificado (FQDN) para funcionar corretamente. Aceda a Erugo através de um domínio registado para configurar estas definições.",
       "callback_url": "Endereço de retorno",
       "callback_url_description": "Utilize o endereço de retorno fornecido na configuração do seu fornecedor de identidade.",
+      "chunked": "Em pedaços",
+      "chunked_uploads_disabled_but_default": "Definiu o modo de carregamento predefinido como em blocos, mas os carregamentos em blocos estão desactivados!",
       "clean_files_after": "Eliminar Ficheiros Após",
       "clean_files_after_description": "Quanto tempo após uma partilha expirar, ela será eliminada do sistema.",
       "days": "Dias",
       "default_language": "Lingua Predefinida",
       "default_language_description": "Defina a língua que será utilizada por todos os utilizadores na aplicação por defeito. Os utilizadores podem posteriormente alterar se assim preferirem.",
+      "default_upload_mode": "Modo de carregamento predefinido",
       "delete_auth_provider": "Apagar este fornecedor",
+      "direct": "Direto",
+      "direct_uploads_disabled_but_default": "Definiu o modo de carregamento predefinido como direto, mas os carregamentos diretos estão desactivados!",
       "disabled": "Desativado",
       "emails": "Notificações",
       "enable_share_deleted_emails": "Ativar E-mails de Partilhas Eliminadas",
@@ -211,6 +219,7 @@
       "smtp_sender_name_description": "O nome a aparecer como remetente dos e-mails de sistema. Os utilizadores verão este nome nos seus clientes de e-mail (ex. \"O nome da sua aplicação\" ou \"O suporte da sua aplicação\")",
       "smtp_username": "Nome de utilizadores de SMTP",
       "smtp_username_description": "O nome de utilizador necessário para autenticação com o seu servidor de SMTP. Este é tipicamente o endereço de e-mail ou nome de conta associada ao seu serviço de e-mail.",
+      "upload_modes": "Modos de carregamento",
       "your_auth_providers": "O seus Fornecedores de Autenticação"
     },
     "system_auth_provider_info_link": "Sobre {name}",
@@ -286,17 +295,17 @@
       "extend": "Extender"
     },
     "contains": {
-      "count": "{value, plural, one {Contém # ficheiro} many {Contém {value} ficheiros} other {}}"
+      "count": "{value, plural, one {Contém: # ficheiro} other {Contém: {value} ficheiros} }"
     },
-    "created": "Criado",
+    "created": "Criação",
     "data_loading": "Carregando...",
-    "deletes": "Elimina",
+    "deletes": "Eliminação",
     "download_limit_reached": "Limite de Descarregamentos Atingido",
     "download_limit_reached.message": "A partilha que está a tentar descarregar atingiu o limite de descarregamentos. Por favor peça ao criador da partilha que aumente o limite.",
     "expired": "Partilha Expirada",
     "expired.message": "A partilha que está a tentar descarregar expirou. Por favor peça ao criador da partilha que estenda o seu prazo com mais tempo.",
-    "expires": "Expira",
-    "expires.in": "Expira em {days} {dias, plural, one {dia} other {dias}}, {hours} {horas, plural, one {hora} other {horas}}, {minutes} {minutos, plural, one {minuto} other {minutos}}",
+    "expires": "Expiração",
+    "expires.in": "Expira em {days} {days, plural, one {dia} other {dias}}, {hours} {hours, plural, one {hora} other {horas}}, {minutes} {minutes, plural, one {minuto} other {minutos}}",
     "files": {
       "count": "{value, plural, one {# ficheiro} many {# ficheiros} other {}}",
       "including": "incluíndo:"
@@ -304,7 +313,15 @@
   },
   "total_size": "Tamanho Total",
   "upload": {
-    "files": "{value, plural, one {Transferir # ficheiro} many {Transferir # ficheiros} other {}}"
+    "files": "{value, plural, one {Transferir # ficheiro} many {Transferir # ficheiros} other {}}",
+    "upload_mode_not_supported": "Não está selecionado nenhum modo de carregamento válido! Não temos a certeza do que sugerir porque isto não deveria ser possível."
+  },
+  "uploader": {
+    "current_mode": {
+      "chunked": "Modo de carregamento em blocos",
+      "direct": "Modo de carregamento direto"
+    },
+    "upload_mode_swapped": "Modo de carregamento alterado para {value}"
   },
   "uploading": {
     "files": "{value, plural, one {Transferindo # ficheiro} many {Transferindo # ficheiros} other {}}"

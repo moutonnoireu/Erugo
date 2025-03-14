@@ -47,6 +47,7 @@
   "message": {
     "from": "Nachricht von {name}"
   },
+  "processing_uploaded_files": "Verarbeitung hochgeladener Dateien",
   "settings": {
     "account": {
       "change_password": "Mein Passwort ändern",
@@ -136,6 +137,8 @@
       "shareExtended": "Anteil erweitert"
     },
     "system": {
+      "allow_chunked_uploads": "Chunked-Upload-Modus zulassen",
+      "allow_direct_uploads": "Direkten Upload-Modus zulassen",
       "application_name": "Name der Anwendung",
       "application_name_description": "Passen Sie den angezeigten Namen Ihrer Anwendung an, der in Titelleisten, Dialogfeldern und anderen Oberflächenelementen erscheint. Dies trägt dazu bei, ein konsistentes Branding in der gesamten Benutzerumgebung zu erhalten.",
       "application_url": "URL der Anwendung",
@@ -153,12 +156,17 @@
       "auth_providers_description_localhost": "Die externe Authentifizierungskonfiguration ist auf localhost nicht verfügbar. OAuth-Anbieter benötigen einen vollständig qualifizierten Domainnamen (FQDN), um ordnungsgemäß zu funktionieren. Bitte greifen Sie über eine registrierte Domain auf Erugo zu, um diese Einstellungen zu konfigurieren.",
       "callback_url": "Rückruf-URL",
       "callback_url_description": "Verwenden Sie die in der Konfiguration Ihres Identitätsanbieters angegebene Callback-URL.",
+      "chunked": "Gehacktes",
+      "chunked_uploads_disabled_but_default": "Sie haben den Standard-Upload-Modus auf \"chunked\" eingestellt, aber \"chunked\" Uploads sind deaktiviert!",
       "clean_files_after": "Dateien bereinigen nach",
       "clean_files_after_description": "Wie lange nach Ablauf einer Freigabe die Dateien aus dem System gelöscht werden.",
       "days": "Tage",
       "default_language": "Standardsprache",
       "default_language_description": "Legen Sie die primäre Sprache fest, die standardmäßig auf der gesamten Anwendungsoberfläche für alle Benutzer verwendet wird. Einzelne Benutzer können diese Einstellung mit ihren persönlichen Präferenzen überschreiben.",
+      "default_upload_mode": "Standard-Upload-Modus",
       "delete_auth_provider": "Diesen Anbieter löschen",
+      "direct": "Direkt",
+      "direct_uploads_disabled_but_default": "Sie haben den Standard-Upload-Modus auf direkt eingestellt, aber direkte Uploads sind deaktiviert!",
       "disabled": "Behinderte",
       "emails": "Benachrichtigungen",
       "enable_share_deleted_emails": "Freigabe gelöschter E-Mails aktivieren",
@@ -211,6 +219,7 @@
       "smtp_sender_name_description": "Der Anzeigename, der als Absender von System-E-Mails erscheinen wird. Die Benutzer sehen diesen Namen in ihrem E-Mail-Client (z. B. \"Your App Name\" oder \"Your App Support\").",
       "smtp_username": "SMTP-Benutzername",
       "smtp_username_description": "Der Benutzername, der für die Authentifizierung bei Ihrem SMTP-Server erforderlich ist. Dies ist normalerweise die E-Mail-Adresse oder der Kontoname, der mit Ihrem E-Mail-Dienst verbunden ist.",
+      "upload_modes": "Upload-Modi",
       "your_auth_providers": "Ihre Auth-Provider"
     },
     "system_auth_provider_info_link": "Über {name}",
@@ -304,7 +313,15 @@
   },
   "total_size": "Gesamtgröße",
   "upload": {
-    "files": "{value, plural, one {Hochladen der Datei #} other {Hochladen von # Dateien}}"
+    "files": "{value, plural, one {Hochladen der Datei #} other {Hochladen von # Dateien}}",
+    "upload_mode_not_supported": "Es ist kein gültiger Upload-Modus ausgewählt! Wir sind uns nicht sicher, was wir vorschlagen sollen, da dies nicht möglich sein sollte."
+  },
+  "uploader": {
+    "current_mode": {
+      "chunked": "Chunked-Upload-Modus",
+      "direct": "Direkter Upload-Modus"
+    },
+    "upload_mode_swapped": "Upload-Modus auf {value} geändert"
   },
   "uploading": {
     "files": "{value, plural, one {Hochladen der Datei #} other {Hochladen von # Dateien}}"

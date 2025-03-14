@@ -204,6 +204,7 @@ class SharesController extends Controller
         //if the share is ready, download the zip file
         if ($share->status == 'ready') {
             $filename = $share->path . '.zip';
+            \Log::info('looking for: ' . $filename);
             //does the file exist?
             if (file_exists($filename)) {
                 $this->createDownloadRecord($share);
@@ -360,7 +361,7 @@ class SharesController extends Controller
     }
 
 
-    private function generateLongId()
+    public function generateLongId()
     {
         $maxAttempts = 10;
         $attempts = 0;

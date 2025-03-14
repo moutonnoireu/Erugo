@@ -47,6 +47,7 @@
   "message": {
     "from": "Message from {name}"
   },
+  "processing_uploaded_files": "Processing uploaded files",
   "settings": {
     "account": {
       "change_password": "Change my password",
@@ -136,6 +137,8 @@
       "shareExtended": "Share extended"
     },
     "system": {
+      "allow_chunked_uploads": "Allow chunked upload mode",
+      "allow_direct_uploads": "Allow direct upload mode",
       "application_name": "Application Name",
       "application_name_description": "Customise the displayed name of your application that appears in title bars, dialogs, and other interface elements. This helps maintain consistent branding throughout the user experience.",
       "application_url": "Application URL",
@@ -153,12 +156,17 @@
       "auth_providers_description_localhost": "External authentication configuration is unavailable on localhost. OAuth providers require a fully qualified domain name (FQDN) to properly function. Please access Erugo through a registered domain to configure these settings.",
       "callback_url": "Callback URL",
       "callback_url_description": "Use the callback URL provided in your identity provider configuration.",
+      "chunked": "Chunked",
+      "chunked_uploads_disabled_but_default": "You have set the default upload mode to chunked, but chunked uploads are disabled!",
       "clean_files_after": "Clean Files After",
       "clean_files_after_description": "How long after a share expires before files are deleted from the system.",
       "days": "Days",
       "default_language": "Default Language",
       "default_language_description": "Set the primary language that will be used throughout the application interface for all users by default. Individual users can override this setting with their personal preferences.",
+      "default_upload_mode": "Default upload mode",
       "delete_auth_provider": "Delete this provider",
+      "direct": "Direct",
+      "direct_uploads_disabled_but_default": "You have set the default upload mode to direct, but direct uploads are disabled!",
       "disabled": "Disabled",
       "emails": "Notifications",
       "enable_share_deleted_emails": "Enable Share Deleted Emails",
@@ -211,6 +219,7 @@
       "smtp_sender_name_description": "The display name that will appear as the sender of system emails. Users will see this name in their email client (e.g. \"Your App Name\" or \"Your App Support\").",
       "smtp_username": "SMTP Username",
       "smtp_username_description": "The username required to authenticate with your SMTP server. This is typically the email address or account name associated with your email service.",
+      "upload_modes": "Upload modes",
       "your_auth_providers": "Your Auth Providers"
     },
     "system_auth_provider_info_link": "About {name}",
@@ -304,7 +313,15 @@
   },
   "total_size": "Total Size",
   "upload": {
-    "files": "{value, plural, one {Upload # file} other {Upload # files}}"
+    "files": "{value, plural, one {Upload # file} other {Upload # files}}",
+    "upload_mode_not_supported": "No valid upload mode is selected! We're not sure what to suggest because this shouldn't be possible."
+  },
+  "uploader": {
+    "current_mode": {
+      "chunked": "Chunked upload mode",
+      "direct": "Direct upload mode"
+    },
+    "upload_mode_swapped": "Upload mode changed to {value}"
   },
   "uploading": {
     "files": "{value, plural, one {Uploading # file} other {Uploading # files}}"

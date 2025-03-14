@@ -47,6 +47,7 @@
   "message": {
     "from": "Bericht van"
   },
+  "processing_uploaded_files": "Verwerken van geüploade bestanden",
   "settings": {
     "account": {
       "change_password": "Mijn wachtwoord wijzigen",
@@ -136,6 +137,8 @@
       "shareExtended": "Aandeel uitgebreid"
     },
     "system": {
+      "allow_chunked_uploads": "Opgedeelde bestands upload toestaan",
+      "allow_direct_uploads": "Directe uploadmodus toestaan",
       "application_name": "Naam toepassing",
       "application_name_description": "Pas de weergegeven naam van je applicatie aan die wordt weergegeven in titelbalken, dialoogvensters en andere interface-elementen. Dit helpt om een consistente merknaam te behouden voor de hele gebruikerservaring.",
       "application_url": "URL toepassing",
@@ -153,12 +156,17 @@
       "auth_providers_description_localhost": "Externe authenticatieconfiguratie is niet beschikbaar op localhost. OAuth providers hebben een volledig gekwalificeerde domeinnaam (FQDN) nodig om goed te functioneren. Ga naar Erugo via een geregistreerd domein om deze instellingen te configureren.",
       "callback_url": "Callback URL",
       "callback_url_description": "Gebruik de callback URL in de configuratie van je identity provider.",
+      "chunked": "Opgedeeld",
+      "chunked_uploads_disabled_but_default": "U hebt de standaard uploadmodus ingesteld op gebundeld, maar gebundelde uploads zijn uitgeschakeld!",
       "clean_files_after": "Bestanden opschonen na",
       "clean_files_after_description": "Hoe lang nadat een gedeelde link is verlopen worden de bestanden verwijderd uit het systeem.",
       "days": "Dagen",
       "default_language": "Standaard Taal",
       "default_language_description": "Stel de primaire taal in die standaard wordt gebruikt in de interface van de applicatie voor alle gebruikers. Individuele gebruikers kunnen deze instelling overschrijven met hun persoonlijke voorkeuren.",
+      "default_upload_mode": "Standaard uploadmodus",
       "delete_auth_provider": "Deze provider verwijderen",
+      "direct": "Direct",
+      "direct_uploads_disabled_but_default": "U hebt de standaard uploadmodus ingesteld op direct, maar direct uploaden is uitgeschakeld!",
       "disabled": "Uitgeschakeld",
       "emails": "Meldingen",
       "enable_share_deleted_emails": "Delen van verwijderde links e-mails inschakelen",
@@ -211,6 +219,7 @@
       "smtp_sender_name_description": "De weergavenaam die wordt weergegeven als de afzender van systeem e-mails. Gebruikers zien deze naam in hun e-mailprogramma (bijv. \"Your App Name\" of \"Your App Support\").",
       "smtp_username": "SMTP Gebruikersnaam",
       "smtp_username_description": "De gebruikersnaam die nodig is om te verifiëren met je SMTP-server. Dit is meestal het e-mailadres of de accountnaam die is gekoppeld aan uw e-mailservice.",
+      "upload_modes": "Upload opties",
       "your_auth_providers": "Uw autorisatoren"
     },
     "system_auth_provider_info_link": "Over {name}",
@@ -304,7 +313,15 @@
   },
   "total_size": "Totale grootte",
   "upload": {
-    "files": "{value, plural, one {# bestand uploaden} other {# bestanden uploaden}}"
+    "files": "{value, plural, one {# bestand uploaden} other {# bestanden uploaden}}",
+    "upload_mode_not_supported": "Er is geen geldige uploadmodus geselecteerd! We weten niet zeker wat we moeten voorstellen omdat dit niet mogelijk zou moeten zijn."
+  },
+  "uploader": {
+    "current_mode": {
+      "chunked": "Modus voor gebundeld uploaden",
+      "direct": "Directe uploadmodus"
+    },
+    "upload_mode_swapped": "Uploadmodus gewijzigd in {value}"
   },
   "uploading": {
     "files": "{value, plural, one {# bestand uploaden} other {# bestanden uploaden}}"

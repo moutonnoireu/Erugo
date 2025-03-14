@@ -14,7 +14,7 @@
   "auth": {
     "back_to_login": "Retour à la connexion",
     "confirm_password": "Confirmez le mot de passe",
-    "email": "E-mail",
+    "email": "Email",
     "failed_to_reset_password": "Échec de la récupération du mot de passe",
     "failed_to_send_password_reset_email": "Échec de l'envoi du mail de réinitialisation du mot de passe",
     "forgot_password": "Mot de passe oublié",
@@ -47,13 +47,14 @@
   "message": {
     "from": "Message de {name}"
   },
+  "processing_uploaded_files": "Traitement des fichiers téléchargés",
   "settings": {
     "account": {
       "change_password": "Modifier mon mot de passe",
       "create_link": "Lier",
-      "email": "Mon adresse e-mail",
+      "email": "Mon adresse email",
       "linked_accounts_description": "Liez votre compte à un fournisseur externe pour faciliter la connexion. Une fois le lien établi, vous pouvez vous connecter directement en sélectionnant le bouton du fournisseur sur l'écran de connexion.",
-      "myProfile_description": "Mettez à jour votre adresse e-mail ou changez votre nom. Vous pouvez modifier votre mot de passe en cliquant sur le bouton « Modifier mon mot de passe » et en suivant les instructions.",
+      "myProfile_description": "Mettez à jour votre adresse email ou changez votre nom. Vous pouvez modifier votre mot de passe en cliquant sur le bouton « Modifier mon mot de passe » et en suivant les instructions.",
       "name": "Mon nom complet",
       "unlink": "Délier"
     },
@@ -136,6 +137,8 @@
       "shareExtended": "Partage étendu"
     },
     "system": {
+      "allow_chunked_uploads": "Autoriser le mode de téléchargement en morceaux",
+      "allow_direct_uploads": "Autoriser le mode téléchargement direct",
       "application_name": "Nom de l'application",
       "application_name_description": "Personnalisez le nom de votre application qui apparaît dans les barres de titre, les boîtes de dialogue et d'autres éléments d'interface. Cela permet de maintenir une image de marque cohérente tout au long de l'expérience de l'utilisateur.",
       "application_url": "URL de l'application",
@@ -153,12 +156,17 @@
       "auth_providers_description_localhost": "La configuration de l'authentification externe n'est pas disponible sur localhost. Les fournisseurs OAuth ont besoin d'un nom de domaine entièrement qualifié (FQDN) pour fonctionner correctement. Veuillez accéder à Erugo via un domaine enregistré pour configurer ces paramètres.",
       "callback_url": "URL de rappel",
       "callback_url_description": "Utilisez l'URL de rappel fournie dans la configuration de votre fournisseur d'identité.",
+      "chunked": "Morceaux",
+      "chunked_uploads_disabled_but_default": "Vous avez défini le mode de téléchargement par défaut sur « morceaux », mais les téléchargements en mode « morceaux » sont désactivés !",
       "clean_files_after": "Nettoyer les fichiers après",
       "clean_files_after_description": "Combien de temps après l'expiration d'un partage avant que les fichiers ne soient supprimés du système.",
       "days": "Jours",
       "default_language": "Langue par défaut",
       "default_language_description": "Définir la langue principale qui sera utilisée par défaut dans l'interface de l'application pour tous les utilisateurs. Les utilisateurs individuels peuvent remplacer ce paramètre par leurs préférences personnelles.",
+      "default_upload_mode": "Mode de téléchargement par défaut",
       "delete_auth_provider": "Supprimer ce fournisseur",
+      "direct": "Direct",
+      "direct_uploads_disabled_but_default": "Vous avez défini le mode de téléchargement par défaut sur direct, mais les téléchargements directs sont désactivés !",
       "disabled": "Désactivé",
       "emails": "Notifications",
       "enable_share_deleted_emails": "Notifier par mail lorsqu'un partage est supprimé",
@@ -211,6 +219,7 @@
       "smtp_sender_name_description": "Le nom d'affichage qui apparaîtra en tant qu'expéditeur des mails du système. Les utilisateurs verront ce nom dans leur client de messagerie (par exemple, \"Nom de l'instance\" ou \"Support\").",
       "smtp_username": "Nom d'utilisateur SMTP",
       "smtp_username_description": "Le nom d'utilisateur requis pour s'authentifier auprès de votre serveur SMTP. Il s'agit généralement de l'adresse mail ou du nom de compte associé à votre service de messagerie.",
+      "upload_modes": "Modes de téléchargement",
       "your_auth_providers": "Vos fournisseurs d'authentification"
     },
     "system_auth_provider_info_link": "À propos",
@@ -304,7 +313,15 @@
   },
   "total_size": "Taille totale",
   "upload": {
-    "files": "{value, plural, one {Télécharger # fichier} other {Télécharger # fichiers} }"
+    "files": "{value, plural, one {Télécharger # fichier} other {Télécharger # fichiers} }",
+    "upload_mode_not_supported": "Aucun mode de téléchargement valide n'est sélectionné ! Nous ne savons pas trop quoi suggérer car cela ne devrait pas être possible."
+  },
+  "uploader": {
+    "current_mode": {
+      "chunked": "Mode de téléchargement par morceaux",
+      "direct": "Mode de téléchargement direct"
+    },
+    "upload_mode_swapped": "Le mode de téléchargement est passé à {value}\n"
   },
   "uploading": {
     "files": "{value, plural, one {Téléchargement du fichier #.} other {Téléchargement des fichiers #.} }"

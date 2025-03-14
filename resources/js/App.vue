@@ -54,7 +54,7 @@ onMounted(() => {
 
   setupNeeded.value = domData().setup_needed
 
-  if (setupNeeded.value == 'true') {
+  if (setupNeeded.value) {
     store.setMode('setup')
     return
   }
@@ -63,8 +63,8 @@ onMounted(() => {
   setTimeout(changeBackground, 180000)
   version.value = domData().version
   logoWidth.value = domData().logo_width
-  useMyBackgrounds.value = domData().use_my_backgrounds === 'true'
-  showPoweredBy.value = domData().show_powered_by === 'true'
+  useMyBackgrounds.value = domData().use_my_backgrounds 
+  showPoweredBy.value = domData().show_powered_by 
   getBackgroundImages().then((data) => {
     backgroundImages.value = data.files
     nextTick(() => {
