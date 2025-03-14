@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, defineExpose, inject, computed, nextTick } from 'vue'
+import { ref, onMounted, defineExpose, inject, computed, nextTick, watch } from 'vue'
 import {
   Settings,
   Tag,
@@ -119,6 +119,11 @@ const saveSettings = async () => {
 
   if (!shareSettingsLookOk()) {
     return
+  }
+
+  //check if settings.application_url ends with a / and remove it if it does
+  if (settings.value.application_url.endsWith('/')) {
+    settings.value.application_url = settings.value.application_url.slice(0, -1)
   }
 
   saving.value = true
@@ -447,6 +452,12 @@ const handleDeleteAuthProvider = async (id) => {
               <p>{{ $t('settings.system.max_share_size_description') }}</p>
               <h6>{{ $t('settings.system.clean_files_after') }}</h6>
               <p>{{ $t('settings.system.clean_files_after_description') }}</p>
+              <h6>{{ $t('settings.system.allow_direct_uploads') }}</h6>
+              <p>{{ $t('settings.system.allow_direct_uploads_description') }}</p>
+              <h6>{{ $t('settings.system.allow_chunked_uploads') }}</h6>
+              <p>{{ $t('settings.system.allow_chunked_uploads_description') }}</p>
+              <h6>{{ $t('settings.system.default_upload_mode') }}</h6>
+              <p>{{ $t('settings.system.default_upload_mode_description') }}</p>
             </div>
           </div>
         </div>

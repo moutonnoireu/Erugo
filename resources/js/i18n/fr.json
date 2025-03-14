@@ -61,6 +61,14 @@
     "branding": {
       "background_images": "Images de fond",
       "background_images_description": "Téléchargez des images d'arrière-plan personnalisées pour remplacer les images par défaut d'Unsplash. Les images tournent de manière aléatoire toutes les 3 minutes pour créer une identité visuelle dynamique.",
+      "background_slideshow_speed": "Intervalle du changement d'image",
+      "background_slideshow_speed_1_day": "Un jour",
+      "background_slideshow_speed_1_hour": "1 heure",
+      "background_slideshow_speed_2_hours": "2 heures",
+      "background_slideshow_speed_3_minutes": "3 minutes",
+      "background_slideshow_speed_5_minutes": "5 minutes",
+      "background_slideshow_speed_description": "Modifie la fréquence à laquelle l'image d'arrière-plan change de manière aléatoire (cela n'a d'effet que si vous avez plusieurs images d'arrière-plan). La valeur 0 permet de désactiver le diaporama et d'afficher une image aléatoire sur chaque nouvelle page.",
+      "background_slideshow_speed_off": "Désactiver",
       "delete": "Supprimer",
       "delete_theme": "Supprimer le thème",
       "delete_theme_description": "Supprimer le thème sélectionné. Il sera alors supprimé de la liste des thèmes et vous ne pourrez plus l'utiliser. Il n'est pas possible de supprimer le thème actif ou les thèmes groupés.",
@@ -68,6 +76,7 @@
       "download_theme": "Télécharger le thème",
       "download_theme_description": "Télécharger le thème sélectionné sous forme de fichier JSON. Ce fichier peut être utilisé pour créer un nouveau thème ou modifier un thème existant.",
       "in_pixels": "En pixels",
+      "in_seconds": "secondes",
       "install_custom_theme": "Installer un thème personnalisé\n",
       "install_custom_theme_description": "Installer un thème personnalisé à partir d'un fichier JSON.\n\nIl peut s'agir d'un thème que vous avez modifié ou créé vous-même ou que vous avez téléchargé.",
       "install_custom_theme_description_2": "Si vous téléchargez un thème à partir du web, assurez-vous que vous avez confiance en la source et que vous avez vérifié que le thème ne contient pas de code malveillant avant de l'installer.",
@@ -97,7 +106,8 @@
         "save": "Enregistrer les modifications du profil"
       },
       "myShares": {
-        "create": "Créer un partage"
+        "create": "Créer un partage",
+        "pruneExpired": "Supprimer les partages expirés"
       },
       "system": {
         "save": "Sauvegarder les paramètres du système"
@@ -107,6 +117,9 @@
       }
     },
     "close": "Fermer",
+    "confirm": {
+      "pruneExpiredShares": "Êtes-vous sûr de vouloir supprimer vos partages expirés ? Cette opération ne peut pas être annulée."
+    },
     "description": {
       "branding": "Personnalisez l'interface utilisateur et l’identité visuelle de votre instance erugo.",
       "myProfile": "Gérer votre profil.",
@@ -115,6 +128,7 @@
       "users": "Gérez vos utilisateurs."
     },
     "error": {
+      "pruneExpiredShares": "Impossible de planifier la suppression des partages expirés !",
       "shareExpired": "Échec de l'expiration du partage",
       "shareExtended": "Échec de la prolongation du partage"
     },
@@ -128,17 +142,21 @@
         "title": "Aide pour la limite de téléchargement"
       }
     },
+    "loading": "Chargement des partages...",
+    "noShares": "Vous n'avez pas de partages. Pourquoi ne pas en créer un ?",
     "provider": {
       "edit": "Editer",
       "view": "Voir"
     },
     "success": {
+      "pruneExpiredShares": "Les partages expirés ont été programmées pour être supprimées et seront traités en arrière-plan.",
       "shareExpired": "Partage expiré",
       "shareExtended": "Partage étendu"
     },
     "system": {
       "allow_chunked_uploads": "Autoriser le mode de téléchargement en morceaux",
       "allow_direct_uploads": "Autoriser le mode téléchargement direct",
+      "allow_direct_uploads_description": "Le mode de téléchargement direct transmet les fichiers en une seule demande ininterrompue. Bien que cette méthode offre les vitesses de transfert les plus rapides pour la plupart des fichiers, les fichiers très volumineux peuvent entraîner des problèmes de stabilité ou des dépassements de délai. Pour des performances optimales avec des fichiers de plus de 100 Mo, il est préférable d'opter pour des téléchargements par morceaux.",
       "application_name": "Nom de l'application",
       "application_name_description": "Personnalisez le nom de votre application qui apparaît dans les barres de titre, les boîtes de dialogue et d'autres éléments d'interface. Cela permet de maintenir une image de marque cohérente tout au long de l'expérience de l'utilisateur.",
       "application_url": "URL de l'application",
@@ -164,6 +182,7 @@
       "default_language": "Langue par défaut",
       "default_language_description": "Définir la langue principale qui sera utilisée par défaut dans l'interface de l'application pour tous les utilisateurs. Les utilisateurs individuels peuvent remplacer ce paramètre par leurs préférences personnelles.",
       "default_upload_mode": "Mode de téléchargement par défaut",
+      "default_upload_mode_description": "Définit le mode qui doit être sélectionné par défaut. Les utilisateurs peuvent modifier ce paramètre lors de la création d'un partage si plusieurs méthodes sont activées.",
       "delete_auth_provider": "Supprimer ce fournisseur",
       "direct": "Direct",
       "direct_uploads_disabled_but_default": "Vous avez défini le mode de téléchargement par défaut sur direct, mais les téléchargements directs sont désactivés !",
@@ -204,6 +223,7 @@
       "share_expiry_warning_emails": "Mails d'avertissement \"Expiration d'un partage\" ",
       "share_expiry_warning_emails_description": "Envoyez des notifications proactives aux utilisateurs lorsque leurs actions approchent de l'expiration. Ils ont ainsi la possibilité de prolonger l'accès si nécessaire.",
       "shares": "Partage",
+      "show_deleted_shares": "Afficher les partages supprimés",
       "show_language_selector": "Afficher le sélecteur de langue",
       "show_language_selector_description": "Permet d'activer la visibilité de la liste déroulante de sélection de la langue dans le coin supérieur droit de l'application. Lorsque cette option est activée, les utilisateurs peuvent rapidement passer d'une langue à l'autre.",
       "smtp": "SMTP",
@@ -299,6 +319,7 @@
     },
     "created": "Créé",
     "data_loading": "Chargement...",
+    "deleted": "Supprimé",
     "deletes": "Suppression",
     "download_limit_reached": "Limite de téléchargement atteinte",
     "download_limit_reached.message": "Le partage que vous essayez de télécharger a atteint sa limite de téléchargement. Veuillez demander au créateur du partage d'augmenter la limite de téléchargement.",

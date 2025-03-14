@@ -452,8 +452,8 @@ export const createShare = async (files, name, description, recipients, uploadId
   })
 }
 
-export const getMyShares = async () => {
-  const response = await fetchWithAuth(`${apiUrl}/api/shares`, {
+export const getMyShares = async (showDeletedShares = false) => {
+  const response = await fetchWithAuth(`${apiUrl}/api/shares?show_deleted=${showDeletedShares}`, {
     method: 'GET',
     headers: {
       ...addJsonHeader()
@@ -509,6 +509,20 @@ export const setDownloadLimit = async (id, amount) => {
     throw new Error(data.message)
   }
   return data.data.share
+}
+
+export const pruneExpiredShares = async () => {
+  const response = await fetchWithAuth(`${apiUrl}/api/shares/prune-expired`, {
+    method: 'POST',
+    headers: {
+      ...addJsonHeader()
+    }
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    throw new Error(data.message)
+  }
+  return data.data.shares
 }
 
 export const getShare = async (id) => {

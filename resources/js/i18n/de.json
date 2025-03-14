@@ -60,7 +60,15 @@
     },
     "branding": {
       "background_images": "Hintergrundbilder",
-      "background_images_description": "Laden Sie benutzerdefinierte Hintergrundbilder hoch, um die Unsplash-Standardwerte zu ersetzen. Die Bilder werden alle 3 Minuten nach dem Zufallsprinzip gedreht, um ein dynamisches Branding zu schaffen.",
+      "background_images_description": "Laden Sie benutzerdefinierte Hintergrundbilder hoch, um die Unsplash-Standardwerte zu ersetzen. Die Bilder rotieren zufällig in dem von Ihnen festgelegten Intervall.",
+      "background_slideshow_speed": "Bildwechselintervall",
+      "background_slideshow_speed_1_day": "Ein Tag",
+      "background_slideshow_speed_1_hour": "1 Stunde",
+      "background_slideshow_speed_2_hours": "2 Stunden",
+      "background_slideshow_speed_3_minutes": "3 Minuten",
+      "background_slideshow_speed_5_minutes": "5 Minuten",
+      "background_slideshow_speed_description": "Ändert, wie oft das Hintergrundbild zufällig wechselt (dies hat nur Auswirkungen, wenn Sie mehrere Hintergrundbilder haben). Setzen Sie den Wert 0, um die Diashow zu deaktivieren und stattdessen auf jeder neuen Seite ein zufälliges Bild anzuzeigen.",
+      "background_slideshow_speed_off": "Deaktivieren Sie",
       "delete": "Löschen",
       "delete_theme": "Thema löschen",
       "delete_theme_description": "Löschen Sie das ausgewählte Thema. Dadurch wird es aus der Liste der Themen entfernt und Sie können es nicht mehr verwenden. Es ist nicht möglich, das aktive Thema oder gebündelte Themen zu löschen.",
@@ -68,6 +76,7 @@
       "download_theme": "Thema herunterladen",
       "download_theme_description": "Laden Sie das ausgewählte Thema als JSON-Datei herunter. Damit können Sie ein neues Thema erstellen oder ein bestehendes Thema ändern.",
       "in_pixels": "In Pixel",
+      "in_seconds": "Sekunden",
       "install_custom_theme": "Installieren Sie ein benutzerdefiniertes Theme\n",
       "install_custom_theme_description": "Installieren Sie ein benutzerdefiniertes Thema aus einer JSON-Datei.\n\nDies kann ein Thema sein, das Sie selbst geändert oder erstellt haben, oder eines, das Sie heruntergeladen haben.",
       "install_custom_theme_description_2": "Wenn Sie ein Theme aus dem Internet herunterladen, stellen Sie bitte sicher, dass Sie der Quelle vertrauen und das Theme vor der Installation auf bösartigen Code überprüft haben.",
@@ -97,7 +106,8 @@
         "save": "Profiländerungen speichern"
       },
       "myShares": {
-        "create": "Anteil erstellen"
+        "create": "Anteil erstellen",
+        "pruneExpired": "Verfallene Aktien löschen"
       },
       "system": {
         "save": "Systemeinstellungen speichern"
@@ -107,6 +117,9 @@
       }
     },
     "close": "Schließen Sie",
+    "confirm": {
+      "pruneExpiredShares": "Sind Sie sicher, dass Sie Ihre abgelaufenen Anteile löschen wollen? Dies kann nicht rückgängig gemacht werden."
+    },
     "description": {
       "branding": "Passen Sie die Benutzeroberfläche Ihrer Erugo-Instanz an und fügen Sie Ihr eigenes Branding hinzu.",
       "myProfile": "Verwalten Sie Ihr Konto.",
@@ -115,6 +128,7 @@
       "users": "Verwalten Sie Ihre Benutzer."
     },
     "error": {
+      "pruneExpiredShares": "Abgelaufene Aktien konnten nicht zur Löschung eingeplant werden!",
       "shareExpired": "Aktie kann nicht verfallen",
       "shareExtended": "Verlängern der Aktie fehlgeschlagen"
     },
@@ -128,17 +142,22 @@
         "title": "Limit-Hilfe herunterladen"
       }
     },
+    "loading": "Aktien laden...",
+    "noShares": "Sie haben keine Aktien. Warum nicht eine anlegen?",
     "provider": {
       "edit": "bearbeiten",
       "view": "Siehe"
     },
     "success": {
+      "pruneExpiredShares": "Abgelaufene Aktien sind zur Löschung vorgesehen und werden im Hintergrund verarbeitet.",
       "shareExpired": "Anteil verfallen",
       "shareExtended": "Anteil erweitert"
     },
     "system": {
       "allow_chunked_uploads": "Chunked-Upload-Modus zulassen",
+      "allow_chunked_uploads_description": "Der Chunked-Upload-Modus unterteilt Dateien in kleinere Segmente, die nacheinander übertragen werden. Diese Methode ist zwar bei kleineren Dateien etwas langsamer als der direkte Upload, bietet aber bei der Übertragung großer Dateien mehr Stabilität und Zuverlässigkeit. Chunked Uploads unterstützen die Verfolgung des Fortschritts und ermöglichen es dem Benutzer, die Übertragung manuell anzuhalten und fortzusetzen. Dies ist ideal für Dateien über 100 MB oder bei instabilen Netzwerkverbindungen.",
       "allow_direct_uploads": "Direkten Upload-Modus zulassen",
+      "allow_direct_uploads_description": "Beim direkten Upload werden die Dateien in einer einzigen, ununterbrochenen Anfrage übertragen. Während diese Methode für die meisten Dateien die schnellsten Übertragungsgeschwindigkeiten bietet, kann es bei extrem großen Dateien zu Stabilitätsproblemen oder Timeouts kommen. Für eine optimale Leistung bei Dateien, die größer als 100 MB sind, ist der Upload in Chunks die bessere Option.",
       "application_name": "Name der Anwendung",
       "application_name_description": "Passen Sie den angezeigten Namen Ihrer Anwendung an, der in Titelleisten, Dialogfeldern und anderen Oberflächenelementen erscheint. Dies trägt dazu bei, ein konsistentes Branding in der gesamten Benutzerumgebung zu erhalten.",
       "application_url": "URL der Anwendung",
@@ -164,6 +183,7 @@
       "default_language": "Standardsprache",
       "default_language_description": "Legen Sie die primäre Sprache fest, die standardmäßig auf der gesamten Anwendungsoberfläche für alle Benutzer verwendet wird. Einzelne Benutzer können diese Einstellung mit ihren persönlichen Präferenzen überschreiben.",
       "default_upload_mode": "Standard-Upload-Modus",
+      "default_upload_mode_description": "Legen Sie fest, welcher Modus standardmäßig ausgewählt werden soll. Benutzer können dies beim Erstellen einer Freigabe ändern, wenn Sie mehr als eine Methode aktiviert haben.",
       "delete_auth_provider": "Diesen Anbieter löschen",
       "direct": "Direkt",
       "direct_uploads_disabled_but_default": "Sie haben den Standard-Upload-Modus auf direkt eingestellt, aber direkte Uploads sind deaktiviert!",
@@ -204,6 +224,7 @@
       "share_expiry_warning_emails": "\"Warn-E-Mails zum Ablauf der Aktie",
       "share_expiry_warning_emails_description": "Senden Sie proaktive Benachrichtigungen an Nutzer, wenn ihre Anteile bald ablaufen. Dies gibt ihnen die Möglichkeit, den Zugang bei Bedarf zu verlängern.",
       "shares": "Aktien",
+      "show_deleted_shares": "Gelöschte Aktien anzeigen",
       "show_language_selector": "Sprachauswahl anzeigen",
       "show_language_selector_description": "Schalten Sie die Sichtbarkeit des Sprachauswahl-Dropdowns in der oberen rechten Ecke der Anwendung um. Wenn es aktiviert ist, können Benutzer schnell zwischen den verfügbaren Sprachen der Benutzeroberfläche wechseln.",
       "smtp": "SMTP",
@@ -299,6 +320,7 @@
     },
     "created": "Erstellt",
     "data_loading": "Laden...",
+    "deleted": "Gelöscht",
     "deletes": "Löscht",
     "download_limit_reached": "Download-Grenze erreicht",
     "download_limit_reached.message": "Die Freigabe, die Sie herunterzuladen versuchen, hat ihr Download-Limit erreicht. Bitte bitten Sie den Ersteller der Freigabe, das Download-Limit zu erhöhen.",

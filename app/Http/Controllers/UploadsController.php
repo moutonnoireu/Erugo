@@ -309,9 +309,11 @@ class UploadsController extends Controller
     $longId = app('App\Http\Controllers\SharesController')->generateLongId();
 
     // Create the share destination directory
-    $sharePath = storage_path('app/shares/' . $user->id . '/' . $longId);
-    if (!file_exists($sharePath)) {
-      mkdir($sharePath, 0777, true);
+    $sharePath = $user->id . '/' . $longId;
+    $completePath = storage_path('app/shares/' .  $sharePath);
+    
+    if (!file_exists($completePath)) {
+      mkdir($completePath, 0777, true);
     }
 
     // Calculate total size of all files
@@ -339,7 +341,7 @@ class UploadsController extends Controller
     foreach ($files as $file) {
       // Move file from temp to share directory
       $sourcePath = storage_path('app/' . $file->temp_path);
-      $destPath = $sharePath . '/' . $file->name;
+      $destPath = $completePath . '/' . $file->name;
       rename($sourcePath, $destPath);
 
       // Update file record

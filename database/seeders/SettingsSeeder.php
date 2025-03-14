@@ -79,6 +79,14 @@ class SettingsSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'key' => 'background_slideshow_speed',
+                'value' => '180',
+                'previous_value' => '180',
+                'group' => 'ui',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
                 'key' => 'show_powered_by',
                 'value' => 'true',
                 'previous_value' => 'true',

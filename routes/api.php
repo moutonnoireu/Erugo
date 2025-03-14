@@ -108,6 +108,9 @@ Route::group([], function ($router) {
 
         //set download limit
         Route::post('/{id}/set-download-limit', [SharesController::class, 'setDownloadLimit'])->name('shares.setDownloadLimit');
+
+        //prune expired shares
+        Route::post('/prune-expired', [SharesController::class, 'pruneExpiredShares'])->name('shares.pruneExpired');
     });
 
     //manage themes [auth, admin]
