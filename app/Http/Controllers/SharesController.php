@@ -183,13 +183,15 @@ class SharesController extends Controller
             return redirect()->to('/shares/' . $shareId);
         }
 
+        $sharePath = storage_path('app/shares/' . $share->path);
+
         //if there is only one file, download it directly
         if ($share->file_count == 1) {
-            if (file_exists($share->path . '/' . $share->files[0]->name)) {
+            if (file_exists($sharePath . '/' . $share->files[0]->name)) {
 
                 $this->createDownloadRecord($share);
 
-                return response()->download($share->path . '/' . $share->files[0]->name);
+                return response()->download($sharePath . '/' . $share->files[0]->name);
             } else {
                 return redirect()->to('/shares/' . $shareId);
             }
@@ -205,7 +207,7 @@ class SharesController extends Controller
 
         //if the share is ready, download the zip file
         if ($share->status == 'ready') {
-            $filename = $share->path . '.zip';
+            $filename = $sharePath . '.zip';
             \Log::info('looking for: ' . $filename);
             //does the file exist?
             if (file_exists($filename)) {
