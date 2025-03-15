@@ -28,6 +28,8 @@
     "password": "Passwort",
     "password_reset_email_sent": "E-Mail zum Zurücksetzen des Passworts gesendet",
     "password_reset_successfully": "Passwort erfolgreich zurückgesetzt",
+    "password_set": "Passwort erfolgreich gesetzt!",
+    "password_set_description": "Ihr Passwort wurde festgelegt. Sie werden in einem Moment eingeloggt.",
     "passwords_do_not_match": "Passwörter stimmen nicht überein",
     "please_enter_email": "Bitte geben Sie eine E-Mail Adresse ein",
     "please_enter_email_and_password": "Bitte E-Mail und Passwort eingeben",
@@ -58,6 +60,7 @@
       "name": "Mein vollständiger Name",
       "unlink": "Unlink"
     },
+    "authProvidersSavedSuccessfully": "Auth-Provider erfolgreich gespeichert",
     "branding": {
       "background_images": "Hintergrundbilder",
       "background_images_description": "Laden Sie benutzerdefinierte Hintergrundbilder hoch, um die Unsplash-Standardwerte zu ersetzen. Die Bilder rotieren zufällig in dem von Ihnen festgelegten Intervall.",
@@ -148,6 +151,7 @@
       "edit": "bearbeiten",
       "view": "Siehe"
     },
+    "settingsSavedSuccessfully": "Einstellungen erfolgreich gespeichert",
     "success": {
       "pruneExpiredShares": "Abgelaufene Aktien sind zur Löschung vorgesehen und werden im Hintergrund verarbeitet.",
       "shareExpired": "Anteil verfallen",

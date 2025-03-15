@@ -28,6 +28,8 @@
     "password": "Palavra passe",
     "password_reset_email_sent": "E-mail para repor a palavra passe foi enviado",
     "password_reset_successfully": "Palavra passe reposta com sucesso",
+    "password_set": "Palavra-passe definida com sucesso!",
+    "password_set_description": "A sua palavra-passe foi definida. A sua sessão será iniciada dentro de momentos.",
     "passwords_do_not_match": "Palavras passe diferentes",
     "please_enter_email": "Por favor inserir um endereço de e-mail",
     "please_enter_email_and_password": "Por favor introduzir endereço e palavra passe",
@@ -58,6 +60,7 @@
       "name": "O meu nome completo",
       "unlink": "Desvincular"
     },
+    "authProvidersSavedSuccessfully": "Fornecedores de autenticação guardados com sucesso",
     "branding": {
       "background_images": "Imagens de Fundo",
       "background_images_description": "Transferir imagens de fundo para personalizar e substituir as de Unplash. As imagens alternam aleatoriamente a cada 3 minutos para criar uma imagem de marca dinâmica.",
@@ -107,7 +110,7 @@
       },
       "myShares": {
         "create": "Criar Partilha",
-        "pruneExpired": "Eliminar acções expiradas"
+        "pruneExpired": "Eliminar transferências expiradas"
       },
       "system": {
         "save": "Salvar Definições de Sistema"
@@ -118,7 +121,7 @@
     },
     "close": "Fechar",
     "confirm": {
-      "pruneExpiredShares": "Tem a certeza de que pretende eliminar as suas acções expiradas? Isso não pode ser desfeito."
+      "pruneExpiredShares": "Tem a certeza de que pretende eliminar as suas transferências expiradas? Não as poderá recuperar."
     },
     "description": {
       "branding": "Personalizar a interface de utilizador da Erugo e adicionar a sua marca.",
@@ -128,7 +131,7 @@
       "users": "Gerir os seus utilizadores."
     },
     "error": {
-      "pruneExpiredShares": "Falha ao programar acções expiradas para eliminação!",
+      "pruneExpiredShares": "Falha ao agendar a eliminação das transferências expiradas!",
       "shareExpired": "Falha ao expirar a partilha",
       "shareExtended": "Falha ao extender a partilha"
     },
@@ -142,14 +145,15 @@
         "title": "Ajuda sobre o limite de descarregamentos"
       }
     },
-    "loading": "Carregamento de acções...",
-    "noShares": "Não tem acções. Porque não criar uma?",
+    "loading": "Carregando as transferências...",
+    "noShares": "Não tem transferências. Porque não criar uma?",
     "provider": {
       "edit": "Editar",
       "view": "Ver"
     },
+    "settingsSavedSuccessfully": "Definições guardadas com sucesso",
     "success": {
-      "pruneExpiredShares": "As acções expiradas foram agendadas para eliminação e serão processadas em segundo plano.",
+      "pruneExpiredShares": "As transferências expiradas foram agendadas para eliminação e serão processadas em segundo plano.",
       "shareExpired": "Partilha expirada",
       "shareExtended": "Partilha extendida"
     },
@@ -224,7 +228,7 @@
       "share_expiry_warning_emails": "E-mails de aviso de \"Partilha a expirar\"",
       "share_expiry_warning_emails_description": "Enviar notificações proativas aos utilizadores avisando que as suas partilhas se aproximam da data de expiração. Isto dá oportunidade de extender o prazo para descarregamento se for necessário.",
       "shares": "Partilhas",
-      "show_deleted_shares": "Mostrar acções eliminadas",
+      "show_deleted_shares": "Mostrar as transferências eliminadas",
       "show_language_selector": "Apresentar Selecionador de Idioma",
       "show_language_selector_description": "Visibilidade do menu de seleção de idioma no canto superior-direito da aplicação. Quando ligada os utilizadores podem rapidamente alternar entre os idiomas de interface disponíveis.",
       "smtp": "SMTP",
@@ -335,7 +339,7 @@
   },
   "total_size": "Tamanho Total",
   "upload": {
-    "files": "{value, plural, one {Transferir # ficheiro} many {Transferir # ficheiros} other {}}",
+    "files": "{value, plural, one {Transferir # ficheiro} other {Transferir # ficheiros} }",
     "upload_mode_not_supported": "Não está selecionado nenhum modo de carregamento válido! Não temos a certeza do que sugerir porque isto não deveria ser possível."
   },
   "uploader": {

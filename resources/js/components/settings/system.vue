@@ -79,7 +79,7 @@ const loadSettings = async () => {
 
     settingsLoaded.value = true
   } catch (error) {
-    toast.error('Failed to load settings')
+    toast.error(t.value('settings.failedToLoadSettings'))
     console.error(error)
   }
 }
@@ -103,13 +103,13 @@ const saveAuthProviders = async () => {
   try {
     await bulkUpdateAuthProviders(authProviders.value)
     saving.value = false
-    toast.success('Auth providers saved successfully')
+    toast.success(t.value('settings.authProvidersSavedSuccessfully'))
     if (!onLocalhost.value) {
       await loadAuthProviders()
     }
   } catch (error) {
     saving.value = false
-    toast.error('Failed to save auth providers')
+    toast.error(t.value('settings.failedToSaveAuthProviders'))
     console.error(error)
   }
 }
@@ -135,18 +135,18 @@ const saveSettings = async () => {
     await saveAuthProviders()
 
     saving.value = false
-    toast.success('Settings saved successfully')
+    toast.success(t.value('settings.settingsSavedSuccessfully'))
     await loadSettings()
   } catch (error) {
     saving.value = false
-    toast.error('Failed to save settings')
+    toast.error(t.value('settings.failedToSaveSettings'))
     console.error(error)
   }
 }
 
 const shareSettingsLookOk = () => {
   if (settings.value.allow_chunked_uploads == false && settings.allow_direct_uploads == false) {
-    toast.error('You must enable at least one upload mode')
+    toast.error(t.value('settings.system.atLeastOneUploadMode'))
     return false
   }
 

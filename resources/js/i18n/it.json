@@ -28,6 +28,8 @@
     "password": "Password",
     "password_reset_email_sent": "Email di reimpostazione della password inviata",
     "password_reset_successfully": "La password è stata reimpostata con successo",
+    "password_set": "Password impostata con successo!",
+    "password_set_description": "La password è stata impostata. Tra poco sarà possibile effettuare l'accesso.",
     "passwords_do_not_match": "Le password non corrispondono",
     "please_enter_email": "Inserire un indirizzo e-mail",
     "please_enter_email_and_password": "Inserire e-mail e password",
@@ -58,6 +60,7 @@
       "name": "Il mio nome completo",
       "unlink": "Unlink"
     },
+    "authProvidersSavedSuccessfully": "Fornitori di autorizzazioni salvati con successo",
     "branding": {
       "background_images": "Immagini di sfondo",
       "background_images_description": "Caricate immagini di sfondo personalizzate per sostituire quelle predefinite di Unsplash. Le immagini ruotano in modo casuale all'intervallo impostato.",
@@ -148,6 +151,7 @@
       "edit": "Modifica",
       "view": "Vista"
     },
+    "settingsSavedSuccessfully": "Impostazioni salvate con successo",
     "success": {
       "pruneExpiredShares": "Le azioni scadute sono state programmate per l'eliminazione e verranno elaborate in background.",
       "shareExpired": "Quota scaduta",

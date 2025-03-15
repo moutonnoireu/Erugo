@@ -28,6 +28,8 @@
     "password": "Wachtwoord",
     "password_reset_email_sent": "Wachtwoord reset e-mail verzonden",
     "password_reset_successfully": "Wachtwoord opnieuw ingesteld",
+    "password_set": "Wachtwoord succesvol ingesteld!",
+    "password_set_description": "Je wachtwoord is ingesteld. Je wordt zo meteen ingelogd.",
     "passwords_do_not_match": "Wachtwoorden komen niet overeen",
     "please_enter_email": "Voer een e-mailadres in",
     "please_enter_email_and_password": "Voer e-mail en wachtwoord in",
@@ -58,6 +60,7 @@
       "name": "Mijn volledige naam",
       "unlink": "Ontkoppelen"
     },
+    "authProvidersSavedSuccessfully": "Auth providers succesvol opgeslagen",
     "branding": {
       "background_images": "Achtergrondafbeeldingen",
       "background_images_description": "Upload aangepaste achtergrondafbeeldingen om de standaard Unsplash-afbeeldingen te vervangen. Afbeeldingen roteren willekeurig met het interval dat je instelt.",
@@ -148,6 +151,7 @@
       "edit": "Bewerk",
       "view": "Bekijk"
     },
+    "settingsSavedSuccessfully": "Instellingen succesvol opgeslagen",
     "success": {
       "pruneExpiredShares": "Vervallen aandelen zijn gepland voor verwijdering en worden op de achtergrond verwerkt.",
       "shareExpired": "Aandeel verlopen",

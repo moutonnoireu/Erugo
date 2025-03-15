@@ -28,6 +28,8 @@
     "password": "Mot de passe",
     "password_reset_email_sent": "Envoi du mail de réinitialisation du mot de passe",
     "password_reset_successfully": "Réinitialisation du mot de passe réussie",
+    "password_set": "Mot de passe défini avec succès !",
+    "password_set_description": "Votre mot de passe a été défini. Vous serez connecté dans un instant.",
     "passwords_do_not_match": "Les mots de passe ne correspondent pas",
     "please_enter_email": "Veuillez saisir une adresse mail",
     "please_enter_email_and_password": "Veuillez saisir le mail et le mot de passe",
@@ -58,6 +60,7 @@
       "name": "Mon nom complet",
       "unlink": "Délier"
     },
+    "authProvidersSavedSuccessfully": "Les fournisseurs d'authentification ont été sauvegardés avec succès",
     "branding": {
       "background_images": "Images de fond",
       "background_images_description": "Téléchargez des images d'arrière-plan personnalisées pour remplacer les images par défaut d'Unsplash. Les images tournent de manière aléatoire toutes les 3 minutes pour créer une identité visuelle dynamique.",
@@ -148,6 +151,7 @@
       "edit": "Editer",
       "view": "Voir"
     },
+    "settingsSavedSuccessfully": "Paramètres enregistrés avec succès",
     "success": {
       "pruneExpiredShares": "Les partages expirés ont été programmées pour être supprimées et seront traités en arrière-plan.",
       "shareExpired": "Partage expiré",
@@ -155,6 +159,7 @@
     },
     "system": {
       "allow_chunked_uploads": "Autoriser le mode de téléchargement en morceaux",
+      "allow_chunked_uploads_description": "Le mode de téléchargement fragmenté, ou encore \"en morceaux\", divise les fichiers en segments plus petits, transférés séquentiellement. Bien que légèrement plus lente que le téléchargement direct pour les fichiers plus petits, cette méthode offre une stabilité et une fiabilité accrues lors du transfert de fichiers volumineux. Le téléchargement fragmenté prend en charge le suivi de la progression et permet aux utilisateurs de suspendre et de reprendre manuellement les transferts, ce qui est idéal pour les fichiers de plus de 100 Mo ou en cas de connexions réseau instables.",
       "allow_direct_uploads": "Autoriser le mode téléchargement direct",
       "allow_direct_uploads_description": "Le mode de téléchargement direct transmet les fichiers en une seule demande ininterrompue. Bien que cette méthode offre les vitesses de transfert les plus rapides pour la plupart des fichiers, les fichiers très volumineux peuvent entraîner des problèmes de stabilité ou des dépassements de délai. Pour des performances optimales avec des fichiers de plus de 100 Mo, il est préférable d'opter pour des téléchargements par morceaux.",
       "application_name": "Nom de l'application",

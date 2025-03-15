@@ -28,6 +28,8 @@
     "password": "Password",
     "password_reset_email_sent": "Password reset email sent",
     "password_reset_successfully": "Password reset successfully",
+    "password_set": "Password set successfully!",
+    "password_set_description": "Your password has been set. You'll be logged in in a moment.",
     "passwords_do_not_match": "Passwords do not match",
     "please_enter_email": "Please enter an email address",
     "please_enter_email_and_password": "Please enter email and password",
@@ -58,6 +60,7 @@
       "name": "My Full Name",
       "unlink": "Unlink"
     },
+    "authProvidersSavedSuccessfully": "Auth providers saved successfully",
     "branding": {
       "background_images": "Background Images",
       "background_images_description": "Upload custom background images to replace Unsplash defaults. Images rotate randomly at the interval you set.",
@@ -148,6 +151,7 @@
       "edit": "Edit",
       "view": "View"
     },
+    "settingsSavedSuccessfully": "Settings saved successfully",
     "success": {
       "pruneExpiredShares": "Expired shares have been scheduled for deletion and will be processed in the background.",
       "shareExpired": "Share expired",
