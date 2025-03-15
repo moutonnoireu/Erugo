@@ -12,9 +12,7 @@
 	</p>
 {% endblock %}
 
-{% block action_url %}
-	{{ settings.application_url }}/shares/{{ share.long_id }}
-{% endblock %}
+{% block action_url %}{{ settings.application_url }}/shares/{{ share.long_id }}{% endblock %}
 {% block action_text %}
 	View Share
 {% endblock %}

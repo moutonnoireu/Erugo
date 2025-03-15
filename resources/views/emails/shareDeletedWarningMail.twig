@@ -22,9 +22,7 @@
 	<p>This share can no longer be revived.</p>
 {% endblock %}
 
-{% block action_url %}
-	{{ settings.application_url }}
-{% endblock %}
+{% block action_url %}{{ settings.application_url }}{% endblock %}
 {% block action_text %}
 	Visit
 	{{ settings.application_name }}

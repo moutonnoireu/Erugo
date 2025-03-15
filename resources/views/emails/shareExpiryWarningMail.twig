@@ -12,9 +12,7 @@
 	<p>You can extend the expiry date in the "My Shares" section of the app.</p>
 {% endblock %}
 
-{% block action_url %}
-	{{ settings.application_url }}
-{% endblock %}
+{% block action_url %}{{ settings.application_url }}{% endblock %}
 {% block action_text %}
 	Visit
 	{{ settings.application_name }}
