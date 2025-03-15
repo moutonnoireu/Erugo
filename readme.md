@@ -64,13 +64,13 @@ Give this repository a star to keep track of releases and updates. Stars are als
 
 You can use the example docker-compose.yaml below to run Erugo in a container.
 
-```
+```yaml
 services:
   app:
     image: wardy784/erugo:latest
     restart: unless-stopped
     volumes:
-      - ./storage:/var/www/html/storage
+      - ./erugo-storage:/var/www/html/storage # Use a dedicated folder
     ports:
       - "9998:80"
     networks:
@@ -86,6 +86,15 @@ The above docker-compose.yml provides a basic configuration starting point that 
 ```sh
 docker compose up -d
 ```
+
+⚠️ **IMPORTANT STORAGE WARNING**
+
+Erugo requires exclusive access to any mounted storage volume. The application will manage this directory as its own, and **may delete or overwrite existing files** that were present before mounting. 
+
+**Always dedicate a new, empty directory** specifically for Erugo storage.
+
+**DO NOT** point Erugo's storage volume to directories containing other data or shared with other applications.
+
 
 ## Configuration Options
 
