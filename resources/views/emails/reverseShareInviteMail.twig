@@ -1,0 +1,16 @@
+{% extends 'emails/layout' %}
+
+{% block header %} You have a new reverse share request
+{% endblock %}
+
+{% block content %}
+	<h2>Hi
+		{{ recipient_name }},</h2>
+	<p>{{ sender_name }} is requesting files from you.</p>
+  <p>Click the button below to accept the request and upload files for {{ sender_name }}.</p>
+{% endblock %}
+
+{% block action_url %}{{ settings.application_url }}/?invite_token={{ token }}{% endblock %}
+{% block action_text %}
+	Accept Request
+{% endblock %}

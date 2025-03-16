@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Mail\passwordResetMail;
 use App\Jobs\sendEmail;
 use Illuminate\Auth\Events\PasswordReset;
+use App\Models\ReverseShareInvite;
+use Illuminate\Support\Facades\Crypt;
 
 
 class AuthController extends Controller
@@ -83,6 +85,64 @@ class AuthController extends Controller
         ])->withCookie($cookie);
     }
 
+    public function acceptReverseShareInvite(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'data' => [
+                    'errors' => $validator->errors()
+                ]
+            ], 422);
+        }
+
+        $token = Crypt::decryptString($request->token);
+
+        $user = Auth::setToken($token)->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized'
+            ], 401);
+        }
+
+        $invite = ReverseShareInvite::where('guest_user_id', $user->id)->first();
+
+        if (!$invite) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invite not found'
+            ], 404);
+        }
+
+        if ($invite->isExpired()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invite expired'
+            ], 404);
+        }
+
+        if ($invite->isUsed()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invite already used'
+            ], 404);
+        }
+
+        $invite->markAsUsed();
+
+        //invalidate the token
+        auth()->invalidate();
+
+        return $this->respondWithToken($user);
+    }
+
     private function respondWithToken($user)
     {
         $token = Auth::login($user);
@@ -106,6 +166,7 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
                 'expires_in' => Auth::factory()->getTTL() * 60,
+                'guest' => $user->is_guest
             ]
         ])->withCookie($cookie);
     }

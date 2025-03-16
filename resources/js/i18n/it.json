@@ -6,6 +6,7 @@
   "No files added yet": "Nessun file aggiunto",
   "No recipients": "Nessun destinatario",
   "Powered by": "Offerto da",
+  "Reverse Share": "Azione inversa",
   "Share Name": "Nome Condivisione",
   "Share URL": "URL per condivisione",
   "We'll provide you with a link instead": {
@@ -13,17 +14,23 @@
   },
   "auth": {
     "back_to_login": "Torna al login",
+    "confirm_end_guest_session": "Siete sicuri di voler terminare questa sessione? Poiché si tratta di un utente ospite, non sarà possibile caricare altri file dopo aver terminato questa sessione.",
     "confirm_password": "Conferma la password",
     "email": "Email",
+    "end_guest_session": "Fine sessione ospiti",
+    "failed_to_accept_invite": "Questo codice invito non è valido. Potrebbe essere scaduto, già utilizzato o revocato dal mittente.",
     "failed_to_reset_password": "Impossibile reimpostare la password",
     "failed_to_send_password_reset_email": "Fallito l'invio dell'e-mail di reimpostazione della password",
     "forgot_password": "Password dimenticata",
     "forgot_password_create_password": "Creare la password",
     "forgot_password_create_password_description": "Inserire la nuova password. La password e la conferma della password devono corrispondere",
+    "guest_warning": "I file caricati tramite il modulo a sinistra saranno condivisi direttamente con la persona che vi ha invitato.",
     "invalid_email_or_password": "Accesso non riuscito",
+    "invite_accepted": "Invito alla condivisione inversa accettato. Ora è possibile caricare i file.",
     "login": "Accesso",
     "login_successful": "Accesso effettuato con successo",
     "login_with": "Accesso con",
+    "logout": "Disconnessione",
     "or": "Oppure",
     "password": "Password",
     "password_reset_email_sent": "Email di reimpostazione della password inviata",
@@ -39,12 +46,20 @@
     "save_new_password": "Salvare la nuova password",
     "welcome": "Benvenuti"
   },
+  "button": {
+    "reverse_share_invite": "Creare una richiesta di condivisione inversa",
+    "reverse_share_invite_send": "Invia la richiesta"
+  },
   "confirm_delete_user": "Siete sicuri di voler eliminare questo utente?",
   "download": {
     "files": "{value, plural, one {Scaricare il file.} other {Scaricare i {value} file} }"
   },
   "email": "Email",
   "full_name": "Nome completo",
+  "guest": {
+    "upload_success": "Caricamento riuscito!",
+    "upload_success_message": "La persona che ha richiesto questi file riceverà un'e-mail con un link per il download."
+  },
   "limit": "Limite",
   "message": {
     "from": "Messaggio da {name}"
@@ -150,6 +165,9 @@
     "provider": {
       "edit": "Modifica",
       "view": "Vista"
+    },
+    "reverse_invite": {
+      "description": "Richiedete i file a un contatto inserendo i suoi dati qui sotto. Riceveranno un link che consente l'accesso una tantum per caricare i file direttamente a voi. Una volta caricati i file, riceverete una notifica via e-mail."
     },
     "settingsSavedSuccessfully": "Impostazioni salvate con successo",
     "success": {
@@ -261,6 +279,7 @@
       "manage": "Gestire",
       "myProfile": "Il mio account",
       "myShares": "Le mie azioni",
+      "reverse_invite": "Creare una richiesta di condivisione inversa",
       "system": "Impostazioni del sistema",
       "users": "Utenti",
       "users.edit": "Modifica {name}"
@@ -305,6 +324,7 @@
       "provider_unlink_failed": "Non è stato possibile scollegare il provider dal proprio account.",
       "provider_unlinked": "Il fornitore è stato scollegato dall'account.",
       "save_changes": "Salva le modifiche",
+      "send_invite": "Invia la richiesta",
       "unlink_provider_confirm": "Davvero avete scollegato il vostro account da questo provider?",
       "update_password": "Aggiornare la password",
       "user": "Utente",
@@ -335,7 +355,8 @@
     "files": {
       "count": "{value, plural, other {# files}}",
       "including": "compreso:"
-    }
+    },
+    "not_found": "La condivisione che si sta cercando non è stata trovata. Potrebbe essere necessario effettuare il login per visualizzarla."
   },
   "total_size": "Peso totale",
   "upload": {
@@ -347,6 +368,7 @@
       "chunked": "Modalità di caricamento a pezzi",
       "direct": "Modalità di caricamento diretto"
     },
+    "guest_share_created": "Grazie! I file sono stati inviati con successo. Tra pochi istanti verrà effettuato il logout.",
     "upload_mode_swapped": "Modalità di caricamento cambiata in {value}"
   },
   "uploading": {

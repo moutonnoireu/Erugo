@@ -14,6 +14,7 @@ use App\Services\SettingsService;
 use App\Http\Controllers\ThemesController;
 use App\Http\Controllers\AuthProvidersController;
 use App\Http\Controllers\UploadsController;
+use App\Http\Controllers\ReverseSharesController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -131,6 +132,16 @@ Route::group([], function ($router) {
         Route::put('/{id}', [AuthProvidersController::class, 'update'])->name('auth-providers.update');
         Route::delete('/{id}', [AuthProvidersController::class, 'delete'])->name('auth-providers.delete');
         Route::get('/{uuid}/callback-url', [AuthProvidersController::class, 'getCallbackUrl'])->name('auth-providers.getCallbackUrl');
+    });
+
+    //manage reverse shares [auth]
+    Route::group(['prefix' => 'reverse-shares', 'middleware' => ['auth']], function ($router) {
+        Route::post('/invite', [ReverseSharesController::class, 'createInvite'])->name('reverse-shares.createInvite');
+    });
+
+    //accept a reverse share invite [public]
+    Route::group(['prefix' => 'reverse-shares'], function ($router) {
+        Route::get('/accept', [ AuthController::class, 'acceptReverseShareInvite'])->name('reverse-shares.acceptInvite');
     });
 
     //read auth providers [public]

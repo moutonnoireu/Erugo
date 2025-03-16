@@ -26,6 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'admin',
         'active',
         'must_change_password',
+        'is_guest'
     ];
 
     /**
@@ -62,7 +63,18 @@ class User extends Authenticatable implements JWTSubject
             'admin' => $this->admin,
             'active' => $this->active,
             'must_change_password' => $this->must_change_password,
+            'guest' => $this->is_guest == 1 ? true : false
         ];
+    }
+
+    public function invite()
+    {
+        return $this->hasOne(ReverseShareInvite::class, 'guest_user_id');
+    }
+
+    public function invites()
+    {
+        return $this->hasMany(ReverseShareInvite::class, 'user_id');
     }
 
     public function shares()

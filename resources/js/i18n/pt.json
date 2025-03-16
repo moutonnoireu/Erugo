@@ -6,6 +6,7 @@
   "No files added yet": "Ainda não tem ficheiros adicionados",
   "No recipients": "Sem destinatários",
   "Powered by": "Powered by",
+  "Reverse Share": "Ação inversa",
   "Share Name": "Nome de partilha",
   "Share URL": "Endereço de partilha",
   "We'll provide you with a link instead": {
@@ -13,17 +14,23 @@
   },
   "auth": {
     "back_to_login": "Voltar à autenticação",
+    "confirm_end_guest_session": "Tem a certeza de que pretende terminar esta sessão? Uma vez que é um utilizador convidado, não poderá carregar ficheiros adicionais depois de terminar esta sessão.",
     "confirm_password": "Confirmar a palavra-passe",
     "email": "E-mail",
+    "end_guest_session": "Fim da sessão de convidados",
+    "failed_to_accept_invite": "Este código de convite não é válido. Pode ter expirado, já ter sido utilizado ou ter sido revogado pelo remetente.",
     "failed_to_reset_password": "Falha ao repor a palavra passe",
     "failed_to_send_password_reset_email": "Falha ao enviar o e-mail para repor a palavra passe",
     "forgot_password": "Esqueci-me da palavra passe",
     "forgot_password_create_password": "Criar palavra-passe",
     "forgot_password_create_password_description": "Introduza a sua nova palavra-passe. Tanto a palavra-passe como a confirmação da palavra-passe têm de corresponder",
+    "guest_warning": "Os ficheiros que carregar utilizando o formulário do lado esquerdo serão partilhados diretamente com a pessoa que o convidou.",
     "invalid_email_or_password": "Falha na autenticação",
+    "invite_accepted": "Convite para partilha inversa aceite. Já pode carregar ficheiros.",
     "login": "Iniciar Sessão",
     "login_successful": "Autenticação bem sucedida",
     "login_with": "Iniciar sessão com",
+    "logout": "Terminar sessão",
     "or": "Ou",
     "password": "Palavra passe",
     "password_reset_email_sent": "E-mail para repor a palavra passe foi enviado",
@@ -39,12 +46,20 @@
     "save_new_password": "Guardar a nova palavra-passe",
     "welcome": "Bem-vindo"
   },
+  "button": {
+    "reverse_share_invite": "Criar um pedido de partilha inversa",
+    "reverse_share_invite_send": "Enviar pedido"
+  },
   "confirm_delete_user": "Tem a certeza de que pretende eliminar este utilizador?",
   "download": {
     "files": "{value, plural, one {Descarregar # ficheiro} other {Descarregar {value} ficheiros} }"
   },
   "email": "E-mail",
   "full_name": "Nome Completo",
+  "guest": {
+    "upload_success": "Carregamento bem-sucedido!",
+    "upload_success_message": "A pessoa que solicitou estes ficheiros receberá um e-mail com uma ligação para descarregamento."
+  },
   "limit": "Limite",
   "message": {
     "from": "Mensagem de {name}"
@@ -150,6 +165,9 @@
     "provider": {
       "edit": "Editar",
       "view": "Ver"
+    },
+    "reverse_invite": {
+      "description": "Solicite ficheiros a um contacto introduzindo os seus dados abaixo. O contacto receberá uma ligação que lhe dá acesso único para carregar ficheiros diretamente para si. Depois de carregarem os ficheiros, receberá uma notificação por correio eletrónico."
     },
     "settingsSavedSuccessfully": "Definições guardadas com sucesso",
     "success": {
@@ -261,6 +279,7 @@
       "manage": "Gerir",
       "myProfile": "A Minha Conta",
       "myShares": "As Minhas Partilhas",
+      "reverse_invite": "Criar pedido de partilha inversa",
       "system": "Definições de Sistema",
       "users": "Utilizadores",
       "users.edit": "Editar {name}"
@@ -305,6 +324,7 @@
       "provider_unlink_failed": "Falha ao desvincular o fornecedor da sua conta",
       "provider_unlinked": "O fornecedor foi desvinculado da sua conta",
       "save_changes": "Guardar Alterações",
+      "send_invite": "Enviar pedido",
       "unlink_provider_confirm": "Deseja realmente desvincular a sua conta deste fornecedor?",
       "update_password": "Atualizar a Palavra Passe",
       "user": "Utilizador",
@@ -335,7 +355,8 @@
     "files": {
       "count": "{value, plural, one {# ficheiro} many {# ficheiros} other {}}",
       "including": "incluíndo:"
-    }
+    },
+    "not_found": "A partilha que procura não foi encontrada. Poderá ser necessário iniciar sessão para a ver."
   },
   "total_size": "Tamanho Total",
   "upload": {
@@ -347,6 +368,7 @@
       "chunked": "Modo de carregamento em blocos",
       "direct": "Modo de carregamento direto"
     },
+    "guest_share_created": "Obrigado! Os seus ficheiros foram enviados com sucesso. Dentro de alguns instantes, a sessão será encerrada.",
     "upload_mode_swapped": "Modo de carregamento alterado para {value}"
   },
   "uploading": {
