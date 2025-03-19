@@ -85,16 +85,7 @@ The above docker-compose.yml provides a basic configuration starting point that 
 
 ```sh
 docker compose up -d
-```
-
-⚠️ **IMPORTANT STORAGE WARNING**
-
-Erugo requires exclusive access to any mounted storage volume. The application will manage this directory as its own, and **may delete or overwrite existing files** that were present before mounting. 
-
-**Always dedicate a new, empty directory** specifically for Erugo storage.
-
-**DO NOT** point Erugo's storage volume to directories containing other data or shared with other applications.
-
+``` 
 
 ## Configuration Options
 
