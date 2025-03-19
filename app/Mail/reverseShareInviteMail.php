@@ -24,6 +24,7 @@ class reverseShareInviteMail extends Mailable
     public $recipient_name;
     public $sender_name;
     public $token;
+    public $invite;
 
     public function __construct(User $user, ReverseShareInvite $invite, $token)
     {

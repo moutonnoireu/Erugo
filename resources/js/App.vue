@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
-import { LogOut, Settings as SettingsIcon, Info, MessageCircleMore } from 'lucide-vue-next'
+import { LogOut, Settings as SettingsIcon, Info, MailPlus } from 'lucide-vue-next'
 import Uploader from './components/uploader.vue'
 import Downloader from './components/downloader.vue'
 import Auth from './components/auth.vue'
@@ -111,7 +111,6 @@ const setPageTitle = (title) => {
 }
 
 const handleLogoutClick = () => {
-
   if (store.isGuest()) {
     const confirm = window.confirm(t.value('auth.confirm_end_guest_session'))
     if (!confirm) {
@@ -167,19 +166,28 @@ const openReverseShareInvite = () => {
       ></div>
     </div>
     <template v-if="store.isLoggedIn()">
-      <button
-        class="logout icon-only secondary"
-        @click="handleLogoutClick"
-        :title="store.isGuest() ? t('auth.end_guest_session') : t('auth.logout')"
-      >
-        <LogOut />
-      </button>
-      <button class="settings-button icon-only" @click="openSettings" v-if="!store.isGuest()">
-        <SettingsIcon />
-      </button>
-      <button class="reverse-share-invite-button icon-only" :title="t('button.reverse_share_invite')" @click="openReverseShareInvite" v-if="!store.isGuest()">
-        <MessageCircleMore />
-      </button>
+      <div class="main-menu">
+        <button
+          class="reverse-share-invite-button secondary icon-only"
+          :title="t('button.reverse_share_invite')"
+          @click="openReverseShareInvite"
+          v-if="!store.isGuest()"
+        >
+          <MailPlus />
+        </button>
+
+        <button class="settings-button secondary icon-only" @click="openSettings" v-if="!store.isGuest()">
+          <SettingsIcon />
+        </button>
+
+        <button
+          class="logout icon-only secondary"
+          @click="handleLogoutClick"
+          :title="store.isGuest() ? t('auth.end_guest_session') : t('auth.logout')"
+        >
+          <LogOut />
+        </button>
+      </div>
     </template>
 
     <div class="wrapper">
@@ -207,7 +215,10 @@ const openReverseShareInvite = () => {
           <div class="right-panel-content-item">
             <div class="right-panel-content-item-title">
               <h5>{{ t('Reverse Share') }}</h5>
-              <p><Info /> {{ t('auth.guest_warning') }}</p>
+              <p>
+                <Info />
+                {{ t('auth.guest_warning') }}
+              </p>
             </div>
           </div>
         </div>

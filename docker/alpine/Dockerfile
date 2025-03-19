@@ -28,7 +28,7 @@ ENV SUPERVISOR_PHP_USER="erugo"
 # Enable community repository for PHP packages
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.19/community" >> /etc/apk/repositories
 
-# Install production requirements (added cronie)
+# Install production requirements
 RUN apk add --no-cache \
     curl \
     su-exec \
@@ -68,8 +68,6 @@ RUN apk add --no-cache \
 # Create necessary directories
 RUN mkdir -p /run/php /var/www/html/public /etc/php83/php-fpm.d /etc/caddy
 
-
-
 COPY ./docker/alpine/www.conf /etc/php83/php-fpm.d/www.conf
 COPY ./docker/alpine/Caddyfile /etc/caddy/Caddyfile
 
@@ -85,7 +83,6 @@ RUN addgroup erugo && \
 
 # Set permissions
 RUN chown -R erugo:erugo /run/php
-
 
 # Copy necessary files from build stages and local context
 COPY --chown=erugo:erugo . /var/www/html/

@@ -7,9 +7,10 @@ import { useToast } from 'vue-toastification'
 const { t } = useTranslate()
 const toast = useToast()
 const reverseInviteActive = ref(false)
-const recipient = ref({
+const invite = ref({
   email: '',
-  name: ''
+  name: '',
+  message: ''
 })
 const errors = ref({})
 
@@ -21,7 +22,7 @@ const reverseInviteClickOutside = (event) => {
 
 const sendReverseInvite = async () => {
   try {
-    await sendReverseShareInvite(recipient.value.email, recipient.value.name)
+    await sendReverseShareInvite(invite.value.email, invite.value.name, invite.value.message)
     reverseInviteActive.value = false
     toast.success(t.value('reverse_invite_send.success'))
   } catch (error) {
@@ -51,7 +52,7 @@ defineExpose({
         <label for="edit_user_email">{{ $t('settings.users.email') }}</label>
         <input
           type="email"
-          v-model="recipient.email"
+          v-model="invite.email"
           id="edit_user_email"
           :placeholder="$t('settings.users.email')"
           required
@@ -65,7 +66,7 @@ defineExpose({
         <label for="edit_user_name">{{ $t('settings.users.name') }}</label>
         <input
           type="text"
-          v-model="recipient.name"
+          v-model="invite.name"
           id="edit_user_name"
           :placeholder="$t('settings.users.name')"
           required
@@ -75,7 +76,14 @@ defineExpose({
           {{ errors.name }}
         </div>
       </div>
-
+      <div class="input-container">
+        <label for="edit_user_message">{{ $t('invite.labels.message') }}</label>
+        <textarea
+          v-model="invite.message"
+          id="edit_user_message"
+          :placeholder="$t('invite.message')"
+        ></textarea>
+      </div>
       <div class="button-bar">
         <button @click="sendReverseInvite">
           <MessageCircleMore />

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reverse_share_invites', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('guest_user_id')->constrained('users');
+            $table->foreignId('guest_user_id')->nullable()->constrained('users');
             $table->string('recipient_name');
             $table->string('recipient_email');
             $table->string('message')->nullable();

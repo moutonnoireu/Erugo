@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('shares', function (Blueprint $table) {
             $table->boolean('public')->default(true);
+            $table->foreignId('invite_id')->nullable();
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('shares', function (Blueprint $table) {
             $table->dropColumn('public');
+            $table->dropColumn('invite_id');
         });
     }
 };

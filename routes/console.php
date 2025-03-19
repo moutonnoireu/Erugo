@@ -8,13 +8,18 @@ use App\Jobs\sendExpiredWarningEmails;
 use App\Jobs\sendDeletionWarningEmails;
 use App\Jobs\pruneLogs;
 use App\Jobs\updateLegacySharePaths;
+use App\Jobs\backUpDatabase;
+//daily jobs
 Schedule::job(cleanExpiredShares::class)->daily();
 Schedule::job(sendExpiryWarningEmails::class)->daily();
-Schedule::job(sendExpiredWarningEmails::class)->hourly();
 Schedule::job(sendDeletionWarningEmails::class)->daily();
 Schedule::job(maintainDb::class)->daily();
 Schedule::job(pruneLogs::class)->daily();
+Schedule::job(backUpDatabase::class)->daily();
+//hourly jobs
+Schedule::job(sendExpiredWarningEmails::class)->hourly();
 
+//manually run jobs
 Artisan::command('clean-expired-shares', function () {
     cleanExpiredShares::dispatch();
 })->purpose('Clean expired shares');
@@ -42,3 +47,7 @@ Artisan::command('prune-logs', function () {
 Artisan::command('update-legacy-share-paths', function () {
     updateLegacySharePaths::dispatch();
 })->purpose('Update legacy share paths');
+
+Artisan::command('back-up-database', function () {
+    backUpDatabase::dispatch();
+})->purpose('Back up the database');

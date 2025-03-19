@@ -97,17 +97,29 @@ class SharesController extends Controller
 
     if ($user->is_guest) {
 
+      $invite = $user->invite;
+
       $share->public = false;
+      $share->invite_id = $invite->id;
+      $share->user_id = null;
       $share->save();
 
-      if ($user->invite->user) {
-        $this->sendShareCreatedEmail($share, $user->invite->user);
+      if ($invite->user) {
+        $this->sendShareCreatedEmail($share, $invite->user);
       } else {
         Log::error('Guest user has no invite user', ['user_id' => $user->id]);
       }
 
+      $invite->guest_user_id = null;
+      $invite->save();
+
+
       //log the user out
       Auth::logout();
+      $user->delete();
+
+
+
       $cookie = cookie('refresh_token', '', 0, null, null, false, true);
       return response()->json([
         'status' => 'success',
@@ -211,7 +223,7 @@ class SharesController extends Controller
       if (!$user) {
         return false;
       }
-      $allowedUser = $share->user->invite->user;
+      $allowedUser = $share->invite->user;
       if ($user && $allowedUser && $allowedUser->id == $user->id) {
         return true;
       } else {
@@ -509,7 +521,7 @@ class SharesController extends Controller
   {
     $settingsService = new SettingsService();
     $sendEmail = $settingsService->get('emails_share_downloaded_enabled');
-    if ($sendEmail == 'true') {
+    if ($sendEmail == 'true' && $share->user) {
       sendEmail::dispatch($share->user->email, shareDownloadedMail::class, ['share' => $share]);
     }
   }

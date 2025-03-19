@@ -8,6 +8,11 @@
 		{{ recipient_name }},</h2>
 	<p>{{ sender_name }} is requesting files from you.</p>
   <p>Click the button below to accept the request and upload files for {{ sender_name }}.</p>
+  {% if invite.message %}
+    <hr>
+    <p>Message: {{ invite.message }}</p>
+    <hr>
+  {% endif %}
 {% endblock %}
 
 {% block action_url %}{{ settings.application_url }}/?invite_token={{ token }}{% endblock %}
