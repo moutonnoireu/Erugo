@@ -495,13 +495,15 @@ const setShowDeletedShares = (value) => {
     .tab-content-header {
       display: flex;
       justify-content: flex-end;
-      @media (min-width: 768px) {
-        justify-content: space-between;
-      }
       align-items: center;
       background: var(--panel-subheader-background-color);
       padding: 20px;
       width: 100%;
+
+      @media (min-width: 768px) {
+        justify-content: space-between;
+      }
+
       h2 {
         font-size: 1.4rem;
         color: var(--panel-subheader-text-color);
