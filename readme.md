@@ -39,6 +39,7 @@ _New login screen with external auth provider support_
 
 ## Community Content
 - [Installer Erugo avec Docker (french)](https://belginux.com/installer-erugo-avec-docker/)
+- [How to Install Erugo on Your Server: Step-by-Step Guide for Secure File Sharing](https://www.linkedin.com/pulse/how-install-erugo-your-server-step-by-step-guide-secure-montinaro-yzbcf)
 
 ## Key Features
 
