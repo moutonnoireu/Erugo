@@ -165,7 +165,7 @@ Erugo is fully translatable. If you would like to contribute a translation, plea
 
 Erugo is a Laravel application and uses Laravel Sail to run the development environment.
 
-Run the following commands to start the server, run migrations, ans start vite in dev mode.
+Run the following commands to start the server, run migrations, and start vite in dev mode.
 
 ### Generate database
 ```sh
