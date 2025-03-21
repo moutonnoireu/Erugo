@@ -182,7 +182,7 @@ body {
     width: 100%;
     padding: 0px 0px;
     padding-bottom: 70px;
-    
+
     @media (min-width: 900px) {
       width: 50%;
       padding: 0px 40px;
@@ -204,6 +204,8 @@ body {
     width: 100%;
     padding: 0px 0px;
     padding-bottom: 70px;
+    z-index: -1;
+
     @media (min-width: 900px) {
       width: 50%;
       padding: 0px 40px;
@@ -212,7 +214,6 @@ body {
       width: 30%;
       padding: 0px 40px;
     }
-    z-index: -1;
 
     .right-panel-content {
       display: flex;
