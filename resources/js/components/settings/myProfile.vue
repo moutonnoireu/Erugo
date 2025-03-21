@@ -291,7 +291,7 @@ const handleUnlinkProvider = async (provider) => {
 
   <div class="user-form-overlay" :class="{ active: editUserFormActive }" @click="editUserFormClickOutside">
     <div class="user-form">
-      <h2 style="text-transform: capitalize">
+      <h2>
         <UserRoundPen />
         {{ $t('settings.account.change_password') }}
       </h2>
