@@ -167,10 +167,29 @@ Erugo is a Laravel application and uses Laravel Sail to run the development envi
 
 Run the following commands to start the server, run migrations, ans start vite in dev mode.
 
+### Generate database
+```sh
+touch database/database.sqlite
+chmod 666 database/database.sqlite
+```
+
+### Install laravel dependencies
 ```sh
 composer install
 npm install
 sail up -d
+```
+
+### Generate .env file
+```sh
+cp .env.example .env
+chmod 666 .env
+sail artisan key:generate
+sail artisan jwt:secret
+```
+
+### Run the development server
+```sh
 sail artisan migrate
 sail artisan db:seed
 npm run dev
