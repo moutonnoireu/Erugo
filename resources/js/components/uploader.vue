@@ -17,12 +17,13 @@ import {
   Box
 } from 'lucide-vue-next'
 import { niceFileSize, niceFileType, simpleUUID } from '../utils'
-import { createShare, getHealth, getMyProfile, uploadFilesInChunks } from '../api'
+import { createShare, getHealth, getMyProfile, uploadFilesInChunks, logout } from '../api'
 import Recipient from './recipient.vue'
 import { uploadController } from '../store'
 import { domData } from '../domData'
 import { useTranslate } from '@tolgee/vue'
 import { useToast } from 'vue-toastification'
+import { store } from '../store'
 
 const { t } = useTranslate()
 const toast = useToast()
@@ -56,7 +57,6 @@ const errors = ref({
 const recipients = ref([])
 
 onMounted(async () => {
-
   //grab the max share size from the health check
   const health = await getHealth()
   maxShareSize.value = health.max_share_size
@@ -80,7 +80,6 @@ onMounted(async () => {
       }
     }
   }
-
 })
 
 const showFilePicker = () => {
@@ -182,7 +181,11 @@ const doChunkedUpload = async (uploadId) => {
         }
       },
       (result) => {
-        showSharePanel(createShareURL(result.data.share.long_id))
+        if (store.isGuest()) {
+          thankGuestForUpload()
+        } else {
+          showSharePanel(createShareURL(result.data.share.long_id))
+        }
         uploadBasket.value = []
         shareName.value = ''
         shareDescription.value = ''
@@ -219,7 +222,11 @@ const doDirectUpload = async (uploadId) => {
       }
     )
 
-    showSharePanel(createShareURL(share.data.share.long_id))
+    if (store.isGuest()) {
+      thankGuestForUpload()
+    } else {
+      showSharePanel(createShareURL(share.data.share.long_id))
+    }
     uploadBasket.value = []
     shareName.value = ''
     shareDescription.value = ''
@@ -255,7 +262,13 @@ const createShareURL = (longId) => {
   return `${baseUrl}/shares/${longId}`
 }
 
+const thankGuestForUpload = () => {
+  logout()
+  store.setMode('thank_guest_for_upload')
+}
+
 const showSharePanel = (url) => {
+
   sharePanelVisible.value = true
   shareUrl.value = url
 }
@@ -379,7 +392,7 @@ const swapUploadMode = () => {
     </div>
 
     <div class="upload-basket-details">
-      <div class="recipients">
+      <div class="recipients" v-if="!store.isGuest()">
         <div class="button-outside-label uploader-add-recipient">
           <button class="icon-only round" @click="addRecipient">
             <Plus />
@@ -416,6 +429,7 @@ const swapUploadMode = () => {
           id="share-name"
           name="share-name"
           autocomplete="share-name"
+          v-if="!store.isGuest()"
         />
         <div class="error-message" v-if="errors.shareName">
           {{ errors.shareName }}
@@ -430,6 +444,7 @@ const swapUploadMode = () => {
           :class="{ error: errors.shareDescription }"
           rows="3"
           class="mt-0 mb-0"
+          v-if="!store.isGuest()"
         />
         <div class="error-message" v-if="errors.shareDescription">
           {{ errors.shareDescription }}

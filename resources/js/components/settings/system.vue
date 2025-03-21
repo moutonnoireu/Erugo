@@ -164,7 +164,6 @@ const shareSettingsLookOk = () => {
   return true
 }
 
-
 const handleNavItemClicked = (item) => {
   emit('navItemClicked', item)
 }
@@ -441,6 +440,14 @@ const handleDeleteAuthProvider = async (id) => {
                   </select>
                 </div>
 
+                <h6 class="mt-3 mb-3">{{ $t('settings.system.reverse_shares') }}</h6>
+                <div class="setting-group-body-item">
+                  <div class="checkbox-container">
+                    <input type="checkbox" id="allow_reverse_shares" v-model="settings.allow_reverse_shares" />
+                    <label for="allow_reverse_shares">{{ $t('settings.system.allow_reverse_shares') }}</label>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -458,6 +465,8 @@ const handleDeleteAuthProvider = async (id) => {
               <p>{{ $t('settings.system.allow_chunked_uploads_description') }}</p>
               <h6>{{ $t('settings.system.default_upload_mode') }}</h6>
               <p>{{ $t('settings.system.default_upload_mode_description') }}</p>
+              <h6>{{ $t('settings.system.allow_reverse_shares') }}</h6>
+              <p>{{ $t('settings.system.allow_reverse_shares_description') }}</p>
             </div>
           </div>
         </div>

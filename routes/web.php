@@ -24,6 +24,7 @@ function getSettings()
         ->orWhere('key', 'default_upload_mode')
         ->orWhere('key', 'allow_direct_uploads')
         ->orWhere('key', 'allow_chunked_uploads')
+        ->orWhere('key', 'allow_reverse_shares')
         ->get();
 
     $settings = $settings->map(function ($setting) use ($settingsService) {

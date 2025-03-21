@@ -18,6 +18,7 @@ const uploadController = reactive({
 const store = reactive({
   userId: null,
   admin: false,
+  guest: false,
   jwt: null,
   jwtExpires: null,
   loggedIn: false,
@@ -73,6 +74,10 @@ const store = reactive({
     return this.loggedIn
   },
 
+  isGuest() {
+    return this.guest
+  },
+
   authSuccess(data) {
     this.setMultiple({
       userId: data.userId,
@@ -82,6 +87,7 @@ const store = reactive({
       loggedIn: data.loggedIn
     })
     this.mustChangePassword = data.mustChangePassword
+    this.guest = data.guest
     this.logState()
   },
 

@@ -139,7 +139,6 @@
   --settings-width: 100vw;
   --settings-height: 100vh;
 
-
   --danger-color: rgb(239, 68, 68);
 }
 
@@ -190,6 +189,59 @@ body {
       padding: 0px 40px;
     }
     z-index: 100;
+  }
+
+  .right-panel {
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0 20px 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0px 0px;
+    padding-bottom: 70px;
+    @media (min-width: 900px) {
+      width: 50%;
+      padding: 0px 40px;
+    }
+    @media (min-width: 1500px) {
+      width: 30%;
+      padding: 0px 40px;
+    }
+    z-index: -1;
+
+    .right-panel-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .right-panel-content-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: var(--panel-background-color);
+      color: var(--panel-text-color);
+      border-radius: 10px;
+      padding: 20px;
+      opacity: 0.9;
+
+      p {
+        svg {
+          width: 16px;
+          height: 16px;
+          margin-right: 3px;
+          margin-top: -3px;
+        }
+      }
+    }
   }
 }
 
@@ -335,6 +387,59 @@ body {
       display: block;
       margin-top: 5px;
     }
+  }
+}
+
+.thank-guest-for-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel-background-color);
+  backdrop-filter: blur(10px);
+  opacity: 0.9;
+  padding: 40px;
+  border-radius: var(--panel-border-radius);
+  width: 100%;
+  height: 100%;
+
+  svg {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    stroke: url(#gradient);
+  }
+  h1 {
+    color: var(--panel-text-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  p {
+    color: var(--panel-text-color);
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    text-align: center;
+
+    &.success-message {
+      font-size: 2rem;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      background: linear-gradient(to right, var(--link-color), var(--link-color-hover));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  #gradientDefs {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
   }
 }
 
@@ -1007,7 +1112,6 @@ body {
 .text-danger {
   color: #ee7354 !important;
 }
-
 
 .tg-dev-tools {
   z-index: 9999999 !important; /* Use a value higher than your highest z-index */

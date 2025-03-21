@@ -326,7 +326,7 @@ const getEmptyUser = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--accent-color-light-transparent-2);
+  background: var(--overlay-background-color);
   backdrop-filter: blur(10px);
   z-index: 230;
   opacity: 0;
@@ -336,7 +336,7 @@ const getEmptyUser = () => {
   h2 {
     margin-bottom: 10px;
     font-size: 24px;
-    color: var(--secondary-color);
+    color: var(--panel-text-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -353,8 +353,8 @@ const getEmptyUser = () => {
     left: 50%;
     transform: translate(-50%, 100%);
     width: 500px;
-    background: var(--accent-color-light-transparent);
-    color: var(--secondary-color);
+    background: var(--panel-background-color);
+    color: var(--panel-text-color);
     padding: 20px;
     border-radius: 10px 10px 0 0;
     box-shadow: 0 0 100px 0 rgba(0, 0, 0, 0.5);

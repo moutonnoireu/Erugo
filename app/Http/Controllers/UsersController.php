@@ -156,7 +156,7 @@ class UsersController extends Controller
   //get all users
   public function index()
   {
-    $users = User::all();
+    $users = User::where('is_guest', false)->get();
 
     return response()->json([
       'status' => 'success',

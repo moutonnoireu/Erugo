@@ -13,7 +13,7 @@
 </head>
 
 
-<body data-settings='{!! json_encode($settings) !!}' data-error="{{ session()->get('error') }}" data-success="{{ session()->get('success') }}">
+<body data-settings='{!! htmlspecialchars(json_encode($settings)) !!}' data-error="{{ session()->get('error') }}" data-success="{{ session()->get('success') }}">
   
 <style id="erugo-css-variables">
     :root {

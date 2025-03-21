@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { niceFileSize, timeUntilExpiration, getApiUrl, niceFileType, niceFileName } from '../utils'
-import { FileIcon, HeartCrack, TrendingDown } from 'lucide-vue-next'
+import { FileIcon, HeartCrack, TrendingDown, FileX } from 'lucide-vue-next'
 import { getShare } from '../api'
 const apiUrl = getApiUrl()
 
@@ -9,7 +9,7 @@ const share = ref(null)
 const showFilesCount = ref(5)
 const shareExpired = ref(false)
 const downloadLimitReached = ref(false)
-
+const shareNotFound = ref(false)
 //define props
 const props = defineProps({
   downloadShareCode: {
@@ -26,10 +26,13 @@ const fetchShare = async () => {
   try {
     share.value = await getShare(props.downloadShareCode)
   } catch (error) {
+    console.log('error',error)
     if (error.message == 'Download limit reached') {
       downloadLimitReached.value = true
     } else if (error.message == 'Share expired') {
       shareExpired.value = true
+    } else if (error.message == 'Share not found') {
+      shareNotFound.value = true
     }
   }
 }
@@ -112,6 +115,14 @@ const splitFullName = (fullName) => {
         <p>
           {{ $t('share.download_limit_reached.message') }}
         </p>
+      </template>
+      <template v-else-if="shareNotFound">
+        <div class="my-5">
+          <FileX />
+        </div>
+        <h1>
+          {{ $t('share.not_found') }}
+        </h1>
       </template>
       <h1 v-else>{{ $t('share.data_loading') }}</h1>
     </template>

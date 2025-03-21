@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
-import { LogOut, Settings as SettingsIcon } from 'lucide-vue-next'
+import { LogOut, Settings as SettingsIcon, Info, MailPlus } from 'lucide-vue-next'
 import Uploader from './components/uploader.vue'
 import Downloader from './components/downloader.vue'
 import Auth from './components/auth.vue'
@@ -14,6 +14,10 @@ import { logout, getBackgroundImages } from './api'
 import { TolgeeProvider } from '@tolgee/vue'
 import LanguageSelector from './components/languageSelector.vue'
 import { useToast } from 'vue-toastification'
+import ThankGuestForUpload from './components/thankGuestForUpload.vue'
+import { useTranslate } from '@tolgee/vue'
+import ReverseInvite from './components/reverseInvite.vue'
+const { t } = useTranslate()
 
 const apiUrl = getApiUrl()
 
@@ -30,6 +34,8 @@ const settingsPanel = ref(null)
 const setupNeeded = ref(false)
 const toast = useToast()
 const slideshowSpeed = ref(180)
+const reverseInvite = ref(null)
+const allowReverseShares = domData().allow_reverse_shares
 
 onMounted(() => {
   if (domError().length > 0) {
@@ -107,6 +113,13 @@ const setPageTitle = (title) => {
 }
 
 const handleLogoutClick = () => {
+  if (store.isGuest()) {
+    const confirm = window.confirm(t.value('auth.confirm_end_guest_session'))
+    if (!confirm) {
+      return
+    }
+  }
+
   logout()
 }
 
@@ -123,6 +136,10 @@ const changeBackground = async () => {
 
 const openSettings = () => {
   store.setSettingsOpen(true)
+}
+
+const openReverseShareInvite = () => {
+  reverseInvite.value.showReverseInviteForm()
 }
 </script>
 
@@ -151,10 +168,28 @@ const openSettings = () => {
       ></div>
     </div>
     <template v-if="store.isLoggedIn()">
-      <button class="logout icon-only" @click="handleLogoutClick"><LogOut /></button>
-      <button class="settings-button icon-only" @click="openSettings">
-        <SettingsIcon />
-      </button>
+      <div class="main-menu">
+        <button
+          class="reverse-share-invite-button secondary icon-only"
+          :title="t('button.reverse_share_invite')"
+          @click="openReverseShareInvite"
+          v-if="!store.isGuest() && allowReverseShares"
+        >
+          <MailPlus />
+        </button>
+
+        <button class="settings-button secondary icon-only" @click="openSettings" v-if="!store.isGuest()">
+          <SettingsIcon />
+        </button>
+
+        <button
+          class="logout icon-only secondary"
+          @click="handleLogoutClick"
+          :title="store.isGuest() ? t('auth.end_guest_session') : t('auth.logout')"
+        >
+          <LogOut />
+        </button>
+      </div>
     </template>
 
     <div class="wrapper">
@@ -172,6 +207,22 @@ const openSettings = () => {
           <template v-if="store.mode === 'setup'">
             <Setup />
           </template>
+          <template v-if="store.mode === 'thank_guest_for_upload'">
+            <ThankGuestForUpload />
+          </template>
+        </div>
+      </div>
+      <div class="right-panel d-none d-md-flex">
+        <div class="right-panel-content" v-if="store.isGuest() && store.mode === 'upload' && store.isLoggedIn()">
+          <div class="right-panel-content-item">
+            <div class="right-panel-content-item-title">
+              <h5>{{ t('Reverse Share') }}</h5>
+              <p>
+                <Info />
+                {{ t('auth.guest_warning') }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -183,5 +234,6 @@ const openSettings = () => {
       </div>
     </div>
     <Settings ref="settingsPanel" />
+    <ReverseInvite ref="reverseInvite" v-if="allowReverseShares && !store.isGuest() && store.isLoggedIn()" />
   </TolgeeProvider>
 </template>

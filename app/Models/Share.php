@@ -57,6 +57,11 @@ class Share extends Model
     return $this->belongsTo(User::class);
   }
 
+  public function invite()
+  {
+    return $this->belongsTo(ReverseShareInvite::class, 'invite_id');
+  }
+
   function getExpiredAttribute()
   {
     return $this->expires_at < now()->addMinutes(1);
@@ -128,6 +133,10 @@ class Share extends Model
 
       $this->status = 'deleted';
       $this->save();
+
+      if ($this->invite) {
+        $this->invite->delete();
+      }
 
       $settingsService = new SettingsService();
 

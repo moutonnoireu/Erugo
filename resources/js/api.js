@@ -146,6 +146,37 @@ export const login = async (email, password) => {
   return buildAuthSuccessData(data)
 }
 
+export const sendReverseShareInvite = async (email, name, message) => {
+  const response = await fetchWithAuth(`${apiUrl}/api/reverse-shares/invite`, {
+    method: 'POST',
+    headers: {
+      ...addJsonHeader()
+    },
+    body: JSON.stringify({
+      recipient_name: name,
+      recipient_email: email,
+      message: message
+    })
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    throw new Error(data.message)
+  }
+  return data
+}
+
+export const acceptReverseShareInvite = async (token) => {
+  const response = await fetch(`${apiUrl}/api/reverse-shares/accept?token=${token}`, {
+    method: 'GET',
+    credentials: 'include'
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    throw new Error(data.message)
+  }
+  return buildAuthSuccessData(data)
+}
+
 export const refresh = async () => {
   const response = await fetch(`${apiUrl}/api/auth/refresh`, {
     method: 'POST',
@@ -776,7 +807,8 @@ const buildAuthSuccessData = (data) => {
     loggedIn: true,
     jwtExpires: decoded.exp,
     jwt: data.data.access_token,
-    mustChangePassword: decoded.must_change_password
+    mustChangePassword: decoded.must_change_password,
+    guest: decoded.guest == 1 ? true : false
   }
 }
 
@@ -824,9 +856,6 @@ export const uploadFileInChunks = async (
 
   // Process chunks
   const processChunk = async () => {
-
-    
-
     if (currentChunk >= totalChunks) {
       // All chunks uploaded, finalize the upload
       try {

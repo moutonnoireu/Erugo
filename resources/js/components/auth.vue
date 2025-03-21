@@ -5,7 +5,15 @@ import { useToast } from 'vue-toastification'
 import { domData } from '../domData'
 import { KeyRound, Fingerprint } from 'lucide-vue-next'
 import { store } from '../store'
-import { login, refresh, logout, forgotPassword, resetPassword, getAvailableAuthProviders } from '../api'
+import {
+  login,
+  refresh,
+  logout,
+  forgotPassword,
+  resetPassword,
+  getAvailableAuthProviders,
+  acceptReverseShareInvite
+} from '../api'
 
 import { useTranslate } from '@tolgee/vue'
 
@@ -23,8 +31,9 @@ const haveResetToken = ref(false)
 const resetToken = ref('')
 const waitingForRedirect = ref(false)
 const authProviders = ref([])
+const reverseShareToken = ref('')
 
-onMounted(() => {
+onMounted(async () => {
   attemptRefresh()
 
   const token = domData().token
@@ -35,6 +44,23 @@ onMounted(() => {
   getAvailableAuthProviders().then((data) => {
     authProviders.value = data
   })
+
+  //grab reverse share token from url
+  const urlParams = new URLSearchParams(window.location.search)
+  reverseShareToken.value = urlParams.get('invite_token')
+  if (reverseShareToken.value) {
+    try {
+      await acceptReverseShareInvite(reverseShareToken.value)
+      toast.success(t.value('auth.invite_accepted'))
+      //remove the invite token from the url
+      window.history.replaceState({}, document.title, window.location.pathname)
+      attemptRefresh()
+    } catch (error) {
+      //remove the invite token from the url
+      window.history.replaceState({}, document.title, window.location.pathname)
+      toast.error(t.value('auth.failed_to_accept_invite'))
+    }
+  }
 })
 
 const attemptLogin = async () => {
@@ -202,7 +228,12 @@ const attemptAuthProviderLogin = (providerId) => {
       </div>
       <div class="input-container">
         <label for="password">{{ t('auth.password') }}</label>
-        <input type="password" v-model="password" :placeholder="t('auth.password')" @keyup.enter="attemptResetPassword" />
+        <input
+          type="password"
+          v-model="password"
+          :placeholder="t('auth.password')"
+          @keyup.enter="attemptResetPassword"
+        />
         <label for="password_confirmation">{{ t('auth.confirm_password') }}</label>
         <input
           type="password"

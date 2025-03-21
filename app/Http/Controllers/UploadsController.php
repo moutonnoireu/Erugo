@@ -311,7 +311,7 @@ class UploadsController extends Controller
     // Create the share destination directory
     $sharePath = $user->id . '/' . $longId;
     $completePath = storage_path('app/shares/' .  $sharePath);
-    
+
     if (!file_exists($completePath)) {
       mkdir($completePath, 0777, true);
     }
@@ -352,6 +352,33 @@ class UploadsController extends Controller
     // Dispatch job to create ZIP file
     CreateShareZip::dispatch($share);
 
+    if ($user->is_guest) {
+      $invite = $user->invite;
+      $share->public = false;
+      $share->invite_id = $invite->id;
+      $share->user_id = null;
+      $share->save();
+
+      if ($invite->user) {
+        $this->sendShareCreatedEmail($share, $invite->user);
+      } else {
+        Log::error('Guest user has no invite user', ['user_id' => $user->id]);
+      }
+
+      $invite->guest_user_id = null;
+      $invite->save();
+
+      //log the user out
+      Auth::logout();
+      $user->delete();
+
+      $cookie = cookie('refresh_token', '', 0, null, null, false, true);
+      return response()->json([
+        'status' => 'success',
+        'message' => 'Share created',
+      ])->withCookie($cookie);
+    }
+
     // Process recipients if provided
     if ($request->has('recipients') && is_array($request->recipients)) {
       foreach ($request->recipients as $recipient) {
@@ -363,7 +390,7 @@ class UploadsController extends Controller
 
     return response()->json([
       'status' => 'success',
-      'message' => 'Share created from chunks',
+      'message' => 'Share created',
       'data' => [
         'share' => $share
       ]

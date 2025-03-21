@@ -84,28 +84,37 @@ button {
   }
 }
 
-button.logout,
-button.settings-button,
+
 button.close-settings-button {
   display: flex;
   position: absolute;
-  bottom: 20px;
+  top: 15px;
+  right: 20px;
   z-index: 102;
 }
 
-button.logout {
+
+.main-menu {
+  display: flex;
+  gap: 5px;
+  position: absolute;
+  bottom: 20px;
   right: 20px;
+  filter: drop-shadow(0 20px 5px rgba(0, 0, 0, 0.5));
+
+  background: var(--panel-background-color);
+  padding: 5px;
+  border-radius: var(--button-border-radius);
+
+  button {
+    margin-right:0;
+    background: none;
+    color: var(--panel-text-color);
+  }
 }
 
-button.settings-button {
-  right: 80px;
-}
 
-button.close-settings-button {
-  right: 20px;
-  top: 20px;
-  bottom: unset;
-}
+
 
 
 .button-outside-label {
