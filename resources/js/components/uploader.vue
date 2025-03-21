@@ -263,7 +263,6 @@ const createShareURL = (longId) => {
 }
 
 const thankGuestForUpload = () => {
-  toast.success(t.value('uploader.guest_share_created'))
   logout()
   store.setMode('thank_guest_for_upload')
 }

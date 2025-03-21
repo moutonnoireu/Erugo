@@ -12,12 +12,24 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use App\Jobs\sendEmail;
 use App\Mail\reverseShareInviteMail;
+use App\Models\Setting;
 
 
 class ReverseSharesController extends Controller
 {
     public function createInvite(Request $request)
     {
+
+        $allowReverseShares = Setting::where('key', 'allow_reverse_shares')->first()->value;
+        $allowReverseShares = filter_var($allowReverseShares, FILTER_VALIDATE_BOOLEAN);
+
+        if (!$allowReverseShares) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Reverse shares are not allowed'
+            ], 400);
+        }
+
         $validator = Validator::make($request->all(), [
             'recipient_name' => ['required', 'string', 'max:255'],
             'recipient_email' => ['required', 'email', 'max:255']

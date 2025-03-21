@@ -35,6 +35,8 @@ const setupNeeded = ref(false)
 const toast = useToast()
 const slideshowSpeed = ref(180)
 const reverseInvite = ref(null)
+const allowReverseShares = domData().allow_reverse_shares
+
 onMounted(() => {
   if (domError().length > 0) {
     console.log('error', domError())
@@ -171,7 +173,7 @@ const openReverseShareInvite = () => {
           class="reverse-share-invite-button secondary icon-only"
           :title="t('button.reverse_share_invite')"
           @click="openReverseShareInvite"
-          v-if="!store.isGuest()"
+          v-if="!store.isGuest() && allowReverseShares"
         >
           <MailPlus />
         </button>
@@ -232,6 +234,6 @@ const openReverseShareInvite = () => {
       </div>
     </div>
     <Settings ref="settingsPanel" />
-    <ReverseInvite ref="reverseInvite" />
+    <ReverseInvite ref="reverseInvite" v-if="allowReverseShares && !store.isGuest() && store.isLoggedIn()" />
   </TolgeeProvider>
 </template>
