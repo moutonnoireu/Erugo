@@ -43,6 +43,16 @@
       --secondary-button-background-color-disabled: {{ $theme->theme->buttons->secondary->disabled->background ?? 'rgba(100, 100, 100, 0.566)' }};
       --secondary-button-text-color-disabled: {{ $theme->theme->buttons->secondary->disabled->text ?? 'rgba(255, 255, 255, 0.579)' }};
       
+
+      /* Scrollbars */  
+      @if(isset($theme->theme->scrollbars))
+      --scrollbar-track-color: {{ $theme->theme->scrollbars->track ?? 'rgba(226, 232, 240, 0.6)' }};
+      --scrollbar-thumb-color: {{ $theme->theme->scrollbars->thumb ?? 'rgba(148, 163, 184, 0.7)' }};
+      --scrollbar-thumb-hover-color: {{ $theme->theme->scrollbars->thumbHover ?? 'rgba(100, 116, 139, 0.8)' }};
+      --scrollbar-width: {{ $theme->theme->scrollbars->width ?? '8px' }};
+      --scrollbar-border-radius: {{ $theme->theme->scrollbars->borderRadius ?? '4px' }};
+      @endif
+
       /* Uploader Colors */
       @if(isset($theme->theme->uploader))
       --uploader-background-color: {{ $theme->theme->uploader->background ?? 'rgba(240, 240, 240, 0.769)' }};

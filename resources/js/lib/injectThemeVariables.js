@@ -1,9 +1,9 @@
 const injectThemeVariables = (location, theme) => {
-
   const injectionPoint = document.querySelector(location)
   if (!theme) {
     return
   }
+
   if (injectionPoint) {
     //links
     injectionPoint.style.setProperty('--link-color', theme.links.default)
@@ -45,6 +45,15 @@ const injectThemeVariables = (location, theme) => {
       theme.buttons.secondary.disabled.background
     )
     injectionPoint.style.setProperty('--secondary-button-text-color-disabled', theme.buttons.secondary.disabled.text)
+
+    //scrollbars
+    if (theme.scrollbars) {
+      injectionPoint.style.setProperty('--scrollbar-track-color', theme.scrollbars.track)
+      injectionPoint.style.setProperty('--scrollbar-thumb-color', theme.scrollbars.thumb)
+      injectionPoint.style.setProperty('--scrollbar-thumb-hover-color', theme.scrollbars.thumbHover)
+      injectionPoint.style.setProperty('--scrollbar-width', theme.scrollbars.width)
+      injectionPoint.style.setProperty('--scrollbar-border-radius', theme.scrollbars.borderRadius)
+    }
 
     // Uploader
     if (theme.uploader) {

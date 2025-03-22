@@ -117,6 +117,13 @@
   --progress-bar-fill-color: rgb(80, 175, 223);
   --progress-bar-text-color: rgb(34, 34, 34);
 
+  /* Scrollbar Colors */
+  --scrollbar-track-color: rgba(113, 113, 113, 0.119);
+  --scrollbar-thumb-color: rgba(118, 118, 118, 0.495);
+  --scrollbar-thumb-hover-color: rgba(81, 81, 81, 0.434);
+  --scrollbar-width: 8px;
+  --scrollbar-border-radius: 4px;
+
   /* Overlay */
 
   --overlay-background-color: rgba(255, 255, 255, 0.2);
@@ -484,13 +491,13 @@ body {
   flex-grow: 0.5;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px;
-  padding-bottom: 0px;
+  padding: 10px 10px 6px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+
 
   .upload-basket-details {
     position: relative;
@@ -1125,13 +1132,44 @@ body {
   white-space: nowrap;
 }
 
-/* Hide scrollbars for all elements */
+//set scrollbar styles
 * {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
 }
 
-/* Hide scrollbars for WebKit browsers (Chrome, Safari, etc.) */
-*::-webkit-scrollbar {
-  display: none;
+::-webkit-scrollbar {
+  width: 10px;
 }
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-color);
+}
+
+* {
+  transition: scrollbar-color 0.1s ease-in-out, -webkit-scrollbar-color 0.1s ease-in-out, -webkit-scrollbar-track 0.1s ease-in-out;
+}
+
+//hide scrollbar when the mouse is not over the scrollable element
+:not(:hover) {
+  scrollbar-color: transparent transparent;
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  
+}
+
+
+
