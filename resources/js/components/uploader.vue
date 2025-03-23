@@ -493,7 +493,7 @@ const canExpireInYears = computed(() => {
   </div>
   <div class="expiry-settings-container">
     <span class="expiry-label" @click="toggleExpirySettings">
-      <Clock9 /> {{ $t('uploader.expiry_label', { value: expiryValue, unit: expiryUnit }) }}
+      <Clock9 /> {{ $t('uploader.expiry_label', { value: expiryValue, unit: t('uploader.expiry_unit.' + expiryUnit) }) }}
     </span>
     <div class="expiry-settings" :class="{ visible: showExpirySettings }">
       <input type="number" v-model="expiryValue" />
