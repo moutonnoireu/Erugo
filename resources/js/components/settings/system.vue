@@ -45,6 +45,7 @@ const settings = ref({
   application_name: '',
   application_url: '',
   login_message: '',
+  default_expiry_time: '',
   max_expiry_time: '',
   max_share_size: '',
   max_share_size_unit: '',
@@ -379,6 +380,13 @@ const handleDeleteAuthProvider = async (id) => {
               </div>
 
               <div class="setting-group-body">
+                <div class="setting-group-body-item">
+                  <label for="default_expiry_time">
+                    {{ $t('settings.system.default_expiry_time') }}
+                    <small>({{ $t('settings.system.days') }})</small>
+                  </label>
+                  <input type="number" id="default_expiry_time" v-model="settings.default_expiry_time" placeholder="7" />
+                </div>
                 <div class="setting-group-body-item">
                   <label for="max_expiry_time">
                     {{ $t('settings.system.max_expiry_time') }}

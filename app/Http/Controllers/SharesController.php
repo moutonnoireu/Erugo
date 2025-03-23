@@ -28,7 +28,8 @@ class SharesController extends Controller
       'name' => ['string', 'max:255'],
       'description' => ['max:500'],
       'expires_at' => ['date'],
-      'files' => ['required', 'array']
+      'files' => ['required', 'array'],
+      'expiry_date' => ['required', 'date']
     ]);
 
     if ($validator->fails()) {
@@ -39,6 +40,23 @@ class SharesController extends Controller
           'errors' => $validator->errors()
         ]
       ], 422);
+    }
+
+    $maxExpiryTime = Setting::where('key', 'max_expiry_time')->first()->value;
+    $expiryDate = Carbon::parse($request->expiry_date);
+
+    if ($maxExpiryTime !== null) {
+      $now = Carbon::now();
+
+      if ($now->diffInDays($expiryDate) > $maxExpiryTime) {
+        return response()->json([
+          'status' => 'error',
+          'message' => 'Expiry date is too long',
+          'data' => [
+            'max_expiry_time' => $maxExpiryTime
+          ]
+        ], 400);
+      }
     }
 
     $user = Auth::user();

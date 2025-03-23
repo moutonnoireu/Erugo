@@ -9,6 +9,10 @@ const props = defineProps({
   secondary: {
     type: Boolean,
     default: true
+  },
+  direction: {
+    type: String,
+    default: 'bottom right'
   }
 })
 
@@ -24,6 +28,30 @@ const visible = ref(false)
 
 const toggleMenu = () => {
   visible.value = !visible.value
+
+  //has the menu gone out of the screen?
+  const menu = document.querySelector('.button-with-menu-dropdown')
+  const menuRect = menu.getBoundingClientRect()
+  const screenWidth = window.innerWidth
+  const screenHeight = window.innerHeight
+
+  // if (menuRect.right > screenWidth) {
+  //   menu.style.left = `${screenWidth - menuRect.right}px`
+  // }
+
+  // if (menuRect.bottom > screenHeight) {
+  //   menu.style.top = `${screenHeight - menuRect.bottom}px`
+  // }
+
+  // //is the menu off the left side of the screen?
+  // if (menuRect.left < 0) {
+  //   menu.style.left = `${menuRect.left}px`
+  // }
+
+  // //is the menu off the top side of the screen?
+  // if (menuRect.top < 0) {
+  //   menu.style.top = `${menuRect.top}px`
+  // }
 }
 
 onMounted(() => {
@@ -49,13 +77,18 @@ const handleItemClick = (item) => {
 </script>
 
 <template>
-  <div class="button-with-menu">
-    <button :class="{ 'icon-only': iconOnly, 'secondary': secondary }" @click="toggleMenu">
+  <div class="button-with-menu" :class="direction">
+    <button :class="{ 'icon-only': iconOnly, secondary: secondary }" @click="toggleMenu">
       <slot name="icon" />
       <slot name="label" />
     </button>
     <div class="button-with-menu-dropdown" :class="{ visible: visible }">
-      <div class="button-with-menu-dropdown-item" v-for="item in items" :key="item.label" @click="handleItemClick(item)">
+      <div
+        class="button-with-menu-dropdown-item"
+        v-for="item in items"
+        :key="item.label"
+        @click="handleItemClick(item)"
+      >
         <Component :is="item.icon" />
         {{ item.label }}
       </div>
@@ -127,6 +160,34 @@ const handleItemClick = (item) => {
       border-radius: 5px;
       width: 15px;
       margin-top: -1px;
+    }
+  }
+
+  &.top {
+    .button-with-menu-dropdown-item {
+      top: auto;
+      bottom: calc(100% + 5px);
+    }
+  }
+
+  &.left {
+    .button-with-menu-dropdown-item {
+      right: auto;
+      left: 0;
+    }
+  }
+
+  &.right {
+    .button-with-menu-dropdown-item {
+      left: auto;
+      right: 0;
+    }
+  }
+
+  &.bottom {
+    .button-with-menu-dropdown-item {
+      top: auto;
+      bottom: calc(100% + 5px);
     }
   }
 }

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import {
   CircleSlash2,
   FilePlus,
@@ -14,7 +14,8 @@ import {
   Pause,
   Play,
   Boxes,
-  Box
+  Box,
+  Clock9,
 } from 'lucide-vue-next'
 import { niceFileSize, niceFileType, simpleUUID } from '../utils'
 import { createShare, getHealth, getMyProfile, uploadFilesInChunks, logout } from '../api'
@@ -24,6 +25,7 @@ import { domData } from '../domData'
 import { useTranslate } from '@tolgee/vue'
 import { useToast } from 'vue-toastification'
 import { store } from '../store'
+import ButtonWithMenu from './buttonWithMenu.vue'
 
 const { t } = useTranslate()
 const toast = useToast()
@@ -49,6 +51,9 @@ const uploadSettings = ref({
   allowDirectUploads: domData().allow_direct_uploads,
   allowChunkedUploads: domData().allow_chunked_uploads
 })
+const expiryValue = ref(domData().default_expiry_time)
+const expiryUnit = ref('days')
+const maxExpiryTime = ref(domData().max_expiry_time)
 
 const errors = ref({
   shareName: null
@@ -153,6 +158,32 @@ const uploadFiles = async () => {
   alert(t.value('upload.upload_mode_not_supported'))
 }
 
+const calculateExpiryDate = () => {
+  const now = new Date()
+  const expiryDate = new Date(now)
+  const currentTimestamp = now.getTime()
+  const multiplier = multiplierFromUnit(expiryUnit.value)
+  const expiryTimestamp = currentTimestamp + expiryValue.value * multiplier
+  expiryDate.setTime(expiryTimestamp)
+  return expiryDate
+}
+
+const multiplierFromUnit = (unit) => {
+  const baseMultiplier = 1000 * 60 * 60 * 24 //1 day in milliseconds
+  switch (unit) {
+    case 'days':
+      return 1 * baseMultiplier
+    case 'weeks':
+      return 7 * baseMultiplier
+    case 'months':
+      return 30 * baseMultiplier
+    case 'years':
+      return 365 * baseMultiplier
+    default:
+      throw new Error('Invalid expiry unit')
+  }
+}
+
 const doChunkedUpload = async (uploadId) => {
   try {
     await uploadFilesInChunks(
@@ -161,6 +192,7 @@ const doChunkedUpload = async (uploadId) => {
       shareName.value,
       shareDescription.value,
       recipients.value,
+      calculateExpiryDate(),
       (progress) => {
         uploadProgress.value = progress.percentage
         uploadedBytes.value = progress.uploadedBytes
@@ -215,6 +247,7 @@ const doDirectUpload = async (uploadId) => {
       shareDescription.value,
       recipients.value,
       uploadId,
+      calculateExpiryDate(),
       (progress) => {
         uploadProgress.value = progress.percentage
         uploadedBytes.value = progress.uploadedBytes
@@ -268,7 +301,6 @@ const thankGuestForUpload = () => {
 }
 
 const showSharePanel = (url) => {
-
   sharePanelVisible.value = true
   shareUrl.value = url
 }
@@ -312,6 +344,103 @@ const swapUploadMode = () => {
   localStorage.setItem('uploadMode', uploadSettings.value.uploadMode)
   toast.success(t.value('uploader.upload_mode_swapped', { value: uploadSettings.value.uploadMode }))
 }
+
+const showExpirySettings = ref(false)
+const toggleExpirySettings = () => {
+  showExpirySettings.value = !showExpirySettings.value
+}
+
+const expiryValueWatchEnabled = ref(true)
+watch(expiryValue, () => {
+  if (expiryValueWatchEnabled.value) {
+    checkExpiryValue()
+  }
+})
+
+const timeUnitConversions = {
+  days: 1,
+  weeks: 7,
+  months: 30,
+  years: 365
+}
+
+// Single watch function with cleaner conversion logic
+watch(expiryUnit, (newUnit, oldUnit) => {
+  // Skip if units are the same
+  if (newUnit === oldUnit) return
+
+  // Get the conversion factor between old and new units
+  const oldUnitValue = timeUnitConversions[oldUnit]
+  const newUnitValue = timeUnitConversions[newUnit]
+  const conversionFactor = oldUnitValue / newUnitValue
+
+  // Apply conversion with a minimum value of 1
+  const newValue = Math.round(expiryValue.value * conversionFactor)
+  expiryValue.value = Math.max(1, newValue)
+
+  // Check if the new value exceeds maximum allowed time
+  checkExpiryValue(false)
+})
+
+const checkExpiryValue = (showError = true) => {
+  if (maxExpiryTime.value == null) {
+    return
+  }
+  const currentTimestamp = new Date().getTime()
+  const selectedUnitMultiplier = multiplierFromUnit(expiryUnit.value)
+  const expiryTimestamp = currentTimestamp + expiryValue.value * selectedUnitMultiplier
+
+  const maxExpiryTimeStamp = currentTimestamp + maxExpiryTime.value * 1000 * 60 * 60 * 24 //days in milliseconds (this setting is always in days)
+  if (expiryTimestamp > maxExpiryTimeStamp) {
+    if (showError) {
+      toast.error(t.value('uploader.expiry_too_long', { value: maxExpiryTimeInSelectedUnit.value }))
+    }
+    console.log('max expiry time in selected unit', maxExpiryTimeInSelectedUnit.value)
+    setNewExpiryValueWithoutLoop(maxExpiryTimeInSelectedUnit.value)
+  }
+}
+
+const maxExpiryTimeInSelectedUnit = computed(() => {
+  if (maxExpiryTime.value == null) {
+    return null
+  }
+  const maxExpiryTimeInMilliseconds = maxExpiryTime.value * 1000 * 60 * 60 * 24
+  const maxExpiryTimeInSelectedUnit = maxExpiryTimeInMilliseconds / multiplierFromUnit(expiryUnit.value)
+  return maxExpiryTimeInSelectedUnit
+})
+
+const RoundedMaxExpiryTimeInSelectedUnit = computed(() => {
+  return Math.max(1, Math.floor(maxExpiryTimeInSelectedUnit.value))
+})
+
+const setNewExpiryValueWithoutLoop = (value) => {
+  expiryValueWatchEnabled.value = false
+  nextTick(() => {
+    expiryValue.value = Math.floor(value)
+    expiryValueWatchEnabled.value = true
+  })
+}
+
+const canExpireInWeeks = computed(() => {
+  if (maxExpiryTime.value == null) {
+    return true
+  }
+  return maxExpiryTime.value >= 7
+})
+
+const canExpireInMonths = computed(() => {
+  if (maxExpiryTime.value == null) {
+    return true
+  }
+  return maxExpiryTime.value >= 30
+})
+
+const canExpireInYears = computed(() => {
+  if (maxExpiryTime.value == null) {
+    return true
+  }
+  return maxExpiryTime.value >= 365
+})
 </script>
 
 <template>
@@ -327,6 +456,7 @@ const swapUploadMode = () => {
       </button>
     </div>
     <div class="max-size-label">{{ niceFileSize(totalSize) }} / {{ niceFileSize(maxShareSize) }}</div>
+
     <div>
       <div class="progress-bar-container" :class="{ visible: currentlyUploading }">
         <div class="progress-bar">
@@ -361,7 +491,23 @@ const swapUploadMode = () => {
       </div>
     </div>
   </div>
-
+  <div class="expiry-settings-container">
+    <span class="expiry-label" @click="toggleExpirySettings">
+      <Clock9 /> {{ $t('uploader.expiry_label', { value: expiryValue, unit: expiryUnit }) }}
+    </span>
+    <div class="expiry-settings" :class="{ visible: showExpirySettings }">
+      <input type="number" v-model="expiryValue" />
+      <span class="maxValueOverlay" v-if="maxExpiryTimeInSelectedUnit != null">{{
+        t('uploader.expiry_max_value', { value: RoundedMaxExpiryTimeInSelectedUnit })
+      }}</span>
+      <select v-model="expiryUnit">
+        <option value="days">{{ $t('uploader.expiry_unit.days') }}</option>
+        <option value="weeks" v-if="canExpireInWeeks">{{ $t('uploader.expiry_unit.weeks') }}</option>
+        <option value="months" v-if="canExpireInMonths">{{ $t('uploader.expiry_unit.months') }}</option>
+        <option value="years" v-if="canExpireInYears">{{ $t('uploader.expiry_unit.years') }}</option>
+      </select>
+    </div>
+  </div>
   <div class="upload-basket">
     <div class="basket-items">
       <div class="upload-basket-item" v-for="file in uploadBasket" :key="file.name" v-if="uploadBasket.length > 0">
@@ -418,6 +564,7 @@ const swapUploadMode = () => {
           </template>
         </div>
       </div>
+
       <div class="input-container mb-0">
         <input
           type="text"
@@ -508,6 +655,7 @@ const swapUploadMode = () => {
       </div>
     </div>
   </div>
+
   <input
     type="file"
     @change="handleFileSelect"
@@ -653,6 +801,78 @@ const swapUploadMode = () => {
     svg {
       width: 13px;
       height: 13px;
+    }
+  }
+}
+
+.expiry-settings-container {
+  width: 100%;
+  background: var(--uploader-header-background-color);
+  backdrop-filter: blur(10px);
+  color: var(--uploader-header-text-color);
+  text-align: center;
+
+  .expiry-label {
+    font-size: 0.8rem;
+    color: var(--panel-text-color);
+    font-weight: 200;
+    cursor: pointer;
+    user-select: none;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    &:hover {
+      color: var(--link-color-hover);
+    }
+    svg {
+      width: 12px;
+      height: 12px;
+      margin-right: 5px;
+      margin-top: -2px;
+    }
+  }
+
+  .expiry-settings {
+    position: relative;
+    overflow: hidden;
+    max-height: 0;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1px;
+    &.visible {
+      max-height: 50px;
+    }
+    input,
+    textarea,
+    select {
+      border-radius: 0 !important;
+      border: none;
+      display: block;
+      margin: 0;
+    }
+
+    input[type='number'] {
+      text-align: right;
+    }
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+      opacity: 0;
+      -moz-appearance: textfield;
+      appearance: textfield;
+      pointer-events: none;
+    }
+
+    .maxValueOverlay {
+      position: absolute;
+      left: 20px;
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      opacity: 0.5;
     }
   }
 }
