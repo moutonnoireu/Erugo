@@ -16,6 +16,8 @@ import {
   Boxes,
   Box,
   Clock9,
+  Lock,
+  LockOpen
 } from 'lucide-vue-next'
 import { niceFileSize, niceFileType, simpleUUID } from '../utils'
 import { createShare, getHealth, getMyProfile, uploadFilesInChunks, logout } from '../api'
@@ -54,9 +56,19 @@ const uploadSettings = ref({
 const expiryValue = ref(domData().default_expiry_time)
 const expiryUnit = ref('days')
 const maxExpiryTime = ref(domData().max_expiry_time)
-
 const errors = ref({
   shareName: null
+})
+
+const shareFormPassword = ref('')
+const shareFormPasswordConfirm = ref('')
+
+const sharePassword = ref('')
+const sharePasswordConfirm = ref('')
+
+const passwordFormErrors = ref({
+  password: null,
+  passwordConfirm: null
 })
 
 const recipients = ref([])
@@ -441,6 +453,39 @@ const canExpireInYears = computed(() => {
   }
   return maxExpiryTime.value >= 365
 })
+
+const showPasswordForm = ref(false)
+const passwordFormClickOutside = (e) => {
+  if (!e.target.closest('.user-form')) {
+    showPasswordForm.value = false
+  }
+}
+
+const passwordProtected = computed(() => {
+  return (
+    sharePassword.value.length > 0 &&
+    sharePasswordConfirm.value.length > 0 &&
+    sharePassword.value === sharePasswordConfirm.value
+  )
+})
+
+const setPassword = () => {
+  // TODO: show errors on the form
+  if (shareFormPassword.value !== shareFormPasswordConfirm.value) {
+    errors.passwordConfirm = t.value('uploader.password_mismatch')
+    return
+  }
+
+  sharePassword.value = shareFormPassword.value
+  sharePasswordConfirm.value = shareFormPasswordConfirm.value
+  showPasswordForm.value = false
+}
+
+const removePassword = () => {
+  sharePassword.value = ''
+  sharePasswordConfirm.value = ''
+  showPasswordForm.value = false
+}
 </script>
 
 <template>
@@ -493,13 +538,14 @@ const canExpireInYears = computed(() => {
   </div>
   <div class="expiry-settings-container">
     <span class="expiry-label" @click="toggleExpirySettings">
-      <Clock9 /> {{ $t('uploader.expiry_label', { value: expiryValue, unit: t('uploader.expiry_unit.' + expiryUnit) }) }}
+      <Clock9 />
+      {{ $t('uploader.expiry_label', { value: expiryValue, unit: t('uploader.expiry_unit.' + expiryUnit) }) }}
     </span>
     <div class="expiry-settings" :class="{ visible: showExpirySettings }">
       <input type="number" v-model="expiryValue" />
-      <span class="maxValueOverlay" v-if="maxExpiryTimeInSelectedUnit != null">{{
-        t('uploader.expiry_max_value', { value: RoundedMaxExpiryTimeInSelectedUnit })
-      }}</span>
+      <span class="maxValueOverlay" v-if="maxExpiryTimeInSelectedUnit != null">
+        {{ t('uploader.expiry_max_value', { value: RoundedMaxExpiryTimeInSelectedUnit }) }}
+      </span>
       <select v-model="expiryUnit">
         <option value="days">{{ $t('uploader.expiry_unit.days') }}</option>
         <option value="weeks" v-if="canExpireInWeeks">{{ $t('uploader.expiry_unit.weeks') }}</option>
@@ -652,6 +698,13 @@ const canExpireInYears = computed(() => {
             </div>
           </div>
         </div>
+
+        <div class="ps-0 col-auto">
+          <button class="icon-only secondary" @click="showPasswordForm = !showPasswordForm">
+            <Lock v-if="passwordProtected" />
+            <LockOpen v-else />
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -676,6 +729,50 @@ const canExpireInYears = computed(() => {
         <button class="sharePanel-copy-button icon-only" @click="copyShareUrl">
           <Check v-if="showCopySuccess" />
           <Copy v-else />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="user-form-overlay" :class="{ active: showPasswordForm }" @click="passwordFormClickOutside">
+    <div class="user-form">
+      <h2>
+        <Lock />
+        {{ $t('settings.title.share.password_protect') }}
+      </h2>
+      <p>{{ $t('settings.share.password_protect_description') }}</p>
+      <div class="input-container">
+        <label for="edit_share_password">{{ $t('settings.share.password') }}</label>
+        <input
+          type="password"
+          v-model="shareFormPassword"
+          id="edit_share_password"
+          :placeholder="$t('settings.share.password')"
+          required
+          :class="{ error: errors.password }"
+        />
+        <label for="edit_share_password_confirm">{{ $t('settings.share.password_confirm') }}</label>
+        <input
+          type="password"
+          v-model="shareFormPasswordConfirm"
+          id="edit_share_password_confirm"
+          :placeholder="$t('settings.share.password_confirm')"
+          required
+          :class="{ error: errors.password }"
+        />
+        <div class="error-message" v-if="errors.password">
+          {{ errors.password }}
+        </div>
+      </div>
+
+      <div class="button-bar">
+        <button @click="setPassword">
+          <Lock />
+          {{ $t('button.share.password_protect') }}
+        </button>
+        <button class="secondary close-button" @click="removePassword">
+          <LockOpen />
+          {{ $t('settings.share.remove_password') }}
         </button>
       </div>
     </div>
@@ -873,6 +970,67 @@ const canExpireInYears = computed(() => {
       border-radius: 5px;
       font-size: 0.8rem;
       opacity: 0.5;
+    }
+  }
+}
+
+.user-form-overlay {
+  border-radius: 10px 10px 0 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay-background-color);
+  backdrop-filter: blur(10px);
+  z-index: 230;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: var(--panel-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+    }
+  }
+  .user-form {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    width: 500px;
+    background: var(--panel-background-color);
+    color: var(--panel-text-color);
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 0 100px 0 rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    transition: all 0.3s ease;
+    padding-bottom: 20px;
+    button {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+    .user-form {
+      transform: translate(-50%, 0%);
     }
   }
 }
