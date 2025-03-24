@@ -197,6 +197,8 @@ const multiplierFromUnit = (unit) => {
 }
 
 const doChunkedUpload = async (uploadId) => {
+  let pageTitleAtStart = document.title
+
   try {
     await uploadFilesInChunks(
       uploadBasket.value,
@@ -205,6 +207,8 @@ const doChunkedUpload = async (uploadId) => {
       shareDescription.value,
       recipients.value,
       calculateExpiryDate(),
+      sharePassword.value,
+      sharePasswordConfirm.value,
       (progress) => {
         uploadProgress.value = progress.percentage
         uploadedBytes.value = progress.uploadedBytes
@@ -223,8 +227,12 @@ const doChunkedUpload = async (uploadId) => {
           currentChunk.value = progress.currentChunk
           totalChunks.value = progress.totalChunks
         }
+
+        //set the page title to the progress
+        document.title = `${Math.round(progress.percentage)}% - ${currentFileName.value}`
       },
       (result) => {
+        document.title = pageTitleAtStart
         if (store.isGuest()) {
           thankGuestForUpload()
         } else {
@@ -252,6 +260,7 @@ const doChunkedUpload = async (uploadId) => {
 }
 
 const doDirectUpload = async (uploadId) => {
+  let pageTitleAtStart = document.title
   try {
     const share = await createShare(
       uploadBasket.value,
@@ -260,13 +269,16 @@ const doDirectUpload = async (uploadId) => {
       recipients.value,
       uploadId,
       calculateExpiryDate(),
+      sharePassword.value,
+      sharePasswordConfirm.value,
       (progress) => {
         uploadProgress.value = progress.percentage
         uploadedBytes.value = progress.uploadedBytes
         totalBytes.value = progress.totalBytes
+        document.title = `${Math.round(progress.percentage)}%`
       }
     )
-
+    document.title = pageTitleAtStart
     if (store.isGuest()) {
       thankGuestForUpload()
     } else {
@@ -470,9 +482,21 @@ const passwordProtected = computed(() => {
 })
 
 const setPassword = () => {
-  // TODO: show errors on the form
+  passwordFormErrors.value.password = null
+  passwordFormErrors.value.passwordConfirm = null
+
+  if (shareFormPassword.value.length === 0) {
+    passwordFormErrors.value.password = t.value('uploader.password_required')
+    return
+  }
+
+  if (shareFormPasswordConfirm.value.length === 0) {
+    passwordFormErrors.value.passwordConfirm = t.value('uploader.password_confirmation_required')
+    return
+  }
+
   if (shareFormPassword.value !== shareFormPasswordConfirm.value) {
-    errors.passwordConfirm = t.value('uploader.password_mismatch')
+    passwordFormErrors.value.passwordConfirm = t.value('uploader.password_mismatch')
     return
   }
 
@@ -484,6 +508,10 @@ const setPassword = () => {
 const removePassword = () => {
   sharePassword.value = ''
   sharePasswordConfirm.value = ''
+  passwordFormErrors.value.password = null
+  passwordFormErrors.value.passwordConfirm = null
+  shareFormPassword.value = ''
+  shareFormPasswordConfirm.value = ''
   showPasswordForm.value = false
 }
 </script>
@@ -749,8 +777,15 @@ const removePassword = () => {
           id="edit_share_password"
           :placeholder="$t('settings.share.password')"
           required
-          :class="{ error: errors.password }"
+          :class="{ error: passwordFormErrors.password }"
+          @keyup.enter="setPassword"
         />
+        <div class="error-message" v-if="passwordFormErrors.password">
+          {{ passwordFormErrors.password }}
+        </div>
+      </div>
+
+      <div class="input-container">
         <label for="edit_share_password_confirm">{{ $t('settings.share.password_confirm') }}</label>
         <input
           type="password"
@@ -758,10 +793,12 @@ const removePassword = () => {
           id="edit_share_password_confirm"
           :placeholder="$t('settings.share.password_confirm')"
           required
-          :class="{ error: errors.password }"
+          :class="{ error: passwordFormErrors.passwordConfirm }"
+          @keyup.enter="setPassword"
         />
-        <div class="error-message" v-if="errors.password">
-          {{ errors.password }}
+
+        <div class="error-message" v-if="passwordFormErrors.passwordConfirm">
+          {{ passwordFormErrors.passwordConfirm }}
         </div>
       </div>
 

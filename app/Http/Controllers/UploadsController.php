@@ -15,7 +15,7 @@ use App\Jobs\CreateShareZip;
 use App\Mail\shareCreatedMail;
 use App\Jobs\sendEmail;
 use App\Models\Setting;
-
+use Illuminate\Support\Facades\Hash;
 class UploadsController extends Controller
 {
   /**
@@ -343,6 +343,18 @@ class UploadsController extends Controller
       $totalSize += $file->size;
     }
 
+    $password = $request->password;
+    $passwordConfirm = $request->password_confirm;
+
+    if($password) {
+      if($password !== $passwordConfirm) {
+        return response()->json([
+          'status' => 'error',
+          'message' => 'Password confirmation does not match'
+        ], 400);
+      }
+    }
+
     // Create the share record
     $share = Share::create([
       'name' => $request->name,
@@ -353,7 +365,8 @@ class UploadsController extends Controller
       'long_id' => $longId,
       'size' => $totalSize,
       'file_count' => $fileCount,
-      'status' => 'pending'
+      'status' => 'pending',
+      'password' => $password ? Hash::make($password) : null
     ]);
 
     // Associate files with the share and move from temp to share directory

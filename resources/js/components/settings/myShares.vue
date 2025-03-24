@@ -7,7 +7,9 @@ import {
   CalendarX2,
   HardDriveDownload,
   MessageCircleQuestion,
-  Rocket
+  Rocket,
+  Lock,
+  LockOpen
 } from 'lucide-vue-next'
 import { useToast } from 'vue-toastification'
 import { niceFileSize, niceDate, niceFileName, niceNumber } from '../../utils'
@@ -152,6 +154,16 @@ defineExpose({
               <SquareArrowOutUpRight />
               {{ share.long_id }}
             </a>
+            <div class="protection-status">
+              <template v-if="share.password_protected">
+                <Lock />
+                {{ $t('share.passwordProtected') }}
+              </template>
+              <template v-else>
+                <LockOpen />
+                {{ $t('share.passwordNotProtected') }}
+              </template>
+            </div>
           </td>
           <td style="vertical-align: top">
             <h6 class="file-count">
@@ -244,7 +256,8 @@ defineExpose({
       </tbody>
     </table>
     <div v-else-if="loadedShares" class="center-message">
-      <Rocket /> <p>{{ $t('settings.noShares') }}</p>
+      <Rocket />
+      <p>{{ $t('settings.noShares') }}</p>
     </div>
     <div v-else class="center-message">
       <p>{{ $t('settings.loading') }}</p>
@@ -444,6 +457,21 @@ td {
     height: 4rem;
     margin-right: 10px;
     margin-top: -20px;
+  }
+}
+
+.protection-status {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  font-size: 0.6rem;
+  color: var(--panel-section-text-color);
+  svg {
+    width: 1rem;
+    height: 1rem;
+    margin-top: -2px;
   }
 }
 </style>
