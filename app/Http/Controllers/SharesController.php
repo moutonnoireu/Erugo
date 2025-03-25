@@ -19,6 +19,7 @@ use App\Mail\shareCreatedMail;
 use App\Jobs\sendEmail;
 use App\Services\SettingsService;
 use App\Jobs\cleanSpecificShares;
+use Illuminate\Support\Facades\Hash;
 
 class SharesController extends Controller
 {
@@ -28,7 +29,8 @@ class SharesController extends Controller
       'name' => ['string', 'max:255'],
       'description' => ['max:500'],
       'expires_at' => ['date'],
-      'files' => ['required', 'array']
+      'files' => ['required', 'array'],
+      'expiry_date' => ['required', 'date']
     ]);
 
     if ($validator->fails()) {
@@ -39,6 +41,23 @@ class SharesController extends Controller
           'errors' => $validator->errors()
         ]
       ], 422);
+    }
+
+    $maxExpiryTime = Setting::where('key', 'max_expiry_time')->first()->value;
+    $expiryDate = Carbon::parse($request->expiry_date);
+
+    if ($maxExpiryTime !== null) {
+      $now = Carbon::now();
+
+      if ($now->diffInDays($expiryDate) > $maxExpiryTime) {
+        return response()->json([
+          'status' => 'error',
+          'message' => 'Expiry date is too long',
+          'data' => [
+            'max_expiry_time' => $maxExpiryTime
+          ]
+        ], 400);
+      }
     }
 
     $user = Auth::user();
@@ -59,6 +78,21 @@ class SharesController extends Controller
     $sharePath = $user->id . '/' . $longId;
     $completePath = storage_path('app/shares/' .  $sharePath);
 
+    $password = $request->password;
+    $passwordConfirm = $request->password_confirm;
+
+    $password = $request->password;
+    $passwordConfirm = $request->password_confirm;
+
+    if ($password) {
+      if ($password !== $passwordConfirm) {
+        return response()->json([
+          'status' => 'error',
+          'message' => 'Password confirmation does not match'
+        ], 400);
+      }
+    }
+
     $shareData = [
       'name' => $request->name,
       'description' => $request->description,
@@ -67,7 +101,8 @@ class SharesController extends Controller
       'path' => $sharePath,
       'long_id' => $longId,
       'size' => $totalFileSize,
-      'file_count' => count($files)
+      'file_count' => count($files),
+      'password' => $password ? Hash::make($password) : null
     ];
     $share = Share::create($shareData);
     foreach ($files as $file) {
@@ -203,9 +238,45 @@ class SharesController extends Controller
       'status' => 'success',
       'message' => 'Share found',
       'data' => [
-        'share' => $share
+
+        'share' => $this->formatSharePublic($share)
+
       ]
     ]);
+  }
+
+  private function formatSharePublic(Share $share)
+  {
+    return [
+      'id' => $share->id,
+      'name' => $share->name,
+      'description' => $share->description,
+      'expires_at' => $share->expires_at,
+      'download_limit' => $share->download_limit,
+      'download_count' => $share->download_count,
+      'size' => $share->size,
+      'file_count' => $share->file_count,
+      'files' => $share->files->map(function ($file) {
+        return [
+          'id' => $file->id,
+          'name' => $file->name,
+          'size' => $file->size,
+          'type' => $file->type,
+          'created_at' => $file->created_at,
+          'updated_at' => $file->updated_at
+        ];
+      }),
+      'user' => [
+        'name' => $share->user ? $share->user->name : 'Guest User',
+      ],
+      'password_protected' => $share->password ? true : false
+    ];
+  }
+
+  private function formatSharePrivate(Share $share)
+  {
+    $share->password_protected = $share->password ? true : false;
+    return $share;
   }
 
   private function checkShareAccess(Share $share)
@@ -239,6 +310,16 @@ class SharesController extends Controller
     $share = Share::where('long_id', $shareId)->with('files')->first();
     if (!$share) {
       return redirect()->to('/shares/' . $shareId);
+    }
+
+    if ($share->password) {
+      $password = request()->input('password');
+      if (!$password) {
+        return redirect()->to('/shares/' . $shareId . '?error=password_required');
+      }
+      if (!Hash::check($password, $share->password)) {
+        return redirect()->to('/shares/' . $shareId . '?error=invalid_password');
+      }
     }
 
     if ($share->expires_at < Carbon::now()) {
@@ -330,7 +411,9 @@ class SharesController extends Controller
       'status' => 'success',
       'message' => 'My shares',
       'data' => [
-        'shares' => $shares
+        'shares' => $shares->map(function ($share) {
+          return $this->formatSharePrivate($share);
+        })
       ]
     ]);
   }

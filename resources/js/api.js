@@ -431,7 +431,7 @@ export const deleteBackgroundImage = async (file) => {
 }
 
 // Share Methods
-export const createShare = async (files, name, description, recipients, uploadId, onProgress) => {
+export const createShare = async (files, name, description, recipients, uploadId, expiryDate, password, passwordConfirm, onProgress) => {
   const formData = new FormData()
   files.forEach((file) => {
     formData.append('files[]', file)
@@ -439,6 +439,13 @@ export const createShare = async (files, name, description, recipients, uploadId
   formData.append('name', name)
   formData.append('description', description)
   formData.append('upload_id', uploadId)
+  formData.append('expiry_date', expiryDate.toISOString())
+  if (password) {
+    formData.append('password', password)
+  }
+  if (passwordConfirm) {
+    formData.append('password_confirm', passwordConfirm)
+  }
   if (recipients.length > 0) {
     recipients.forEach((recipient, index) => {
       formData.append(`recipients[${index}][name]`, recipient.name)
@@ -995,6 +1002,9 @@ export const uploadFilesInChunks = async (
   shareName,
   shareDescription,
   recipients,
+  expiryDate,
+  password,
+  passwordConfirm,
   onProgress,
   onComplete,
   onError
@@ -1058,7 +1068,10 @@ export const uploadFilesInChunks = async (
         name: shareName,
         description: shareDescription,
         recipients: recipients,
-        fileInfo: results.map((r) => r.data.file.id)
+        fileInfo: results.map((r) => r.data.file.id),
+        expiry_date: expiryDate,
+        password: password,
+        password_confirm: passwordConfirm
       })
     })
 

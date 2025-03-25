@@ -23,7 +23,8 @@ class Share extends Model
     'download_count',
     'require_email',
     'expires_at',
-    'status'
+    'status',
+    'password'
   ];
 
   protected $casts = [

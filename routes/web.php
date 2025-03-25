@@ -25,6 +25,8 @@ function getSettings()
         ->orWhere('key', 'allow_direct_uploads')
         ->orWhere('key', 'allow_chunked_uploads')
         ->orWhere('key', 'allow_reverse_shares')
+        ->orWhere('key', 'max_expiry_time')
+        ->orWhere('key', 'default_expiry_time')
         ->get();
 
     $settings = $settings->map(function ($setting) use ($settingsService) {

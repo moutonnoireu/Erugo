@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import {
   CircleSlash2,
   FilePlus,
@@ -14,7 +14,10 @@ import {
   Pause,
   Play,
   Boxes,
-  Box
+  Box,
+  Clock9,
+  Lock,
+  LockOpen
 } from 'lucide-vue-next'
 import { niceFileSize, niceFileType, simpleUUID } from '../utils'
 import { createShare, getHealth, getMyProfile, uploadFilesInChunks, logout } from '../api'
@@ -24,6 +27,7 @@ import { domData } from '../domData'
 import { useTranslate } from '@tolgee/vue'
 import { useToast } from 'vue-toastification'
 import { store } from '../store'
+import ButtonWithMenu from './buttonWithMenu.vue'
 
 const { t } = useTranslate()
 const toast = useToast()
@@ -49,9 +53,22 @@ const uploadSettings = ref({
   allowDirectUploads: domData().allow_direct_uploads,
   allowChunkedUploads: domData().allow_chunked_uploads
 })
-
+const expiryValue = ref(domData().default_expiry_time)
+const expiryUnit = ref('days')
+const maxExpiryTime = ref(domData().max_expiry_time)
 const errors = ref({
   shareName: null
+})
+
+const shareFormPassword = ref('')
+const shareFormPasswordConfirm = ref('')
+
+const sharePassword = ref('')
+const sharePasswordConfirm = ref('')
+
+const passwordFormErrors = ref({
+  password: null,
+  passwordConfirm: null
 })
 
 const recipients = ref([])
@@ -153,7 +170,35 @@ const uploadFiles = async () => {
   alert(t.value('upload.upload_mode_not_supported'))
 }
 
+const calculateExpiryDate = () => {
+  const now = new Date()
+  const expiryDate = new Date(now)
+  const currentTimestamp = now.getTime()
+  const multiplier = multiplierFromUnit(expiryUnit.value)
+  const expiryTimestamp = currentTimestamp + expiryValue.value * multiplier
+  expiryDate.setTime(expiryTimestamp)
+  return expiryDate
+}
+
+const multiplierFromUnit = (unit) => {
+  const baseMultiplier = 1000 * 60 * 60 * 24 //1 day in milliseconds
+  switch (unit) {
+    case 'days':
+      return 1 * baseMultiplier
+    case 'weeks':
+      return 7 * baseMultiplier
+    case 'months':
+      return 30 * baseMultiplier
+    case 'years':
+      return 365 * baseMultiplier
+    default:
+      throw new Error('Invalid expiry unit')
+  }
+}
+
 const doChunkedUpload = async (uploadId) => {
+  let pageTitleAtStart = document.title
+
   try {
     await uploadFilesInChunks(
       uploadBasket.value,
@@ -161,6 +206,9 @@ const doChunkedUpload = async (uploadId) => {
       shareName.value,
       shareDescription.value,
       recipients.value,
+      calculateExpiryDate(),
+      sharePassword.value,
+      sharePasswordConfirm.value,
       (progress) => {
         uploadProgress.value = progress.percentage
         uploadedBytes.value = progress.uploadedBytes
@@ -179,8 +227,12 @@ const doChunkedUpload = async (uploadId) => {
           currentChunk.value = progress.currentChunk
           totalChunks.value = progress.totalChunks
         }
+
+        //set the page title to the progress
+        document.title = `${Math.round(progress.percentage)}% - ${currentFileName.value}`
       },
       (result) => {
+        document.title = pageTitleAtStart
         if (store.isGuest()) {
           thankGuestForUpload()
         } else {
@@ -208,6 +260,7 @@ const doChunkedUpload = async (uploadId) => {
 }
 
 const doDirectUpload = async (uploadId) => {
+  let pageTitleAtStart = document.title
   try {
     const share = await createShare(
       uploadBasket.value,
@@ -215,13 +268,17 @@ const doDirectUpload = async (uploadId) => {
       shareDescription.value,
       recipients.value,
       uploadId,
+      calculateExpiryDate(),
+      sharePassword.value,
+      sharePasswordConfirm.value,
       (progress) => {
         uploadProgress.value = progress.percentage
         uploadedBytes.value = progress.uploadedBytes
         totalBytes.value = progress.totalBytes
+        document.title = `${Math.round(progress.percentage)}%`
       }
     )
-
+    document.title = pageTitleAtStart
     if (store.isGuest()) {
       thankGuestForUpload()
     } else {
@@ -268,7 +325,6 @@ const thankGuestForUpload = () => {
 }
 
 const showSharePanel = (url) => {
-
   sharePanelVisible.value = true
   shareUrl.value = url
 }
@@ -312,6 +368,159 @@ const swapUploadMode = () => {
   localStorage.setItem('uploadMode', uploadSettings.value.uploadMode)
   toast.success(t.value('uploader.upload_mode_swapped', { value: uploadSettings.value.uploadMode }))
 }
+
+const showExpirySettings = ref(false)
+const toggleExpirySettings = () => {
+  showExpirySettings.value = !showExpirySettings.value
+}
+
+const expiryValueWatchEnabled = ref(true)
+watch(expiryValue, () => {
+  if (expiryValueWatchEnabled.value) {
+    checkExpiryValue()
+  }
+})
+
+const timeUnitConversions = {
+  days: 1,
+  weeks: 7,
+  months: 30,
+  years: 365
+}
+
+// Single watch function with cleaner conversion logic
+watch(expiryUnit, (newUnit, oldUnit) => {
+  // Skip if units are the same
+  if (newUnit === oldUnit) return
+
+  // Get the conversion factor between old and new units
+  const oldUnitValue = timeUnitConversions[oldUnit]
+  const newUnitValue = timeUnitConversions[newUnit]
+  const conversionFactor = oldUnitValue / newUnitValue
+
+  // Apply conversion with a minimum value of 1
+  const newValue = Math.round(expiryValue.value * conversionFactor)
+  expiryValue.value = Math.max(1, newValue)
+
+  // Check if the new value exceeds maximum allowed time
+  checkExpiryValue(false)
+})
+
+const checkExpiryValue = (showError = true) => {
+  if (maxExpiryTime.value == null) {
+    return
+  }
+  const currentTimestamp = new Date().getTime()
+  const selectedUnitMultiplier = multiplierFromUnit(expiryUnit.value)
+  const expiryTimestamp = currentTimestamp + expiryValue.value * selectedUnitMultiplier
+
+  const maxExpiryTimeStamp = currentTimestamp + maxExpiryTime.value * 1000 * 60 * 60 * 24 //days in milliseconds (this setting is always in days)
+  if (expiryTimestamp > maxExpiryTimeStamp) {
+    if (showError) {
+      toast.error(t.value('uploader.expiry_too_long', { value: maxExpiryTimeInSelectedUnit.value }))
+    }
+    console.log('max expiry time in selected unit', maxExpiryTimeInSelectedUnit.value)
+    setNewExpiryValueWithoutLoop(maxExpiryTimeInSelectedUnit.value)
+  }
+}
+
+const maxExpiryTimeInSelectedUnit = computed(() => {
+  if (maxExpiryTime.value == null) {
+    return null
+  }
+  const maxExpiryTimeInMilliseconds = maxExpiryTime.value * 1000 * 60 * 60 * 24
+  const maxExpiryTimeInSelectedUnit = maxExpiryTimeInMilliseconds / multiplierFromUnit(expiryUnit.value)
+  return maxExpiryTimeInSelectedUnit
+})
+
+const RoundedMaxExpiryTimeInSelectedUnit = computed(() => {
+  return Math.max(1, Math.floor(maxExpiryTimeInSelectedUnit.value))
+})
+
+const setNewExpiryValueWithoutLoop = (value) => {
+  expiryValueWatchEnabled.value = false
+  nextTick(() => {
+    expiryValue.value = Math.floor(value)
+    expiryValueWatchEnabled.value = true
+  })
+}
+
+const canExpireInWeeks = computed(() => {
+  if (maxExpiryTime.value == null) {
+    return true
+  }
+  return maxExpiryTime.value >= 7
+})
+
+const canExpireInMonths = computed(() => {
+  if (maxExpiryTime.value == null) {
+    return true
+  }
+  return maxExpiryTime.value >= 30
+})
+
+const canExpireInYears = computed(() => {
+  if (maxExpiryTime.value == null) {
+    return true
+  }
+  return maxExpiryTime.value >= 365
+})
+
+const showPasswordForm = ref(false)
+const passwordFormClickOutside = (e) => {
+  if (!e.target.closest('.user-form')) {
+    showPasswordForm.value = false
+  }
+}
+
+const passwordProtected = computed(() => {
+  return (
+    sharePassword.value.length > 0 &&
+    sharePasswordConfirm.value.length > 0 &&
+    sharePassword.value === sharePasswordConfirm.value
+  )
+})
+
+const setPassword = () => {
+  passwordFormErrors.value.password = null
+  passwordFormErrors.value.passwordConfirm = null
+
+  if (shareFormPassword.value.length === 0) {
+    passwordFormErrors.value.password = t.value('uploader.password_required')
+    return
+  }
+
+  if (shareFormPasswordConfirm.value.length === 0) {
+    passwordFormErrors.value.passwordConfirm = t.value('uploader.password_confirmation_required')
+    return
+  }
+
+  if (shareFormPassword.value !== shareFormPasswordConfirm.value) {
+    passwordFormErrors.value.passwordConfirm = t.value('uploader.password_mismatch')
+    return
+  }
+
+  sharePassword.value = shareFormPassword.value
+  sharePasswordConfirm.value = shareFormPasswordConfirm.value
+  showPasswordForm.value = false
+}
+
+const removePassword = () => {
+  sharePassword.value = ''
+  sharePasswordConfirm.value = ''
+  passwordFormErrors.value.password = null
+  passwordFormErrors.value.passwordConfirm = null
+  shareFormPassword.value = ''
+  shareFormPasswordConfirm.value = ''
+  showPasswordForm.value = false
+}
+
+const passwordInput = ref(null)
+watch(showPasswordForm, (newVal) => {
+  if (newVal) {
+    passwordInput.value.focus()
+  }
+})
 </script>
 
 <template>
@@ -327,6 +536,7 @@ const swapUploadMode = () => {
       </button>
     </div>
     <div class="max-size-label">{{ niceFileSize(totalSize) }} / {{ niceFileSize(maxShareSize) }}</div>
+
     <div>
       <div class="progress-bar-container" :class="{ visible: currentlyUploading }">
         <div class="progress-bar">
@@ -361,7 +571,24 @@ const swapUploadMode = () => {
       </div>
     </div>
   </div>
-
+  <div class="expiry-settings-container">
+    <span class="expiry-label" @click="toggleExpirySettings">
+      <Clock9 />
+      {{ $t('uploader.expiry_label', { value: expiryValue, unit: t('uploader.expiry_unit.' + expiryUnit) }) }}
+    </span>
+    <div class="expiry-settings" :class="{ visible: showExpirySettings }">
+      <input type="number" v-model="expiryValue" />
+      <span class="maxValueOverlay" v-if="maxExpiryTimeInSelectedUnit != null">
+        {{ t('uploader.expiry_max_value', { value: RoundedMaxExpiryTimeInSelectedUnit }) }}
+      </span>
+      <select v-model="expiryUnit">
+        <option value="days">{{ $t('uploader.expiry_unit.days') }}</option>
+        <option value="weeks" v-if="canExpireInWeeks">{{ $t('uploader.expiry_unit.weeks') }}</option>
+        <option value="months" v-if="canExpireInMonths">{{ $t('uploader.expiry_unit.months') }}</option>
+        <option value="years" v-if="canExpireInYears">{{ $t('uploader.expiry_unit.years') }}</option>
+      </select>
+    </div>
+  </div>
   <div class="upload-basket">
     <div class="basket-items">
       <div class="upload-basket-item" v-for="file in uploadBasket" :key="file.name" v-if="uploadBasket.length > 0">
@@ -418,6 +645,7 @@ const swapUploadMode = () => {
           </template>
         </div>
       </div>
+
       <div class="input-container mb-0">
         <input
           type="text"
@@ -505,9 +733,17 @@ const swapUploadMode = () => {
             </div>
           </div>
         </div>
+
+        <div class="ps-0 col-auto">
+          <button class="icon-only secondary" @click="showPasswordForm = !showPasswordForm">
+            <Lock v-if="passwordProtected" />
+            <LockOpen v-else />
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
   <input
     type="file"
     @change="handleFileSelect"
@@ -528,6 +764,60 @@ const swapUploadMode = () => {
         <button class="sharePanel-copy-button icon-only" @click="copyShareUrl">
           <Check v-if="showCopySuccess" />
           <Copy v-else />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="user-form-overlay" :class="{ active: showPasswordForm }" @click="passwordFormClickOutside">
+    <div class="user-form">
+      <h2>
+        <Lock />
+        {{ $t('settings.title.share.password_protect') }}
+      </h2>
+      <p>{{ $t('settings.share.password_protect_description') }}</p>
+      <div class="input-container">
+        <label for="edit_share_password">{{ $t('settings.share.password') }}</label>
+        <input
+          type="password"
+          v-model="shareFormPassword"
+          id="edit_share_password"
+          :placeholder="$t('settings.share.password')"
+          required
+          :class="{ error: passwordFormErrors.password }"
+          @keyup.enter="setPassword"
+          ref="passwordInput"
+        />
+        <div class="error-message" v-if="passwordFormErrors.password">
+          {{ passwordFormErrors.password }}
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label for="edit_share_password_confirm">{{ $t('settings.share.password_confirm') }}</label>
+        <input
+          type="password"
+          v-model="shareFormPasswordConfirm"
+          id="edit_share_password_confirm"
+          :placeholder="$t('settings.share.password_confirm')"
+          required
+          :class="{ error: passwordFormErrors.passwordConfirm }"
+          @keyup.enter="setPassword"
+        />
+
+        <div class="error-message" v-if="passwordFormErrors.passwordConfirm">
+          {{ passwordFormErrors.passwordConfirm }}
+        </div>
+      </div>
+
+      <div class="button-bar">
+        <button @click="setPassword">
+          <Lock />
+          {{ $t('button.share.password_protect') }}
+        </button>
+        <button class="secondary close-button" @click="removePassword">
+          <LockOpen />
+          {{ $t('settings.share.remove_password') }}
         </button>
       </div>
     </div>
@@ -653,6 +943,139 @@ const swapUploadMode = () => {
     svg {
       width: 13px;
       height: 13px;
+    }
+  }
+}
+
+.expiry-settings-container {
+  width: 100%;
+  background: var(--uploader-header-background-color);
+  backdrop-filter: blur(10px);
+  color: var(--uploader-header-text-color);
+  text-align: center;
+
+  .expiry-label {
+    font-size: 0.8rem;
+    color: var(--panel-text-color);
+    font-weight: 200;
+    cursor: pointer;
+    user-select: none;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    &:hover {
+      color: var(--link-color-hover);
+    }
+    svg {
+      width: 12px;
+      height: 12px;
+      margin-right: 5px;
+      margin-top: -2px;
+    }
+  }
+
+  .expiry-settings {
+    position: relative;
+    overflow: hidden;
+    max-height: 0;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1px;
+    &.visible {
+      max-height: 50px;
+    }
+    input,
+    textarea,
+    select {
+      border-radius: 0 !important;
+      border: none;
+      display: block;
+      margin: 0;
+    }
+
+    input[type='number'] {
+      text-align: right;
+    }
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+      opacity: 0;
+      -moz-appearance: textfield;
+      appearance: textfield;
+      pointer-events: none;
+    }
+
+    .maxValueOverlay {
+      position: absolute;
+      left: 20px;
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      opacity: 0.5;
+    }
+  }
+}
+
+.user-form-overlay {
+  border-radius: 10px 10px 0 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay-background-color);
+  backdrop-filter: blur(10px);
+  z-index: 230;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: var(--panel-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+    }
+  }
+  .user-form {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    width: 500px;
+    background: var(--panel-background-color);
+    color: var(--panel-text-color);
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 0 100px 0 rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    transition: all 0.3s ease;
+    padding-bottom: 20px;
+    button {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+    .user-form {
+      transform: translate(-50%, 0%);
     }
   }
 }

@@ -154,7 +154,7 @@ Route::group([], function ($router) {
     Route::get('/shares/{share}', [SharesController::class, 'read'])->name('shares.read');
 
     //download shares [public]
-    Route::get('/shares/{share}/download', [SharesController::class, 'download'])->name('shares.download');
+    Route::any('/shares/{share}/download', [SharesController::class, 'download'])->name('shares.download');
 
     //use background image [public]
     Route::get('/backgrounds', [BackgroundsController::class, 'list'])->name('backgrounds.list');

@@ -119,6 +119,14 @@ class SettingsSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
+                'key' => 'default_expiry_time',
+                'value' => '7',
+                'previous_value' => null,
+                'group' => 'system.shares',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
                 'key' => 'expiry_warning_days',
                 'value' => '3',
                 'previous_value' => null,

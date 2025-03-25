@@ -1,5 +1,22 @@
-INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "updated_at", "category", "bundled") VALUES
-('10', 'Erugo', '{
+-- -------------------------------------------------------------
+-- v:1.0.1
+-- -------------------------------------------------------------
+INSERT
+  OR IGNORE INTO "themes" (
+    "id",
+    "name",
+    "theme",
+    "active",
+    "created_at",
+    "updated_at",
+    "category",
+    "bundled"
+  )
+VALUES
+  (
+    '10',
+    'Erugo',
+    '{
   "links": {
     "default": "rgb(57, 115, 144)",
     "hover": "rgb(27, 162, 230)",
@@ -162,6 +179,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "rgba(255, 255, 255, 0.2)"
   },
+  "scrollbars": {
+    "track": "rgba(221, 221, 221, 0.4)",
+    "thumb": "rgba(138, 208, 242, 0.6)",
+    "thumbHover": "rgba(70, 154, 196, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -180,8 +204,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-28 20:45:11', 'Light', '1'),
-('12', 'Heather', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-03-22 10:48:03',
+    'Light',
+    '1'
+  ),
+  (
+    '12',
+    'Heather',
+    '{
   "links": {
     "default": "rgb(88, 80, 141)",
     "hover": "rgb(122, 103, 174)",
@@ -344,6 +378,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "rgba(245, 245, 255, 0.7)"
   },
+  "scrollbars": {
+    "track": "rgba(235, 235, 245, 0.4)",
+    "thumb": "rgba(122, 103, 174, 0.6)",
+    "thumbHover": "rgba(156, 136, 196, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -362,8 +403,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-28 18:12:39', 'Light', '1'),
-('14', 'Sakura', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-03-22 11:01:07',
+    'Light',
+    '1'
+  ),
+  (
+    '14',
+    'Sakura',
+    '{
   "links": {
     "default": "rgb(219, 127, 163)",
     "hover": "rgb(233, 155, 183)",
@@ -526,6 +577,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "rgba(252, 240, 245, 0.2)"
   },
+  "scrollbars": {
+    "track": "rgba(244, 226, 233, 0.4)",
+    "thumb": "rgba(219, 127, 163, 0.6)",
+    "thumbHover": "rgba(233, 155, 183, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -544,8 +602,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-28 13:34:56', 'Light', '1'),
-('15', 'Aqua', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-02-28 13:34:56',
+    'Light',
+    '1'
+  ),
+  (
+    '15',
+    'Aqua',
+    '{
   "links": {
     "default": "rgb(86, 130, 189)",
     "hover": "rgb(75, 166, 189)",
@@ -708,6 +776,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "rgba(213, 232, 245, 0.2)"
   },
+  "scrollbars": {
+    "track": "rgba(213, 232, 245, 0.4)",
+    "thumb": "rgba(129, 199, 212, 0.6)",
+    "thumbHover": "rgba(86, 130, 189, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -726,8 +801,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-28 14:06:08', 'Light', '1'),
-('17', 'Colbolt', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-02-28 14:06:08',
+    'Light',
+    '1'
+  ),
+  (
+    '17',
+    'Colbolt',
+    '{
   "links": {
     "default": "rgb(64, 156, 255)",
     "hover": "rgb(96, 175, 255)",
@@ -890,6 +975,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "rgba(20, 20, 24, 0.8)"
   },
+  "scrollbars": {
+    "track": "rgba(40, 40, 46, 0.4)",
+    "thumb": "rgba(45, 120, 230, 0.6)",
+    "thumbHover": "rgba(68, 138, 243, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -908,8 +1000,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-28 13:04:17', 'Dark', '1'),
-('18', 'Dracula', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-02-28 13:04:17',
+    'Dark',
+    '1'
+  ),
+  (
+    '18',
+    'Dracula',
+    '{
   "links": {
     "default": "rgb(189, 147, 249)",
     "hover": "rgb(255, 121, 198)",
@@ -1072,6 +1174,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "rgba(40, 42, 54, 0.8)"
   },
+  "scrollbars": {
+    "track": "rgba(58, 60, 78, 0.4)",
+    "thumb": "rgba(189, 147, 249, 0.6)",
+    "thumbHover": "rgba(255, 121, 198, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -1090,8 +1199,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-28 13:55:00', 'Dark', '1'),
-('19', 'Github Light', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-02-28 13:55:00',
+    'Dark',
+    '1'
+  ),
+  (
+    '19',
+    'Github Light',
+    '{
   "links": {
     "default": "rgb(9, 105, 218)",
     "hover": "rgb(3, 85, 183)",
@@ -1254,6 +1373,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "rgba(240, 242, 244, 0.8)"
   },
+  "scrollbars": {
+    "track": "rgba(246, 248, 250, 0.4)",
+    "thumb": "rgba(208, 215, 222, 0.6)",
+    "thumbHover": "rgba(175, 184, 193, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "38px",
@@ -1272,8 +1398,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-27 23:40:21', 'Light', '1'),
-('20', 'Tropical Sunset', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-02-27 23:40:21',
+    'Light',
+    '1'
+  ),
+  (
+    '20',
+    'Tropical Sunset',
+    '{
   "links": {
     "default": "rgb(70, 95, 60)",
     "hover": "rgb(95, 125, 82)",
@@ -1454,8 +1590,17 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-27 23:40:21', 'Light', '1'),
-('21', 'Parma Violet', '{
+}',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-02-27 23:40:21',
+    'Light',
+    '1'
+  ),
+  (
+    '21',
+    'Parma Violet',
+    '{
   "links": {
     "default": "rgb(80, 210, 194)",
     "hover": "rgb(111, 232, 216)",
@@ -1618,6 +1763,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "linear-gradient(150deg, rgba(235, 240, 255, 0.85) 0%, rgba(225, 232, 247, 0.85) 100%)"
   },
+  "scrollbars": {
+    "track": "rgba(220, 225, 245, 0.4)",
+    "thumb": "rgba(138, 85, 255, 0.5)",
+    "thumbHover": "rgba(108, 99, 255, 0.7)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -1636,8 +1788,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '1', '2025-02-27 23:40:21', '2025-02-28 21:16:46', 'Light', '1'),
-('22', 'CyberNeon Flux', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-03-19 22:14:38',
+    'Light',
+    '1'
+  ),
+  (
+    '22',
+    'CyberNeon Flux',
+    '{
   "links": {
     "default": "rgb(0, 255, 205)",
     "hover": "rgb(255, 83, 198)",
@@ -1883,6 +2045,15 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
     "backdropFilter": "blur(10px)",
     "boxShadow": "inset 0 0 100px rgba(0, 255, 205, 0.1)"
   },
+  "scrollbars": {
+    "track": "rgba(25, 25, 40, 0.4)",
+    "thumb": "rgba(0, 255, 205, 0.5)",
+    "thumbHover": "rgba(255, 83, 198, 0.7)",
+    "width": "6px",
+    "borderRadius": "3px",
+    "boxShadow": "0 0 8px rgba(0, 255, 205, 0.3)",
+    "border": "1px solid rgba(0, 255, 205, 0.2)"
+  },
   "animations": {
     "button": {
       "hover": "glowPulse 2s infinite alternate",
@@ -1910,8 +2081,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-28 18:13:28', 'Dark', '1'),
-('23', 'Amethyst', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-02-28 18:13:28',
+    'Dark',
+    '1'
+  ),
+  (
+    '23',
+    'Amethyst',
+    '{
   "links": {
     "default": "rgb(187, 134, 252)",
     "hover": "rgb(203, 166, 247)",
@@ -2102,6 +2283,14 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
     "background": "linear-gradient(145deg, rgba(18, 18, 22, 0.85) 0%, rgba(24, 24, 30, 0.85) 100%)",
     "backdropFilter": "blur(3px)"
   },
+  "scrollbars": {
+    "track": "rgba(34, 34, 39, 0.4)",
+    "thumb": "rgba(137, 87, 229, 0.6)",
+    "thumbHover": "rgba(156, 113, 232, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px",
+    "boxShadow": "inset 0 1px 3px rgba(0, 0, 0, 0.1)"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -2120,8 +2309,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-28 20:44:39', 'Dark', '1'),
-('32', 'Galaxy', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-02-28 20:44:39',
+    'Dark',
+    '1'
+  ),
+  (
+    '32',
+    'Galaxy',
+    '{
   "links": {
     "default": "rgb(80, 210, 194)",
     "hover": "rgb(111, 232, 216)",
@@ -2284,6 +2483,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "linear-gradient(150deg, rgba(25, 27, 40, 0.85) 0%, rgba(20, 22, 35, 0.85) 100%)"
   },
+  "scrollbars": {
+    "track": "rgba(35, 37, 50, 0.4)",
+    "thumb": "rgba(108, 99, 255, 0.6)",
+    "thumbHover": "rgba(138, 85, 255, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -2302,8 +2508,18 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', '2025-02-27 23:40:21', '2025-02-28 21:15:37', 'Dark', '1'),
-('33', 'Cave Dweller', '{
+}
+',
+    '0',
+    '2025-02-27 23:40:21',
+    '2025-03-22 11:30:48',
+    'Dark',
+    '1'
+  ),
+  (
+    '33',
+    'Cave Dweller',
+    '{
   "links": {
     "default": "rgb(46, 204, 113)",
     "hover": "rgb(76, 234, 143)",
@@ -2466,6 +2682,13 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
   "overlay": {
     "background": "linear-gradient(150deg, rgba(5, 5, 8, 0.85) 0%, rgba(0, 0, 0, 0.85) 100%)"
   },
+  "scrollbars": {
+    "track": "rgba(10, 10, 12, 0.4)",
+    "thumb": "rgba(39, 174, 96, 0.6)",
+    "thumbHover": "rgba(46, 204, 113, 0.8)",
+    "width": "6px",
+    "borderRadius": "3px"
+  },
   "dimensions": {
     "button": {
       "height": "50px",
@@ -2484,4 +2707,25 @@ INSERT OR IGNORE INTO "themes" ("id", "name", "theme", "active", "created_at", "
       "height": "100vh"
     }
   }
-}', '0', NULL, '2025-02-28 21:16:29', 'Dark', '1');
+}
+',
+    '0',
+    NULL,
+    '2025-02-28 21:16:29',
+    'Dark',
+    '1'
+  ),
+  (
+    '40',
+    'Doom',
+    '{"links":{"default":"rgb(255, 80, 40)","hover":"rgb(255, 120, 80)","active":"rgb(255, 160, 120)","disabled":"rgba(120, 50, 30, 0.6)"},"buttons":{"primary":{"default":{"background":"linear-gradient(135deg, rgb(170, 20, 0) 0%, rgb(120, 10, 0) 100%)","text":"rgb(255, 200, 180)"},"hover":{"background":"linear-gradient(135deg, rgb(200, 30, 0) 0%, rgb(150, 20, 0) 100%)","text":"rgb(255, 220, 200)"},"active":{"background":"linear-gradient(135deg, rgb(230, 40, 0) 0%, rgb(180, 30, 0) 100%)","text":"rgb(255, 240, 220)"},"disabled":{"background":"linear-gradient(135deg, rgba(170, 20, 0, 0.5) 0%, rgba(120, 10, 0, 0.5) 100%)","text":"rgba(255, 200, 180, 0.7)"}},"secondary":{"default":{"background":"linear-gradient(135deg, rgba(60, 50, 45, 0.9) 0%, rgba(50, 40, 35, 0.9) 100%)","text":"rgb(220, 180, 160)"},"hover":{"background":"linear-gradient(135deg, rgba(70, 60, 55, 1) 0%, rgba(60, 50, 45, 1) 100%)","text":"rgb(230, 190, 170)"},"active":{"background":"linear-gradient(135deg, rgba(80, 70, 65, 1) 0%, rgba(70, 60, 55, 1) 100%)","text":"rgb(240, 200, 180)"},"disabled":{"background":"linear-gradient(135deg, rgba(60, 50, 45, 0.5) 0%, rgba(50, 40, 35, 0.5) 100%)","text":"rgba(220, 180, 160, 0.5)"}}},"uploader":{"background":"linear-gradient(160deg, rgba(40, 30, 25, 0.95) 0%, rgba(30, 25, 20, 0.95) 100%)","text":"rgb(220, 180, 160)","header":{"background":"linear-gradient(160deg, rgba(50, 40, 35, 0.8) 0%, rgba(40, 35, 30, 0.8) 100%)","text":"rgb(230, 190, 170)"},"item":{"background":"linear-gradient(160deg, rgba(55, 45, 40, 0.9) 0%, rgba(45, 40, 35, 0.9) 100%)","text":"rgb(220, 180, 160)"}},"panel":{"background":"linear-gradient(150deg, rgb(35, 25, 20) 0%, rgb(30, 20, 15) 100%)","text":"rgb(220, 180, 160)","item":{"background":"linear-gradient(150deg, rgb(45, 35, 30) 0%, rgb(40, 30, 25) 100%)","text":"rgb(220, 180, 160)","hover":{"background":"linear-gradient(150deg, rgb(55, 45, 40) 0%, rgb(50, 40, 35) 100%)","text":"rgb(230, 190, 170)"},"action":{"hover":{"backgroundFrom":"rgba(55, 45, 40, 0.42)","backgroundTo":"rgba(50, 40, 35, 0.8)"}}},"header":{"background":"linear-gradient(135deg, rgba(180, 30, 0, 0.85) 0%, rgba(130, 20, 0, 0.85) 100%)","text":"rgb(255, 220, 200)"},"textAlt":"rgb(180, 150, 130)","subheader":{"background":"linear-gradient(to bottom, rgb(50, 40, 35) 0%, rgb(45, 35, 30) 100%)","text":"rgb(220, 180, 160)"},"nav":{"item":{"background":"linear-gradient(150deg, rgb(45, 35, 30) 0%, rgb(40, 30, 25) 100%)","text":"rgb(220, 180, 160)","hover":{"background":"linear-gradient(135deg, rgba(180, 30, 0, 0.85) 0%, rgba(130, 20, 0, 0.85) 100%)","text":"rgb(255, 220, 200)"}}},"section":{"background":"linear-gradient(150deg, rgb(45, 35, 30) 0%, rgb(40, 30, 25) 100%)","text":"rgb(220, 180, 160)","alt":{"background":"linear-gradient(150deg, rgb(50, 40, 35) 0%, rgb(45, 35, 30) 100%)","text":"rgb(220, 180, 160)"}}},"tabs":{"bar":{"background":"linear-gradient(180deg, rgb(35, 25, 20) 0%, rgb(30, 20, 15) 100%)"},"tab":{"background":"linear-gradient(180deg, rgb(45, 35, 30) 0%, rgb(40, 30, 25) 100%)","text":"rgb(180, 150, 130)","hover":{"background":"linear-gradient(135deg, rgba(180, 30, 0, 0.85) 0%, rgba(130, 20, 0, 0.85) 100%)","text":"rgb(255, 220, 200)"},"active":{"background":"linear-gradient(135deg, rgba(180, 30, 0, 0.85) 0%, rgba(130, 20, 0, 0.85) 100%)","text":"rgb(255, 220, 200)"}}},"table":{"background":"linear-gradient(150deg, rgb(35, 25, 20) 0%, rgb(30, 20, 15) 100%)","text":"rgb(220, 180, 160)","header":{"background":"linear-gradient(135deg, rgba(180, 30, 0, 0.9) 0%, rgba(130, 20, 0, 0.9) 100%)","text":"rgb(255, 220, 200)"},"row":{"background":"linear-gradient(150deg, rgb(45, 35, 30) 0%, rgb(40, 30, 25) 100%)","text":"rgb(220, 180, 160)","alt":{"background":"linear-gradient(150deg, rgb(40, 30, 25) 0%, rgb(35, 25, 20) 100%)","text":"rgb(220, 180, 160)"}}},"input":{"background":"linear-gradient(150deg, rgb(50, 40, 35) 0%, rgb(45, 35, 30) 100%)","text":"rgb(230, 190, 170)","border":{"default":"rgba(70, 60, 55, 0.8)","hover":"rgba(180, 30, 0, 0.6)","focus":"rgba(220, 40, 0, 0.8)"},"placeholder":"rgb(150, 120, 100)"},"checkbox":{"background":"linear-gradient(150deg, rgb(50, 40, 35) 0%, rgb(45, 35, 30) 100%)","checked":{"background":"linear-gradient(135deg, rgb(180, 30, 0) 0%, rgb(130, 20, 0) 100%)","check":"rgb(255, 220, 200)"}},"label":{"text":"rgb(220, 180, 160)"},"progressBar":{"background":"linear-gradient(90deg, rgb(45, 35, 30) 0%, rgb(40, 30, 25) 100%)","fill":"linear-gradient(90deg, rgb(255, 80, 40) 0%, rgb(170, 20, 0) 100%)","text":"rgb(230, 190, 170)"},"overlay":{"background":"linear-gradient(150deg, rgba(30, 20, 15, 0.9) 0%, rgba(25, 15, 10, 0.9) 100%)"},"dimensions":{"button":{"height":"50px","width":"100%","iconOnlyWidth":"50px","borderRadius":"2px"},"panel":{"borderRadius":"2px"},"tabs":{"borderRadius":"2px 2px 0 0"},"settings":{"width":"100vw","height":"100vh"}}}',
+    '1',
+    '2025-03-22 11:30:42',
+    '2025-03-22 11:30:48',
+    'custom',
+    '0'
+  ) ON CONFLICT(id) DO
+UPDATE
+SET
+  theme = excluded.theme,
+  updated_at = CURRENT_TIMESTAMP;

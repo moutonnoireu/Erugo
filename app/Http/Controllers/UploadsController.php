@@ -14,7 +14,8 @@ use Carbon\Carbon;
 use App\Jobs\CreateShareZip;
 use App\Mail\shareCreatedMail;
 use App\Jobs\sendEmail;
-
+use App\Models\Setting;
+use Illuminate\Support\Facades\Hash;
 class UploadsController extends Controller
 {
   /**
@@ -284,7 +285,8 @@ class UploadsController extends Controller
       'name' => ['string', 'max:255'],
       'description' => ['max:500'],
       'fileInfo' => ['required', 'array'],
-      'fileInfo.*' => ['required', 'numeric', 'exists:files,id']
+      'fileInfo.*' => ['required', 'numeric', 'exists:files,id'],
+      'expiry_date' => ['required', 'date']
     ]);
 
     if ($validator->fails()) {
@@ -295,6 +297,23 @@ class UploadsController extends Controller
           'errors' => $validator->errors()
         ]
       ], 422);
+    }
+
+    $maxExpiryTime = Setting::where('key', 'max_expiry_time')->first()->value;
+    $expiryDate = Carbon::parse($request->expiry_date);
+    
+    if ($maxExpiryTime !== null) {
+      $now = Carbon::now();
+
+      if ($now->diffInDays($expiryDate) > $maxExpiryTime) {
+        return response()->json([
+          'status' => 'error',
+          'message' => 'Expiry date is too long',
+          'data' => [
+            'max_expiry_time' => $maxExpiryTime
+          ]
+        ], 400);
+      }
     }
 
     $user = Auth::user();
@@ -324,17 +343,30 @@ class UploadsController extends Controller
       $totalSize += $file->size;
     }
 
+    $password = $request->password;
+    $passwordConfirm = $request->password_confirm;
+
+    if($password) {
+      if($password !== $passwordConfirm) {
+        return response()->json([
+          'status' => 'error',
+          'message' => 'Password confirmation does not match'
+        ], 400);
+      }
+    }
+
     // Create the share record
     $share = Share::create([
       'name' => $request->name,
       'description' => $request->description,
-      'expires_at' => Carbon::now()->addDays(7),
+      'expires_at' => $expiryDate,
       'user_id' => $user->id,
       'path' => $sharePath,
       'long_id' => $longId,
       'size' => $totalSize,
       'file_count' => $fileCount,
-      'status' => 'pending'
+      'status' => 'pending',
+      'password' => $password ? Hash::make($password) : null
     ]);
 
     // Associate files with the share and move from temp to share directory
