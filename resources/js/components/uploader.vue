@@ -514,6 +514,13 @@ const removePassword = () => {
   shareFormPasswordConfirm.value = ''
   showPasswordForm.value = false
 }
+
+const passwordInput = ref(null)
+watch(showPasswordForm, (newVal) => {
+  if (newVal) {
+    passwordInput.value.focus()
+  }
+})
 </script>
 
 <template>
@@ -779,6 +786,7 @@ const removePassword = () => {
           required
           :class="{ error: passwordFormErrors.password }"
           @keyup.enter="setPassword"
+          ref="passwordInput"
         />
         <div class="error-message" v-if="passwordFormErrors.password">
           {{ passwordFormErrors.password }}
