@@ -139,6 +139,38 @@ const handleDrop = (e) => {
   }
 }
 
+const handleFileSelect = (event) => {
+  const files = event.target.files;
+  
+  if (files.length > 0) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      
+      // Check if it's a directory (webkitdirectory attribute adds a webkitRelativePath property)
+      if (file.webkitRelativePath) {
+        // Extract directory path from the webkitRelativePath
+        const pathParts = file.webkitRelativePath.split('/');
+        const directoryPath = pathParts.slice(0, -1).join('/');
+        
+        // Create file with path information
+        const fileWithPath = new File([file], file.name, {
+          type: file.type,
+          lastModified: file.lastModified
+        });
+        
+        fileWithPath.path = directoryPath;
+        fileWithPath.fullPath = file.webkitRelativePath;
+        pushFile(fileWithPath);
+      } else {
+        // Regular file
+        pushFile(file);
+      }
+    }
+  }
+  
+  resetFileInput();
+}
+
 const recurseDirectory = (entry, path) => {
   if (!entry || typeof entry.createReader !== 'function') {
     console.error('Invalid directory entry:', entry)
@@ -224,17 +256,7 @@ const pushFile = (file) => {
   }
 }
 
-const handleFileSelect = (event) => {
-  if (event.target.files.length > 1) {
-    for (let i = 0; i < event.target.files.length; i++) {
-      pushFile(event.target.files[i])
-    }
-  }
-  if (event.target.files.length === 1) {
-    pushFile(event.target.files[0])
-  }
-  resetFileInput()
-}
+
 
 const removeFile = (file) => {
   uploadBasket.value = uploadBasket.value.filter((item) => item.fullPath !== file.fullPath)

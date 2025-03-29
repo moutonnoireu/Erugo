@@ -1,6 +1,6 @@
 <script setup>
 import { Folder, Trash, File } from 'lucide-vue-next'
-import { niceFileSize, niceFileType } from '../utils'
+import { niceFileSize, niceFileType, niceFileName } from '../utils'
 import { ref } from 'vue'
 defineProps({
   structure: {
@@ -38,7 +38,7 @@ function getDirectories(structure) {
     <div v-if="structure.files && structure.files.length" class="root-files">
       <div class="upload-basket-item" v-for="file in structure.files" :key="file.fullPath || file.name">
         <div class="name">
-          {{ file.name }}
+          {{ niceFileName(file.name) }}
         </div>
         <div class="meta">
           <div class="size">
@@ -67,11 +67,12 @@ function getDirectories(structure) {
         <!-- Files in this directory -->
         <div class="directory-files" v-if="dirContent.files && dirContent.files.length">
           <div class="upload-basket-item" v-for="file in dirContent.files" :key="file.fullPath || file.name">
+            
             <div class="name">
               <div class="icon">
-                <File />
-              </div>
-              {{ file.name }}
+              <File />
+            </div>
+                {{ niceFileName(file.name) }}
             </div>
             <div class="meta">
               <div class="size">
@@ -105,11 +106,11 @@ function getDirectories(structure) {
 .directory-structure {
   width: 100%;
   position: relative;
-  cursor: default;
 }
 
 .subdirectory {
   padding-left: 0px;
+
 }
 
 .directory-header {
@@ -117,18 +118,9 @@ function getDirectories(structure) {
   display: flex;
   align-items: center;
   gap: 8px;
-  position: sticky;
-  top: -15px;
-  z-index: 100;
-  background: var(--uploader-item-background-color);
-  margin-left: -10px;
-  margin-right: -10px;
-  margin-top: -11px;
-  margin-bottom: 10px;
-  padding: 10px 10px;
 }
 
 .directory-files {
-  margin-left: 10px;
+  margin-left: 16px;
 }
 </style>
