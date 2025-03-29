@@ -598,7 +598,7 @@ const handleDropzoneClick = (e) => {
         <div class="progress-bar">
           <div class="progress-bar-fill" :style="{ width: `${uploadProgress}%` }"></div>
         </div>
-        <div class="pause-button" @click="togglePause">
+        <div class="pause-button" @click="togglePause" v-if="uploadSettings.uploadMode === 'chunked'">
           <Pause v-if="!isPaused" />
           <Play v-else />
         </div>
