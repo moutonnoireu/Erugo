@@ -117,6 +117,15 @@ function getDirectories(structure) {
   display: flex;
   align-items: center;
   gap: 8px;
+  position: sticky;
+  top: -15px;
+  z-index: 100;
+  background: var(--uploader-item-background-color);
+  margin-left: -10px;
+  margin-right: -10px;
+  margin-top: -11px;
+  margin-bottom: 10px;
+  padding: 10px 10px;
 }
 
 .directory-files {
