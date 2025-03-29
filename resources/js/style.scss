@@ -500,7 +500,6 @@ body {
   align-items: flex-start;
   justify-content: flex-start;
 
-
   .upload-basket-details {
     position: relative;
     margin-top: 10px;
@@ -616,6 +615,7 @@ body {
   background: var(--uploader-background-color);
   backdrop-filter: blur(5px);
   z-index: 100;
+  margin-bottom: 15px;
 
   .svg-container {
     svg {
