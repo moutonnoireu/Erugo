@@ -237,7 +237,7 @@ const handleFileSelect = (event) => {
 }
 
 const removeFile = (file) => {
-  uploadBasket.value = uploadBasket.value.filter((item) => item.name !== file.name)
+  uploadBasket.value = uploadBasket.value.filter((item) => item.fullPath !== file.fullPath)
 }
 
 const totalSize = computed(() => {
