@@ -40,7 +40,7 @@ class BackgroundsController extends Controller
 
     public function upload(Request $request)
     {
-        \Log::info('uploading background image');
+
         $validator = Validator::make($request->all(), [
             'background_image' => 'required|image|mimes:jpg,jpeg,png,gif,webp',
         ]);
@@ -57,7 +57,6 @@ class BackgroundsController extends Controller
 
         try {
             $file = $request->file('background_image');
-            \Log::info('file info', ['file' => $file, 'name' => $file->getClientOriginalName(), 'extension' => $file->getClientOriginalExtension()]);
             $fileName = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
             $safeFilename = basename($fileName);
