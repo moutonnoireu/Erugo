@@ -484,6 +484,19 @@ body {
     font-size: 0.8rem;
   }
 }
+.upload-basket-details {
+  position: relative;
+  width: 100%;
+  width: calc(100% + 18px);
+  background: var(--uploader-background-color);
+
+  input,
+  textarea {
+    border-radius: 0 !important;
+    border: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--panel-text-color), transparent 93%);
+  }
+}
 
 .upload-basket {
   background: var(--uploader-background-color);
@@ -499,23 +512,6 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-
-  .upload-basket-details {
-    position: relative;
-    margin-top: 10px;
-    width: 100%;
-    margin-left: -9px;
-    margin-right: -9px;
-    margin-bottom: -6px;
-    width: calc(100% + 18px);
-
-    input,
-    textarea {
-      border-radius: 0 !important;
-      border: none;
-      border-bottom: 1px solid color-mix(in srgb, var(--panel-text-color), transparent 93%);
-    }
-  }
 
   .basket-items {
     flex-grow: 1;
@@ -549,6 +545,17 @@ body {
       overflow: hidden;
       text-overflow: ellipsis;
       color: var(--uploader-item-text-color);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+
+      svg {
+        width: 16px;
+        height: 16px;
+        margin-top: -3px;
+      }
     }
     .meta {
       display: flex;
@@ -558,6 +565,9 @@ body {
       width: 100%;
       color: var(--uploader-item-text-color);
       font-size: 0.8rem;
+      margin-top: 3px;
+      margin-left: 5px;
+      opacity: 0.4;
     }
     .hover-actions {
       position: absolute;

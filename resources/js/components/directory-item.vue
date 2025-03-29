@@ -1,5 +1,5 @@
 <script setup>
-import { Folder, Trash } from 'lucide-vue-next'
+import { Folder, Trash, File } from 'lucide-vue-next'
 import { niceFileSize, niceFileType } from '../utils'
 import { ref } from 'vue'
 defineProps({
@@ -68,6 +68,9 @@ function getDirectories(structure) {
         <div class="directory-files" v-if="dirContent.files && dirContent.files.length">
           <div class="upload-basket-item" v-for="file in dirContent.files" :key="file.fullPath || file.name">
             <div class="name">
+              <div class="icon">
+                <File />
+              </div>
               {{ file.name }}
             </div>
             <div class="meta">
@@ -102,11 +105,11 @@ function getDirectories(structure) {
 .directory-structure {
   width: 100%;
   position: relative;
+  cursor: default;
 }
 
 .subdirectory {
   padding-left: 0px;
-
 }
 
 .directory-header {
@@ -117,6 +120,6 @@ function getDirectories(structure) {
 }
 
 .directory-files {
-  margin-left: 16px;
+  margin-left: 10px;
 }
 </style>

@@ -764,30 +764,7 @@ const filesByDirectory = computed(() => {
       </select>
     </div>
   </div>
-
-  <div class="upload-basket">
-    <div
-      class="basket-items dropzone"
-      @drop="handleDrop"
-      @dragenter="handleDragOver"
-      @dragover.prevent.stop
-      @dragleave="handleDragLeave($event)"
-      @click="handleDropzoneClick"
-      ref="dropzone"
-    >
-      <template v-if="uploadBasket.length > 0">
-        <directory-item :structure="filesByDirectory" :is-root="true" @remove-file="removeFile" />
-      </template>
-
-      <div class="upload-basket-empty" v-else>
-        <div class="upload-basket-empty-text">
-          <CircleSlash2 />
-          {{ $t('No files added yet') }}
-        </div>
-      </div>
-    </div>
-
-    <div class="upload-basket-details">
+  <div class="upload-basket-details pt-2">
       <div class="recipients" v-if="!store.isGuest()">
         <div class="button-outside-label uploader-add-recipient">
           <button class="icon-only round" @click="addRecipient">
@@ -839,12 +816,33 @@ const filesByDirectory = computed(() => {
           :placeholder="$t('Message to share recipients (optional)')"
           required
           :class="{ error: errors.shareDescription }"
-          rows="3"
+          rows="1"
           class="mt-0 mb-0"
           v-if="!store.isGuest()"
         />
         <div class="error-message" v-if="errors.shareDescription">
           {{ errors.shareDescription }}
+        </div>
+      </div>
+    </div>
+  <div class="upload-basket">
+    <div
+      class="basket-items dropzone"
+      @drop="handleDrop"
+      @dragenter="handleDragOver"
+      @dragover.prevent.stop
+      @dragleave="handleDragLeave($event)"
+      @click="handleDropzoneClick"
+      ref="dropzone"
+    >
+      <template v-if="uploadBasket.length > 0">
+        <directory-item :structure="filesByDirectory" :is-root="true" @remove-file="removeFile" />
+      </template>
+
+      <div class="upload-basket-empty" v-else>
+        <div class="upload-basket-empty-text">
+          <CircleSlash2 />
+          {{ $t('No files added yet') }}
         </div>
       </div>
     </div>
