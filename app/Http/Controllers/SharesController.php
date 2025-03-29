@@ -70,6 +70,11 @@ class SharesController extends Controller
     }
     $longId = $this->generateLongId();
     $files = $request->file('files');
+    \Log::info('paths', ['paths' => $request->file_paths]);
+    \Log::info('files', ['files' => array_map(function ($file) {
+      return $file->getClientOriginalName();
+    }, $files)]);
+
     $totalFileSize = 0;
     foreach ($files as $file) {
       $totalFileSize += $file->getSize();
@@ -106,6 +111,7 @@ class SharesController extends Controller
     ];
     $share = Share::create($shareData);
     foreach ($files as $file) {
+
       $fileData = [
         'share_id' => $share->id,
         'name' => $file->getClientOriginalName(),
@@ -121,8 +127,11 @@ class SharesController extends Controller
       mkdir($completePath, 0777, true);
     }
     $files = $request->file('files');
-    foreach ($files as $file) {
-      $file->move($completePath, $file->getClientOriginalName());
+    foreach ($files as $index => $file) {
+      $originalPath = $request->file_paths[$index];
+      $originalPath = explode('/', $originalPath);
+      $originalPath = implode('/', array_slice($originalPath, 0, -1));
+      $file->move($completePath . '/' . $originalPath, $file->getClientOriginalName());
     }
     $share->status = 'pending';
     $share->save();
@@ -194,6 +203,7 @@ class SharesController extends Controller
       ]
     ]);
   }
+
 
   private function sendShareCreatedEmail(Share $share, $recipient)
   {

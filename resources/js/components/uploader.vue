@@ -27,8 +27,7 @@ import { domData } from '../domData'
 import { useTranslate } from '@tolgee/vue'
 import { useToast } from 'vue-toastification'
 import { store } from '../store'
-import ButtonWithMenu from './buttonWithMenu.vue'
-
+import DirectoryItem from './directory-item.vue'
 const { t } = useTranslate()
 const toast = useToast()
 const fileInput = ref(null)
@@ -113,13 +112,114 @@ const resetFileInput = () => {
   fileInput.value.value = null
 }
 
+const dropzone = ref(null)
+
+const handleDrop = (e) => {
+  e.preventDefault()
+  e.stopPropagation()
+  dropBoxRemoveActiveClass()
+
+  const items = e.dataTransfer.items || []
+
+  for (const item of items) {
+    if (item.kind === 'file') {
+      // For Chromium-based browsers
+      const entry = item.webkitGetAsEntry?.()
+      if (entry?.isDirectory) {
+        console.log(`Got directory: ${entry.name}`)
+        recurseDirectory(entry, entry.name)
+        continue
+      }
+
+      const file = item.getAsFile()
+      if (file) {
+        pushFile(file, '')
+      }
+    }
+  }
+}
+
+const recurseDirectory = (entry, path) => {
+  if (!entry || typeof entry.createReader !== 'function') {
+    console.error('Invalid directory entry:', entry)
+    return
+  }
+
+  console.log(`Recursing directory: ${path}`)
+  const reader = entry.createReader()
+
+  // Read entries in batches (the API might not return all entries at once)
+  const readAllEntries = () => {
+    reader.readEntries(
+      (entries) => {
+        if (entries.length === 0) {
+          // No more entries, we're done with this directory
+          return
+        }
+
+        for (const childEntry of entries) {
+          if (childEntry.isDirectory) {
+            recurseDirectory(childEntry, `${path}/${childEntry.name}`)
+          } else if (childEntry.isFile) {
+            childEntry.file(
+              (file) => {
+                // Create file with path information
+                const fileWithPath = new File([file], file.name, {
+                  type: file.type,
+                  lastModified: file.lastModified
+                })
+                // Add path information
+                fileWithPath.path = path
+                fileWithPath.fullPath = `${path}/${file.name}`
+                pushFile(fileWithPath)
+              },
+              (error) => {
+                console.error('Error getting file:', error)
+              }
+            )
+          }
+        }
+
+        // Continue reading more entries (the API might return entries in batches)
+        readAllEntries()
+      },
+      (error) => {
+        console.error('Error reading directory entries:', error)
+      }
+    )
+  }
+
+  readAllEntries()
+}
+
 const pushFile = (file) => {
-  //check if the file is already in the upload basket
-  if (!uploadBasket.value.some((item) => item.name === file.name)) {
+
+  const ignore = [
+    '.DS_Store',
+    'Thumbs.db',
+    'desktop.ini'
+  ]
+
+  if (ignore.includes(file.name)) {
+    return
+  }
+
+  // Check if the file has path information
+  const fileKey = file.fullPath || file.name
+
+  // Check if the file is already in the upload basket using the full path if available
+  if (!uploadBasket.value.some((item) => (item.fullPath || item.name) === fileKey)) {
     uploadBasket.value.push(file)
-    //if the share name is empty, set it to the file name
+
+    // If the share name is empty, set it to the top-level directory name or file name
     if (shareName.value === '') {
-      shareName.value = file.name
+      if (file.path) {
+        // Use the top directory name
+        const topDir = file.path.split('/')[0]
+        shareName.value = topDir
+      } else {
+        shareName.value = file.name
+      }
     }
   }
 }
@@ -157,7 +257,7 @@ const uploadFiles = async () => {
   }
 
   //before we try uploading lets just check we're logged in still
-  const user = await getMyProfile()
+  await getMyProfile()
 
   if (uploadSettings.value.uploadMode === 'chunked') {
     await doChunkedUpload(uploadId)
@@ -522,32 +622,6 @@ watch(showPasswordForm, (newVal) => {
   }
 })
 
-//file dropping
-const dropzone = ref(null)
-const handleDrop = (e) => {
-  e.preventDefault()
-  e.stopPropagation()
-  dropBoxRemoveActiveClass()
-
-  const items = e.dataTransfer.items || []
-
-  for (const item of items) {
-    if (item.kind === 'file') {
-      // For Chromium-based browsers
-      const entry = item.webkitGetAsEntry?.()
-      if (entry?.isDirectory) {
-        console.log(`Skipping directory: ${entry.name}`)
-        continue
-      }
-
-      const file = item.getAsFile()
-      if (file) {
-        pushFile(file)
-      }
-    }
-  }
-}
-
 const handleDragOver = (e) => {
   e.preventDefault()
   e.stopPropagation()
@@ -559,6 +633,7 @@ const handleDragLeave = (e) => {
   e.stopPropagation()
   dropBoxRemoveActiveClass(e)
 }
+
 const dropBoxAddActiveClass = () => {
   dropzone.value.classList.add('active')
 }
@@ -577,6 +652,50 @@ const handleDropzoneClick = (e) => {
     showFilePicker()
   }
 }
+
+// Add this computed property to organize files by directory
+const filesByDirectory = computed(() => {
+  const structure = {}
+
+  uploadBasket.value.forEach((file) => {
+    const path = file.path || ''
+    const dirs = path ? path.split('/') : ['']
+
+    // Create nested structure
+    let current = structure
+    for (const dir of dirs) {
+      if (dir) {
+        if (!current[dir]) {
+          current[dir] = { files: [], directories: {} }
+        }
+        current = current[dir].directories
+      }
+    }
+
+    // Add file to its directory
+    if (path) {
+      const parentDir = dirs.reduce((acc, dir, index) => {
+        if (index < dirs.length - 1 && dir) {
+          return acc[dir].directories
+        }
+        return acc
+      }, structure)
+
+      const lastDir = dirs[dirs.length - 1]
+      if (lastDir) {
+        parentDir[lastDir].files.push(file)
+      }
+    } else {
+      // Root files
+      if (!structure.files) {
+        structure.files = []
+      }
+      structure.files.push(file)
+    }
+  })
+
+  return structure
+})
 </script>
 
 <template>
@@ -656,24 +775,9 @@ const handleDropzoneClick = (e) => {
       @click="handleDropzoneClick"
       ref="dropzone"
     >
-      <div class="upload-basket-item" v-for="file in uploadBasket" :key="file.name" v-if="uploadBasket.length > 0">
-        <div class="name">
-          {{ file.name }}
-        </div>
-        <div class="meta">
-          <div class="size">
-            {{ niceFileSize(file.size) }}
-          </div>
-          <div class="type">
-            {{ niceFileType(file.type) }}
-          </div>
-        </div>
-        <div class="hover-actions">
-          <button class="icon-only" @click="removeFile(file)">
-            <Trash />
-          </button>
-        </div>
-      </div>
+      <template v-if="uploadBasket.length > 0">
+        <directory-item :structure="filesByDirectory" :is-root="true" @remove-file="removeFile" />
+      </template>
 
       <div class="upload-basket-empty" v-else>
         <div class="upload-basket-empty-text">

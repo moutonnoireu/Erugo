@@ -373,8 +373,14 @@ class UploadsController extends Controller
     foreach ($files as $file) {
       // Move file from temp to share directory
       $sourcePath = storage_path('app/' . $file->temp_path);
-      $destPath = $completePath . '/' . $file->name;
-      rename($sourcePath, $destPath);
+      $originalPath = $request->filePaths[$file->id];
+      $originalPath = explode('/', $originalPath);
+      $originalPath = implode('/', array_slice($originalPath, 0, -1));
+      $destPath = $completePath . '/' . $originalPath;
+      if (!file_exists($destPath)) {
+        mkdir($destPath, 0777, true);
+      }
+      rename($sourcePath, $destPath . '/' . $file->name);
 
       // Update file record
       $file->share_id = $share->id;
