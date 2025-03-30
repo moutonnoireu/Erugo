@@ -70,13 +70,15 @@ class SharesController extends Controller
     }
     $longId = $this->generateLongId();
     $files = $request->file('files');
+    \Log::info('paths', ['paths' => $request->file_paths]);
+    \Log::info('files', ['files' => array_map(function ($file) {
+      return $file->getClientOriginalName();
+    }, $files)]);
+
     $totalFileSize = 0;
     foreach ($files as $file) {
       $totalFileSize += $file->getSize();
     }
-
-    $sharePath = $user->id . '/' . $longId;
-    $completePath = storage_path('app/shares/' .  $sharePath);
 
     $password = $request->password;
     $passwordConfirm = $request->password_confirm;
@@ -93,6 +95,14 @@ class SharesController extends Controller
       }
     }
 
+    $sharePath = $user->id . '/' . $longId;
+    $completePath = storage_path('app/shares/' .  $sharePath);
+    
+    //create the directory if it doesn't exist
+    if (!file_exists($completePath)) {
+      mkdir($completePath, 0777, true);
+    }
+
     $shareData = [
       'name' => $request->name,
       'description' => $request->description,
@@ -106,23 +116,26 @@ class SharesController extends Controller
     ];
     $share = Share::create($shareData);
     foreach ($files as $file) {
+
       $fileData = [
         'share_id' => $share->id,
         'name' => $file->getClientOriginalName(),
         'type' => $file->getMimeType(),
         'size' => $file->getSize()
       ];
-      $file = File::create($fileData);
-      $file->share_id = $share->id;
-      $file->save();
+      $db_file = File::create($fileData);
+      $db_file->share_id = $share->id;
+      $db_file->save();
+      $file->dbFile = $db_file;
     }
 
-    if (!file_exists($completePath)) {
-      mkdir($completePath, 0777, true);
-    }
-    $files = $request->file('files');
-    foreach ($files as $file) {
-      $file->move($completePath, $file->getClientOriginalName());
+    foreach ($files as $index => $file) {
+      $originalPath = $request->file_paths[$index];
+      $originalPath = explode('/', $originalPath);
+      $originalPath = implode('/', array_slice($originalPath, 0, -1));
+      $file->move($completePath . '/' . $originalPath, $file->getClientOriginalName());
+      $file->dbFile->full_path = $originalPath;
+      $file->dbFile->save();
     }
     $share->status = 'pending';
     $share->save();
@@ -195,6 +208,7 @@ class SharesController extends Controller
     ]);
   }
 
+
   private function sendShareCreatedEmail(Share $share, $recipient)
   {
     $user = Auth::user();
@@ -262,6 +276,7 @@ class SharesController extends Controller
           'name' => $file->name,
           'size' => $file->size,
           'type' => $file->type,
+          'full_path' => $file->full_path,
           'created_at' => $file->created_at,
           'updated_at' => $file->updated_at
         ];

@@ -435,6 +435,7 @@ export const createShare = async (files, name, description, recipients, uploadId
   const formData = new FormData()
   files.forEach((file) => {
     formData.append('files[]', file)
+    formData.append('file_paths[]', file.fullPath)
   })
   formData.append('name', name)
   formData.append('description', description)
@@ -1041,8 +1042,9 @@ export const uploadFilesInChunks = async (
           })
         },
         (result) => {
-          console.log('result', result)
+          result.fullPath = file.fullPath
           results.push(result)
+          console.log('result', results)
           uploadedSize += file.size
           resolve()
         },
@@ -1056,6 +1058,14 @@ export const uploadFilesInChunks = async (
 
   // All files have been uploaded, now create the share
   try {
+
+    const filePaths = {}
+    results.forEach((r) => {
+      console.log('r', r)
+      filePaths[r.data.file.id] = r.fullPath
+    })
+    console.log('filePaths', filePaths)
+
     const response = await fetchWithAuth(`${apiUrl}/api/uploads/create-share-from-chunks`, {
       method: 'POST',
       headers: {
@@ -1069,6 +1079,7 @@ export const uploadFilesInChunks = async (
         description: shareDescription,
         recipients: recipients,
         fileInfo: results.map((r) => r.data.file.id),
+        filePaths: filePaths,
         expiry_date: expiryDate,
         password: password,
         password_confirm: passwordConfirm

@@ -26,7 +26,7 @@ class CreateShareZip implements ShouldQueue
   {
 
 
-    if($this->share->user_id) {
+    if ($this->share->user_id) {
       $user_folder = $this->share->user_id;
     } else {
       //grab the first segment of the path
@@ -38,25 +38,20 @@ class CreateShareZip implements ShouldQueue
     if (file_exists($zipPath)) {
       return;
     }
-    
+
     //if there is only one file just leave it alone and set the status to ready
     if ($this->share->file_count == 1) {
       $this->share->status = 'ready';
       $this->share->save();
       return;
     }
-    
+
     try {
       $sourcePath = storage_path('app/shares/' . $user_folder . '/' . $this->share->long_id);
       $this->createZipFromDirectory($sourcePath, $zipPath);
       $this->share->status = 'ready';
       $this->share->save();
-
-      foreach ($this->share->files as $file) {
-        unlink($sourcePath . '/' . $file->name);
-      }
-      rmdir($sourcePath);
-
+      $this->removeDirectory($sourcePath);
     } catch (\Exception $e) {
       $this->share->status = 'failed';
       $this->share->save();
@@ -64,30 +59,31 @@ class CreateShareZip implements ShouldQueue
     }
   }
 
-  function createZipFromDirectory($sourcePath, $zipPath) {
+  function createZipFromDirectory($sourcePath, $zipPath)
+  {
 
     // Ensure the zip directory exists
     $zipDir = dirname($zipPath);
     if (!is_dir($zipDir)) {
-        mkdir($zipDir, 0755, true);
+      mkdir($zipDir, 0755, true);
     }
-    
+
     // Build the zip command to zip the entire directory
     $zipCommand = sprintf(
-        'zip -r %s %s',
-        escapeshellarg($zipPath),
-        escapeshellarg('.')  // '.' represents current directory after we chdir
+      'zip -r %s %s',
+      escapeshellarg($zipPath),
+      escapeshellarg('.')  // '.' represents current directory after we chdir
     );
-        
+
     // Change to the source directory
     $currentDir = getcwd();
     chdir($sourcePath);
-    
+
     // Execute the command
     $output = [];
     $returnCode = 0;
     exec($zipCommand . ' 2>&1', $output, $returnCode);
-    
+
     // Change back to original directory
     chdir($currentDir);
 
@@ -107,5 +103,28 @@ class CreateShareZip implements ShouldQueue
     }
 
     return true;
-}
+  }
+
+  private function removeDirectory($dir)
+  {
+    if (!file_exists($dir)) {
+      return true;
+    }
+
+    if (!is_dir($dir)) {
+      return unlink($dir);
+    }
+
+    foreach (scandir($dir) as $item) {
+      if ($item == '.' || $item == '..') {
+        continue;
+      }
+
+      if (!$this->removeDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+        return false;
+      }
+    }
+
+    return rmdir($dir);
+  }
 }
