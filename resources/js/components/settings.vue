@@ -433,7 +433,6 @@ const setShowDeletedShares = (value) => {
     margin-top: 10px;
     padding: 10px;
     border-radius: var(--tabs-border-radius);
-    box-shadow: inset 0 -5px 2px 0 rgba(0, 0, 0, 0.05);
     cursor: pointer;
     transition: all 300ms ease-in-out;
 
