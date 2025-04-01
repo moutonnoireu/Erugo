@@ -1,36 +1,13 @@
 <script setup>
-import { ref, onMounted, defineExpose, inject, computed, nextTick, watch } from 'vue'
-import {
-  Settings,
-  Tag,
-  Share2,
-  Send,
-  AtSign,
-  Fingerprint,
-  MessageCircleQuestion,
-  ShieldCheck,
-  ShieldBan,
-  Eye,
-  EyeOff,
-  Plus,
-  Trash,
-  ExternalLink
-} from 'lucide-vue-next'
-import {
-  getSettingsByGroup,
-  saveSettingsById,
-  getAuthProviders,
-  bulkUpdateAuthProviders,
-  getAvailableProviderTypes,
-  deleteAuthProvider,
-  getCallbackUrl
-} from '../../api'
-import HelpTip from '../helpTip.vue'
+import { ref, onMounted, defineExpose, inject } from 'vue'
+// import {} from 'lucide-vue-next'
+import { getEmailTemplates, updateEmailTemplates } from '../../api'
 
 import { useToast } from 'vue-toastification'
 import { mapSettings } from '../../utils'
 
 import { useTranslate } from '@tolgee/vue'
+import EmailTemplateEditor from '../emailTemplateEditor.vue'
 
 const { t } = useTranslate()
 
@@ -38,74 +15,106 @@ const showHelpTip = inject('showHelpTip')
 
 const toast = useToast()
 
-
-
-const settingsLoaded = ref(false)
 const saving = ref(false)
-const authProviders = ref([])
+const emailTemplates = ref([])
 
 const emit = defineEmits(['navItemClicked'])
 
 onMounted(async () => {
-
+  try {
+    const templates = await getEmailTemplates()
+    console.log(templates)
+    templates.forEach((template) => {
+      emailTemplates.value.push({
+        name: tidyTemplateName(template.name),
+        id: template.name,
+        content: template.content,
+        variables: template.variables,
+        subject: template.subject
+      })
+    })
+  } catch (error) {
+    console.error(error)
+    toast.error(t.value('settings.emailTemplates.error_loading_templates'))
+  }
 })
 
+const tidyTemplateName = (name) => {
+  // First, remove 'Mail' or 'mail' at the end (case-insensitive)
+  let result = name.replace(/[mM]ail$/, '')
 
-const saveEmailTemplates = async () => {
-  console.log('saving email templates')
+  // Replace underscores with spaces
+  result = result.replace(/_/g, ' ')
+
+  // Insert spaces before capital letters in camelCase
+  result = result.replace(/([a-z])([A-Z])/g, '$1 $2')
+
+  // Capitalize first letter of each word
+  result = result.replace(/\b\w/g, (char) => char.toUpperCase())
+
+  return result
 }
 
-
+const saveEmailTemplates = async () => {
+  try {
+    await updateEmailTemplates(emailTemplates.value)
+    toast.success(t.value('settings.emailTemplates.success'))
+  } catch (error) {
+    console.error(error)
+    toast.error(t.value('settings.emailTemplates.error_saving_templates'))
+  }
+}
 
 const handleNavItemClicked = (item) => {
   emit('navItemClicked', item)
+}
+
+const updateTemplate = (event, template) => {
+  emailTemplates.value = emailTemplates.value.map((t) => {
+    if (t.id === template.id) {
+      return template
+    }
+    return t
+  })
 }
 
 //define exposed methods
 defineExpose({
   saveEmailTemplates
 })
-
-
-
-
 </script>
 <template>
   <div class="container-fluid">
     <div class="row mb-5">
       <div class="col-2 d-none d-md-block">
         <ul class="settings-nav pt-5">
-          <li>
-            <a href="#" @click.prevent="handleNavItemClicked('accountCreated')">
-              {{ $t('settings.emailTemplates.accountCreated') }}
-            </a>
-          </li>
-          <li>
-            <a href="#" @click.prevent="handleNavItemClicked('passwordReset')">
-              {{ $t('settings.emailTemplates.passwordReset') }}
+          <li v-for="template in emailTemplates" :key="template.id">
+            <a href="#" @click.prevent="handleNavItemClicked(template.id)">
+              {{ $t(template.name) }}
             </a>
           </li>
         </ul>
       </div>
       <div class="col-12 col-md-10 pt-5">
-        <div class="row mb-5">
+        
+        <div class="row mb-5" v-for="template in emailTemplates" :key="template.id">
           <div class="col-12 col-md-8 pe-0 ps-0 ps-md-3">
-            <div class="setting-group" id="accountCreated">
+            <div class="setting-group" :id="template.id">
               <div class="setting-group-header">
                 <h3>
-                  {{ $t('settings.emailTemplates.accountCreated') }}
+                  {{ $t(template.name) }}
                 </h3>
               </div>
 
               <div class="setting-group-body">
-                
+                <EmailTemplateEditor :model-value="template" @update:model-value="updateTemplate($event, template)" />
               </div>
             </div>
           </div>
           <div class="d-none d-md-block col ps-0">
             <div class="section-help">
-              <h6>{{ $t('settings.emailTemplates.accountCreated') }}</h6>
-              <p>{{ $t('settings.emailTemplates.accountCreatedDescription') }}</p>
+              <h6>{{ $t(template.name) }}</h6>
+              <p>{{ $t('settings.emailTemplates.' + template.id + 'Description') }}</p>
             </div>
           </div>
         </div>
@@ -283,5 +292,9 @@ defineExpose({
     height: 15px;
     margin-top: -2px;
   }
+}
+
+.section-help {
+  word-break: break-word;
 }
 </style>

@@ -11,7 +11,8 @@ import {
   Boxes,
   Plus,
   EllipsisVertical,
-  Bomb
+  Bomb,
+  Mail
 } from 'lucide-vue-next'
 import { ref, onMounted } from 'vue'
 import Users from './settings/users.vue'
@@ -184,7 +185,7 @@ const setShowDeletedShares = (value) => {
             v-if="store.isAdmin()"
           >
             <h2>
-              <Settings />
+              <Mail />
               {{ $t('settings.title.emailTemplates') }}
             </h2>
           </div>
@@ -269,7 +270,7 @@ const setShowDeletedShares = (value) => {
                   </span>
                 </h2>
                 <div class="user-actions">
-                  <button @click="$refs['systemSettings'].saveSettings()">
+                  <button @click="$refs['emailTemplates'].saveEmailTemplates()">
                     <Save />
                     {{ $t('settings.button.emailTemplates.save') }}
                   </button>
