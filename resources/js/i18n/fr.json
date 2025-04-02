@@ -174,6 +174,8 @@
         "action_text": "Texte du bouton d'action",
         "action_url": "Action URL",
         "content": "Contenu du message",
+        "fallbackText": "Texte de description du lien de secours",
+        "fallbackTextDescription": "Pour les clients de messagerie qui ne peuvent pas afficher correctement les boutons d'action, nous incluons un lien de secours au bas de l'e-mail. Cette option permet de personnaliser le texte qui apparaît au-dessus de ce lien de secours, afin d'aider les destinataires à en comprendre l'utilité.",
         "header": "Contenu de l'en-tête",
         "subject": "Sujet"
       },
