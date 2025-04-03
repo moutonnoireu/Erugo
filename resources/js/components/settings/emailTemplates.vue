@@ -154,7 +154,7 @@ defineExpose({
           <div class="d-none d-md-block col ps-0">
             <div class="section-help">
               <h6>{{ $t(template.name) }}</h6>
-              <p>{{ $t('settings.emailTemplates.' + template.id + 'Description') }}</p>
+
             </div>
           </div>
         </div>
