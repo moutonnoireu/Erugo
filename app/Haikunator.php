@@ -3,34 +3,34 @@ namespace App;
 
 class Haikunator {
     private static array $adjectives = [
-        "aged", "ancient", "autumn", "billowing", "bitter", "black", "blue", "bold",
-        "broad", "broken", "calm", "cold", "cool", "crimson", "curly", "damp",
-        "dark", "dawn", "delicate", "divine", "dry", "empty", "falling", "fancy",
-        "flat", "floral", "fragrant", "frosty", "gentle", "green", "hidden", "holy",
-        "icy", "jolly", "late", "lingering", "little", "lively", "long", "lucky",
-        "misty", "morning", "muddy", "mute", "nameless", "noisy", "odd", "old",
-        "orange", "patient", "plain", "polished", "proud", "purple", "quiet", "rapid",
-        "raspy", "red", "restless", "rough", "round", "royal", "shiny", "shrill",
-        "shy", "silent", "small", "snowy", "soft", "solitary", "sparkling", "spring",
-        "square", "steep", "still", "summer", "super", "sweet", "throbbing", "tight",
-        "tiny", "twilight", "wandering", "weathered", "white", "wild", "winter", "wispy",
-        "withered", "yellow", "young"
-    ];
+      "vieux", "antique", "automnal", "ondoyant", "amer", "noir", "bleu", "audacieux",
+      "large", "brise", "calme", "froid", "frais", "cramoisi", "boucle", "humide",
+      "sombre", "aurore", "delicat", "divin", "sec", "vide", "tombant", "fantaisiste",
+      "plat", "fleuri", "parfume", "givre", "doux", "vert", "cache", "sacre",
+      "glace", "joyeux", "tardif", "persistant", "petit", "vivant", "long", "chanceux",
+      "brumeux", "matinal", "boueux", "muet", "sans nom", "bruyant", "etrange", "vieux",
+      "orange", "patient", "simple", "poli", "fier", "violet", "tranquille", "rapide",
+      "raque", "rouge", "agite", "rugueux", "rond", "royal", "brillant", "strident",
+      "timide", "silencieux", "petit", "neigeux", "mou", "solitaire", "etincelant", "printanier",
+      "carre", "raide", "immobile", "estival", "super", "doux", "palpitant", "serre",
+      "minuscule", "crepusculaire", "errant", "use", "blanc", "sauvage", "hivernal", "vaporux",
+      "fane", "jaune", "jeune"
+];
 
     private static array $nouns = [
-        "art", "band", "bar", "base", "bird", "block", "boat", "bonus",
-        "bread", "breeze", "brook", "bush", "butterfly", "cake", "cell", "cherry",
-        "cloud", "credit", "darkness", "dawn", "dew", "disk", "dream", "dust",
-        "feather", "field", "fire", "firefly", "flower", "fog", "forest", "frog",
-        "frost", "glade", "glitter", "grass", "hall", "hat", "haze", "heart",
-        "hill", "king", "lab", "lake", "leaf", "limit", "math", "meadow",
-        "mode", "moon", "morning", "mountain", "mouse", "mud", "night", "paper",
-        "pine", "poetry", "pond", "queen", "rain", "recipe", "resonance", "rice",
-        "river", "salad", "scene", "sea", "shadow", "shape", "silence", "sky",
-        "smoke", "snow", "snowflake", "sound", "star", "sun", "sunset",
-        "surf", "term", "thunder", "tooth", "tree", "truth", "union", "unit",
-        "violet", "voice", "water", "waterfall", "wave", "wildflower", "wind", "wood"
-    ];
+      "art", "groupe", "bar", "base", "oiseau", "bloc", "bateau", "bonus",
+      "pain", "brise", "ruisseau", "buisson", "papillon", "gateau", "cellule", "cerise",
+      "nuage", "credit", "obscurite", "aurore", "rosee", "disque", "reve", "poussiere",
+      "plume", "champ", "feu", "luciole", "fleur", "brouillard", "foret", "grenouille",
+      "gele", "clairiere", "paillette", "herbe", "salle", "chapeau", "brume", "coeur",
+      "colline", "roi", "labo", "lac", "feuille", "limite", "maths", "prairie",
+      "mode", "lune", "matin", "montagne", "souris", "boue", "nuit", "papier",
+      "pin", "poesie", "etang", "reine", "pluie", "recette", "resonance", "riz",
+      "riviere", "salade", "scene", "mer", "ombre", "forme", "silence", "ciel",
+      "fumee", "neige", "flocon", "son", "etoile", "soleil", "coucher de soleil",
+      "vague", "terme", "tonnerre", "dent", "arbre", "verite", "union", "unite",
+      "violette", "voix", "eau", "cascade", "vague", "fleur sauvage", "vent", "bois"
+];
 
     public static function setSeed(int $seed): void {
         mt_srand($seed);
