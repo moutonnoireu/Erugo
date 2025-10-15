@@ -27,7 +27,7 @@ class Haikunator {
       "mode", "lune", "matin", "montagne", "souris", "boue", "nuit", "papier",
       "pin", "poesie", "etang", "reine", "pluie", "recette", "resonance", "riz",
       "riviere", "salade", "scene", "mer", "ombre", "forme", "silence", "ciel",
-      "fumee", "neige", "flocon", "son", "etoile", "soleil", "coucher de soleil",
+      "fumee", "neige", "flocon", "son", "etoile", "soleil", "crepuscule",
       "vague", "terme", "tonnerre", "dent", "arbre", "verite", "union", "unite",
       "violette", "voix", "eau", "cascade", "vague", "fleur sauvage", "vent", "bois"
 ];
